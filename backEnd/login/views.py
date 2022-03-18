@@ -1,0 +1,61 @@
+from django.shortcuts import render, redirect
+from django.contrib import auth
+from django.contrib.auth.models import User
+from django.urls import reverse
+from django.http import HttpResponse,JsonResponse
+
+def index(request):
+    # 页面初次渲染
+    if request.method == "GET":
+        return render(request, "login/index.html")
+
+    try:
+        user_name = request.POST["username"]
+        password = request.POST["password"]
+    except:
+        return HttpResponse("error")
+
+    if '@' in user_name:
+        try :
+            user_name = User.objects.get(email=user_name).username
+        except User.DoesNotExist:
+            pass
+    user = auth.authenticate(username=user_name, password=password)
+    # 如果用户不存在，提示不存在用户，并返回登录界面
+    # 如果用户存在，跳转到主界面，并附加session信息
+    if not user:
+        return redirect(reverse('login:index'))
+    else:
+        auth.login(request, user)
+        return redirect(reverse("main_menu:index"))
+
+def register(request):
+    if request.method == "GET":
+        return render(request, 'login/register.html')
+    # 若已存在用户名，显示相关提示（未实现）并返回登录界面
+    # 若不存在用户名，创建用户并返回登录界面
+    # 前端的错误提示方式需要改一下
+    print(request.POST)
+    try:
+        Email = request.POST["email"]
+        UserName = request.POST["username"]
+        Password = request.POST["password"]
+    except:
+        return HttpResponse('error')
+
+    if User.objects.filter(email=Email):
+        JsonData = {
+            'err':'Email_repeat',
+        }
+    elif User.objects.filter(username=UserName):
+        JsonData = {
+            'err':'Username_repeat',
+        }
+    else:
+        User.objects.create_user(username=UserName, email=Email, password=Password)
+        JsonData = {
+            'err':'NONE',
+        }
+
+    return JsonResponse(JsonData)
+

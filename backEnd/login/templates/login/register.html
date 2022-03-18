@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% load static %}
+        <title>Register</title>
+        <link rel="stylesheet" href="{% static 'CSS/register.css' %}">
+        <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
+        <script type="text/javascript" charset="utf-8">
+            var userform_url = "{% url 'login:register' %}"
+            var login_url = "{% url 'login:index' %}"
+        </script>
+        <script type="text/javascript" src="{% static 'JS/register.js' %}"></script>
+    </head>
+    <body>
+        <div class="background">
+            <img src="{% static 'IMG/register/bg.jpg' %}" alt="" id="bg">
+        </div>
+        <div class="main">
+            <img src="{% static 'IMG/register/7.jpg' %}" alt="" id="head">
+            <p class="title">SIGN UP</p>
+            <form name="userdata" method="post">
+                <p class="stitle">Email<a class="prompt" id="usnpro">UserName cannot be empty and does not contain '@'</a></p>
+                <input type="text" name="" id="Email" placeholder="Email"/>
+                <p class="stitle">UserName<a class="prompt" id="emlpro">Email cannot be empty</a></p>
+                <input type="text" name="" id="UserName" placeholder="UserName"/>
+                <p class="stitle">Password<a class="prompt" id="psdpro"></a></p>
+                <input type="password" name="" id="Password" placeholder="Password"/>
+                <p class="stitle">Confirm Password<a class="prompt" id="cpsdpro">Password and confirm password do not match</a></p>
+                <input type="password" name="" id="confirm_password" placeholder="Confirm Password"/>
+            </form>
+            <button id="submit">Submit</button>
+            <p class="signup">Already Have an Account? <a href="{% url 'login:index' %}"><b>Sign In</b></a></p>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% load static %}
+        <title>Login</title>
+        <link rel="stylesheet" href="{% static 'CSS/login.css' %}">
+        <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
+        <script type="text/javascript" charset="utf-8">
+            var hide_img = "{% static 'IMG/login/hide.png' %}"
+            var show_img = "{% static 'IMG/login/show.png' %}"
+        </script>
+        <script type="text/javascript" src="{% static 'JS/login.js' %}"></script>
+    </head>
+    <body>
+        <div class="background">
+            <img src="{% static 'IMG/login/bg.jpg' %}" alt="" id="bg">
+        </div>
+        <div class="main">
+            <img src="{% static 'IMG/login/7.jpg' %}" alt="" id="head">
+            <p class="title">SIGN IN</p>
+            <form name="userdata" method="post">
+                <p class="stitle">Username</p>
+                <input type="text" name="" id="username" placeholder="Email/UserName"/>
+                <p class="stitle">Password</p>
+                <div>
+                <input type="password" name="" id="password" placeholder="Password"/>
+                <img src="{% static 'IMG/login/hide.png' %}" alt="" id="eyes"/>
+                </div>
+            </form>
+            <p id="forget"><a href="">Forgot Password?</a></p>
+            <button id="submit">Submit</button>
+            <p class="signup">Don't Have an Account? <a href="{% url 'login:register' %}"><b>Sign Up</b></a></p>
+        </div>
+    </body>
+</html>

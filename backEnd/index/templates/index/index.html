@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% load static %}
+        <title>Welcome</title>
+        <link rel="stylesheet" href="{% static 'CSS/main.css' %}" type="text/css">
+        <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
+        <script type="text/javascript" src="{% static 'JS/main.js' %}"></script>
+    </head>
+    <body>
+        <div class="main">
+            <img src="{% static 'IMG/index/bg.jpg' %}" alt="" id="bg">
+            <img src="{% static 'IMG/index/moon.png' %}" alt="" id="moon">
+            <img src="{% static 'IMG/index/mountain.png' %}" alt="" id="mountain">
+            <img src="{% static 'IMG/index/road.png' %}" alt="" id="road">
+            <h2 id="text">BUAA数据标注平台</h2>
+        </div>
+        <ul id="navbar">
+            <li class="logo"><img src="{% static 'IMG/index/buaalogo.png' %}" width="60"></li>
+            <li><a href="">Home</a></li>
+            <li><a href="">About</a></li>
+            <li><a href="">Service</a></li>
+            <li><a href="">Portfolio</a></li>
+            <li><a href="">Contract</a></li>
+            <li class="right"><a href="{% url 'login:index' %}">Login</a></li>
+        </ul>
+    </body>
+</html>
+

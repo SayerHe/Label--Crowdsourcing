@@ -1,0 +1,141 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins' , sans-serif;
+}
+body{
+    background: #0e273d;
+    background: #ffffff;
+    min-height: 3500px;
+}
+
+/*背景*/
+.main{
+    position: relative;
+    width:100%;
+    /* 100vh和100%区别在于，如果里面没有元素，100vh还是会占据这个高度，而100%此时的高度就是0 */
+    height: 100vh;  
+    overflow: hidden;
+    /* 溢出隐藏 */
+    display: flex;
+    /* 弹性布局 在不同方向排列元素 重新排列元素的显示顺序 更改元素的对齐方式 动态地将元素装入容器*/
+    justify-content: center;
+    /* 水平居中，弹性项目居中紧挨着填充。（如果剩余的自由空间是负的，则弹性项目将在两个方向上同时溢出）。 */
+    align-items: center;
+    /* 垂直居中，弹性项目居中紧挨着填充。（如果剩余的自由空间是负的，则弹性项目将在两个方向上同时溢出）。 */
+}
+.main img{
+    position: absolute;
+    /*让四张图片重合了*/
+    top: 0;
+    left: 0;
+    /*直接充满整个屏幕*/
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 保留原始比例 */
+    pointer-events: none;
+    /* 是否对鼠标指针事件做出反应。none就是鼠标点上去也没用，auto就是有用 */
+    
+}
+.main:before{
+    content: " ";
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 100%;
+    /* linear-gradient是渐变函数 transparent 是透明的意思*/
+    background: linear-gradient(to top,#0a2a43, transparent);
+    z-index: 100;
+}
+.main:after{
+    content: " ";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: #0a2a43;
+    z-index: 10000;
+    mix-blend-mode: color;
+    /*颜色混合*/
+    z-index: 100;
+}
+#text{
+    position: relative;
+    color:#ffffff;
+    font-size: 8em;
+    z-index: 1;
+}
+#road{
+    z-index: 2;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+/*导航栏*/
+
+a{
+    text-decoration: none;
+}
+ul[id="navbar"]{
+    position: fixed;
+    top: 30px;
+    left: 0;
+    transform: translate(0,0);
+    z-index: 10010;
+    width: 100%;
+    padding: 10px 0;
+    background-color: #0e273d00;
+}
+ul[id="navbar"] li{
+    list-style: none;
+    float: left;
+    width: 200px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    /*background-color: aqua;*/
+}
+ul[id="navbar"] li.logo{
+    width: 90px;
+    padding-left: 40px;
+}
+ul[id="navbar"] img{
+    scale: 0.1;
+}
+/*  */
+ul[id="navbar"] li a{
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2em;
+    position: absolute; 
+    transform: translate(-50%, 0);
+}
+ul[id="navbar"] li.right{
+    float: right;
+    margin-right: 20px;
+}
+
+/* 千万在：前面留空格 */
+ul[id="navbar"] li a:before{
+    content: ' ';
+    position:absolute; 
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    border-bottom: 3px solid lightskyblue;
+    transform: scaleX(0);
+    transition: 0.5s;
+    transform-origin: left;
+}
+ul[id="navbar"] li:hover a:before{
+    border-bottom: 3px solid lightskyblue;
+    transform: scaleX(0.5);
+    transition: 0.5s;
+    transform-origin: right;
+} 
