@@ -25,25 +25,28 @@ $(document).ready(function(){
 });
 function userform_callback(err)
 {
-    console.log(err)
+    //console.log(err)
     if(err == "NONE"){
-        alert("Successfully Registered")
-        window.location.href = login_url
+        alert("Successfully Registered");
+        window.location.href = login_url;
     }
     else if(err == "Email_repeat"){
-        alert("Email Repeat")
+        alert("Email Repeat");
     }
     else if(err == "Username_repeat"){
-        alert("UserName Repeat")
+        alert("UserName Repeat");
     }
     else if(err == "Email_empty"){
-        alert("Email cannot be empty")
+        alert("Email cannot be empty");
+    }
+    else if(err == "Username_empty"){
+        alert("UserName cannot be empty");
     }
     else if(err == "Username_format"){
-        alert("UserName cannot be empty and does not contain '@'")
+        alert("UserName can only contain Chinese and English, numbers and '_'");
     }
     else if(err == "Password_wrong"){
-        alert("Password and confirm password do not match")
+        alert("Password and confirm password do not match");
     }
 }
 function check_userform()
@@ -51,7 +54,10 @@ function check_userform()
     if($("#Email").val() == ''){
         userform_callback("Email_empty")
     }
-    else if($("#UserName").val() == '' || $("#UserName").val().indexOf("@") != -1){
+    else if($("#UserName").val() == ''){
+        userform_callback("Username_empty")
+    }
+    else if($("#UserName").val().indexOf("@") != -1){
         userform_callback("Username_format")
     }
     else if($("#Password").val() != $("#confirm_password").val()){    
@@ -69,7 +75,6 @@ function check_userform()
             error: function () {
                 //当请求错误之后，自动调用
             }
-            
         });
     }
 }

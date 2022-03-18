@@ -7,27 +7,34 @@ from django.http import HttpResponse,JsonResponse
 def index(request):
     # 页面初次渲染
     if request.method == "GET":
-        return render(request, "login/index.html")
-
+        if request.user.is_authenticated:
+            auth.login(request, request.user)
+            return redirect(reverse('main_menu:index'))
+        else:
+            return render(request, "login/index.html")
     try:
         user_name = request.POST["username"]
         password = request.POST["password"]
     except:
         return HttpResponse("error")
-
     if '@' in user_name:
         try :
             user_name = User.objects.get(email=user_name).username
         except User.DoesNotExist:
-            pass
+            return JsonResponse({'err':'UserDoesNotExist'})
+    else:
+        try :
+            User.objects.get(username=user_name)
+        except User.DoesNotExist:
+            return JsonResponse({'err':'UserDoesNotExist'})
     user = auth.authenticate(username=user_name, password=password)
     # 如果用户不存在，提示不存在用户，并返回登录界面
     # 如果用户存在，跳转到主界面，并附加session信息
     if not user:
-        return redirect(reverse('login:index'))
+        return JsonResponse({'err':'Password_wrong'})
     else:
         auth.login(request, user)
-        return redirect(reverse("main_menu:index"))
+        return JsonResponse({'err':'None'})
 
 def register(request):
     if request.method == "GET":
@@ -44,18 +51,11 @@ def register(request):
         return HttpResponse('error')
 
     if User.objects.filter(email=Email):
-        JsonData = {
-            'err':'Email_repeat',
-        }
+        return JsonResponse({'err':'Email_repeat'})
     elif User.objects.filter(username=UserName):
-        JsonData = {
-            'err':'Username_repeat',
-        }
+        return JsonResponse({'err':'Username_repeat'})
     else:
         User.objects.create_user(username=UserName, email=Email, password=Password)
-        JsonData = {
-            'err':'NONE',
-        }
+        return JsonResponse({'err':'None'})
 
-    return JsonResponse(JsonData)
 

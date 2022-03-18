@@ -5,9 +5,11 @@
         {% load static %}
         <title>Welcome</title>
         <link rel="stylesheet" href="{% static 'CSS/main.css' %}" type="text/css">
+        <link rel="stylesheet" href="{% static 'CSS/SubModule.css' %}" type="text/css">
         <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
         <script type="text/javascript" src="{% static 'JS/main.js' %}"></script>
     </head>
+
     <body>
         <div class="main">
             <img src="{% static 'IMG/index/bg.jpg' %}" alt="" id="bg">
@@ -18,13 +20,25 @@
         </div>
         <ul id="navbar">
             <li class="logo"><img src="{% static 'IMG/index/buaalogo.png' %}" width="60"></li>
-            <li><a href="">Home</a></li>
-            <li><a href="">About</a></li>
-            <li><a href="">Service</a></li>
-            <li><a href="">Portfolio</a></li>
-            <li><a href="">Contract</a></li>
+            <li><a href="#Home">Home</a></li>
+            <li><a href="#About">About</a></li>
+            <li><a href="#Service">Service</a></li>
+            <li><a href="#Portfolio">Portfolio</a></li>
+            <li><a href="#Contract">Contract</a></li>
             <li class="right"><a href="{% url 'login:index' %}">Login</a></li>
         </ul>
+        <div class="SubModule" id="About_div">
+            <p style="justify-content: center; align-content: center;">About</p>
+        </div>
+        <div class="SubModule" id="Service_div">
+            <p style="justify-content: center; align-content: center;">Service</p>
+        </div>
+        <div class="SubModule" id="Portfolio_div">
+            <p style="justify-content: center; align-content: center;">Portfolio</p>
+        </div>
+        <div class="SubModule" id="Contract_div">
+            <p style="justify-content: center; align-content: center;">Contract</p>
+        </div>
     </body>
 </html>
 

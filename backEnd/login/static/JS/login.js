@@ -1,16 +1,16 @@
 $(document).ready(function(){
     $("#submit").click(function(){
-        check_userform()
+        check_userform();
     });
     $("input").keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if(keycode == '13')
         {
-            check_userform()
+            check_userform();
         }
     })
     $("#eyes").click(function(){
-        var input = document.getElementById('password')
+        var input = document.getElementById("Password")
         var imgs = document.getElementById('eyes');
         //下面是一个判断每次点击的效果
         if (input.type == 'password') {
@@ -22,23 +22,40 @@ $(document).ready(function(){
         }
     });
 });
+function userform_callback(err)
+{
+    console.log(err)
+    if(err == "None"){
+        //alert("Successfully Login");
+        window.location.href = main_menu_url;
+    }
+    else if(err == "Username_empty"){
+        alert("UserName Cannot Be Empty");
+    }
+    else if(err == "Password_wrong"){
+        alert("Wrong Password");
+    }
+    else if(err == "UserDoesNotExist"){
+        alert("User Does Not Exist");
+    }
+}
 function check_userform()
 {
-    var temp=document.createElement("form");
-    temp.method="post";
-    temp.style.display="none";
-    
-    var usn = document.createElement("textarea");
-    usn.name = 'username';
-    usn.value = $("#username").val();
-    var psd = document.createElement("textarea");
-    psd.name = 'password';
-    psd.value = $("#password").val();
-    temp.appendChild(usn);
-    temp.appendChild(psd);
-
-    document.body.appendChild(temp);
-    //temp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    temp.submit();
-    return temp;
+    if($("#UserName").val() == ''){
+        userform_callback("Username_empty");
+    }
+    else{
+        $.ajax({
+            url: login_url,
+            type: "POST",        //请求类型
+            data: {"username":$("#UserName").val(), "password":$("#Password").val()},
+            dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
+            success: function (callback) {
+                userform_callback(callback["err"])
+            },
+            error: function () {
+                //当请求错误之后，自动调用
+            }
+        });
+    }
 }
