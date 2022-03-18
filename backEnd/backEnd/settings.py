@@ -61,7 +61,6 @@ TEMPLATES = [
         'DIRS': [
             os.path.join(BASE_DIR, 'login/templates'),
             os.path.join(BASE_DIR, 'index/templates'),
-            os.path.join(BASE_DIR, 'register/templates'),
             os.path.join(BASE_DIR, 'main_menu/templates'),
         ],
         'APP_DIRS': True,
