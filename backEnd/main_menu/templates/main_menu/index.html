@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% load static %}
+        <title>Welcome</title>
+        <link rel="stylesheet" href="{% static 'CSS/main_menu.css' %}" type="text/css">
+        <script>
+            var UserName = '{{ UserName }}';
+        </script>
+        <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
+        <script type="text/javascript" src="{% static 'JS/main_menu.js' %}"></script>
+    </head>
+
+    <body>
+        <div id="head">
+            <a id="Title"><p><b>数据标注平台</b></p></a>
+            <a id="User"><p id="UserName">UserName</p></a>
+        </div>
+        <div id="menu">
+            <div id="menu_active"><a></a></div>
+            <ul>
+                <li id=""><a>Home</a></li>
+                <li id=""><a>About</a></li>
+                <li id=""><a>Service</a></li>
+                <li id=""><a>Portfolio</a></li>
+                <li id=""><a>Contract</a></li>
+            </ul>
+        </div>
+    </body>
+</html>
+
+
+ 
+<!-- <body>
+    <div class="box">
+        <div class="text_active"><a></a></div>
+    </div>
+    <p class="text">车辆进出预约</p>
+</body> -->
+
+ 
