@@ -7,6 +7,8 @@
         <link rel="stylesheet" href="{% static 'CSS/main_menu.css' %}" type="text/css">
         <script>
             var UserName = '{{ UserName }}';
+            var user_url = "{% url 'user:show_tasks' %}"
+            var publish_url = "{% url 'publisher:create_task' %}"
         </script>
         <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
         <script type="text/javascript" src="{% static 'JS/main_menu.js' %}"></script>
@@ -20,14 +22,14 @@
         <div id="menu">
             <div id="menu_active"><a></a></div>
             <ul>
-                <li id=""><a>Home</a></li>
-                <li id=""><a>About</a></li>
-                <li id=""><a>Service</a></li>
-                <li id=""><a>Portfolio</a></li>
-                <li id=""><a>Contract</a></li>
+                <li class="menubt" id="Publish"><a>发布任务</a></li>
+                <li class="menubt" id="T_Doing"><a>标注中的任务</a></li>
+                <li class="menubt" id="T_Finished"><a>已完成的任务</a></li>
+                <li class="menubt" id="Annotation"><a>数据标注</a></li>
+                <li class="menubt" id="Account"><a>账户余额</a></li>
             </ul>
         </div>
-        <iframe id="HTML" src="{% url 'publisher:create_task' %}" frameborder="0"></iframe>
+        <iframe id="SUBHTML" src="{% url 'publisher:create_task' %}" frameborder="0"></iframe>
 
     </body>
 </html>

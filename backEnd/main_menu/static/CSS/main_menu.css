@@ -62,7 +62,7 @@ body{
     background-color: #fff;
     position: fixed;
     left: 0;
-    top: 5.7em;
+    top: 0;
     display: inline-block;
     border-radius: var(--menu-border-radius) 0 0 var(--menu-border-radius);
     z-index: 0;
@@ -111,11 +111,13 @@ body{
     padding: 0;
     top: 1.5em;
     z-index: 2;
+    flex-direction: column;
 }
 #menu li{
     list-style: none;
-    /* background-color: red; */
     padding: 1em 2em;
+    /* display: block;
+    clear: both; */
 }
 #menu li:hover{
     background-color: #ffffff33;
@@ -124,7 +126,7 @@ body{
     text-decoration: none;
 }
 
-#HTML{
+#SUBHTML{
     position: absolute;
     left: var(--menu-width);
     top: var(--head-height);
