@@ -3,18 +3,35 @@ window.onload=function(){
     mindate = date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2, '0')+'-'+date.getDate()
     var date = new Date(Date.now() + 90*24*60*60*1000);
     maxdate = date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2, '0')+'-'+date.getDate()
+    var date = new Date(Date.now() + 7*24*60*60*1000);
+    middate = date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2, '0')+'-'+date.getDate()
     ddl = document.getElementById("deadline")
     ddl.setAttribute("min",mindate);
     ddl.setAttribute("max",maxdate);
-
+    ddl.setAttribute("value",middate);
+    $("#payment").val(Math.max(1, Math.round(100/7/7)));
 }
 
 $(document).ready(function(){
     $("#deadline").change(function(){
-        date = new Date($("#deadline").val())
+        date = new Date($("#deadline").val());
         days = Math.floor((date.valueOf() - Date.now())/(24*60*60*1000)+1);
-        $("#payment").val(Math.ceil(100/days/days))
+        $("#payment").val(Math.max(1, Math.round(100/days/days)));
     });
+
+    $("#datafiletext").click(function(){
+        $("#datafile").trigger('click');
+    });
+    $("#datafile").change(function(){
+        $("#datafiletext").val($(this).val());
+    });
+    $("#markfiletext").click(function(){
+        $("#markfile").trigger('click');
+    });
+    $("#markfile").change(function(){
+        $("#markfiletext").val($(this).val());
+    });
+
 });
 
 function btsubmit(){
@@ -24,8 +41,8 @@ function btsubmit(){
             type: "POST",        //请求类型
             data: {
                 "taskname" : $("#taskname").val(),
-                "datatype" : $("#datatypeform").val(),
-                "marktype" : $("#marktypeform").val(),
+                "datatype" : $("input:radio[name='datatype']:checked").val(),
+                "marktype" : $("input:radio[name='marktype']:checked").val(),
                 "deadline" : $("#deadline").val(),
                 "payment"  : $("#payment").val(),
                 "datafile" : $("#datafile").val(),

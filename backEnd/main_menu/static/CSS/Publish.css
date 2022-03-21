@@ -6,6 +6,92 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: 60%;
+    /* padding: 0 100px; */
+    width: 440px;
     /* background-color: red; */
+}
+
+#taskname{
+    width: 380px;
+    border: none;
+    border-bottom: 1px gray solid;
+    outline: none;
+    background: none;
+    height: 20px;
+    font-size: 18px;
+}
+
+.container {
+	display: flex;
+	/* 让子元素垂直排列 */
+	/* flex-direction: column; */
+}
+.container label {
+	display: flex;
+	/* 鼠标移入变小手 */
+	cursor: pointer;
+    margin-right: 20px;
+}
+.container label input {
+	/* 隐藏元素 先显示出来 */
+	display: none;
+}
+/* + 是相邻兄弟选择器 */
+.container label input + span {
+	display: flex;
+	/* 让伪元素和文字水平排列 */
+	align-items: center;
+	padding: 5px 10px;
+	margin-bottom: 10px;
+	border-radius: 30px;
+	transition: all 0.3s;
+}
+/* 鼠标移入变背景颜色 */
+.container label input + span:hover {
+	background-color: #412f5e15;
+}
+/* 选中单选按钮对应的span元素背景颜色改变 */
+.container label input:checked + span {
+	background-color: #412f5e15;
+}
+.container label input + span::before {
+	content: "";
+	/* 伪元素是行内元素 需要转为块级元素才能设置宽高 */
+	display: block;
+	width: 16px;
+	height: 16px;
+	/* 圆角属性 */
+	border-radius: 50%;
+	margin-right: 15px;
+	background-color: #fff;
+	/* 盒子阴影 inset是内部阴影 */
+	box-shadow: 0 0 0 2px #3FB7EB inset;
+	/* 加个过渡时间 */
+	transition: all 0.3s;
+}
+.container label input:checked + span::before {
+	/* 选中的元素内部的阴影加深 */
+	box-shadow: 0 0 0 4px #3FB7EB inset;
+}
+
+#payment{
+    width: 7em;
+}
+
+input.filetext{
+    padding:3px 0px;
+    padding-left:10px;
+    border:1px solid #E7EAEC;
+    width: 380px;;
+    height:25px;
+    outline: none;
+    line-height:25px;
+    border-left:4px solid #3FB7EB;
+    background:#FAFAFB;
+    border-radius:2px;
+    vertical-align: middle;
+}
+input[type='file']{
+    border:0px;
+    display:none;
 }
