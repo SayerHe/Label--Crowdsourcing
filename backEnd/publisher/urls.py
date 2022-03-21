@@ -5,5 +5,5 @@ from publisher import views
 app_name = "publisher"
 
 urlpatterns = [
-    path('', views.load_task_info, name="load_info")
+    path('', views.create_new_task, name="create_task")
 ]
