@@ -123,3 +123,12 @@ body{
 #menu li a{
     text-decoration: none;
 }
+
+#HTML{
+    position: absolute;
+    left: var(--menu-width);
+    top: var(--head-height);
+    width: calc(100vw - var(--menu-width));
+    height: calc(100vh - var(--head-height));
+    /* background-color: aqua; */
+}

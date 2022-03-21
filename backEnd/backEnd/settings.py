@@ -50,7 +50,7 @@ MIDDLEWARE = [
     #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'backEnd.urls'
@@ -139,5 +139,5 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SESSION_COOKIE_AGE = 60*60*24 # Session的cookie失效日期（2周）（数字为秒数）（默认）
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True # 是否关闭浏览器使得Session过期（默认）
+SESSION_COOKIE_AGE = 60*60*24 # Session的cookie失效日期（数字为秒数）
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True # 是否关闭浏览器使得Session过期
