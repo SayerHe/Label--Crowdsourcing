@@ -4,6 +4,9 @@
         <meta charset="utf-8">
         <title></title>
         <link rel="stylesheet" href="../CSS/Publish.css" type="text/css">
+        <script>
+            publish_url = "{% url 'Publisher:index' %}"
+        </script>
         <script type="text/javascript" src="../JS/jquery-3.6.0.js"></script>
         <script type="text/javascript" src="../JS/Publish.js"></script>
         <!-- {% load static %}
@@ -16,32 +19,31 @@
         <h1 id="title">发布数据</h1>
         <div id="main">
             <p>任务名称</p>
-            <input type="text" id="name" value="数据标注任务"/>
+            <input type="text" id="taskname" value="数据标注任务"/>
             <p>数据类型</p>
-            <form action="" method="post" name="datatypeform">
+            <form action="" name="datatypeform">
                 <input type="radio" name="datatype" checked="checked">文本
                 <input type="radio" name="datatype">图片
                 <input type="radio" name="datatype">语音
                 <input type="radio" name="datatype">视频
             </form>
             <p>标注类型</p>
-            <form action="" method="post" name="marktypeform">
+            <form action="" name="marktypeform">
                 <input type="radio" name="marktype" checked="checked">打分
                 <input type="radio" name="marktype">选择
                 <input type="radio" name="marktype">描述
             </form>
             <p>截止日期</p>
-            <input type="date" id="ddl"/>
+            <input type="date" id="deadline"/>
             <p>单条薪酬</p>
-            <input type="text" id="pay" value=""/>
+            <input type="number" id="payment" min="0"/>
+            <span id="unit">元</span>
             <p>数据文件</p>
-            <form action="" method="post" enctype="multipart/form-data" name="datafileform">
-                <input type="file" name="datafile">
-            </form>
+            <input type="file" id="datafile">
             <p>标注规则</p>
-            <form action="" method="post" enctype="multipart/form-data" name="markruleform">
-                <input type="file" name="markrule">
-            </form>
+            <input type="file" id="markrule">
+            <br/><br/><br/>
+            <button id="submit" onclick="btsubmit()">提交</button>
         </div>
     </body>
 </html>
