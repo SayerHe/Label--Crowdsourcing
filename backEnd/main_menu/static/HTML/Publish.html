@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <link rel="stylesheet" href="../CSS/Publish.css" type="text/css">
+        <script type="text/javascript" src="../JS/jquery-3.6.0.js"></script>
+        <script type="text/javascript" src="../JS/Publish.js"></script>
+        <!-- {% load static %}
+        <link rel="stylesheet" href="{% static 'CSS/Publish.css' %}" type="text/css">
+        <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
+        <script type="text/javascript" src="{% static 'JS/Publish.js' %}"></script> -->
+    </head>
+
+    <body>
+        <h1 id="title">发布数据</h1>
+        <div id="main">
+            <p>任务名称</p>
+            <input type="text" id="name" value="数据标注任务"/>
+            <p>数据类型</p>
+            <form action="" method="post" name="datatypeform">
+                <input type="radio" name="datatype" checked="checked">文本
+                <input type="radio" name="datatype">图片
+                <input type="radio" name="datatype">语音
+                <input type="radio" name="datatype">视频
+            </form>
+            <p>标注类型</p>
+            <form action="" method="post" name="marktypeform">
+                <input type="radio" name="marktype" checked="checked">打分
+                <input type="radio" name="marktype">选择
+                <input type="radio" name="marktype">描述
+            </form>
+            <p>截止日期</p>
+            <input type="date" id="ddl"/>
+            <p>单条薪酬</p>
+            <input type="text" id="pay" value=""/>
+            <p>数据文件</p>
+            <form action="" method="post" enctype="multipart/form-data" name="datafileform">
+                <input type="file" name="datafile">
+            </form>
+            <p>标注规则</p>
+            <form action="" method="post" enctype="multipart/form-data" name="markruleform">
+                <input type="file" name="markrule">
+            </form>
+        </div>
+    </body>
+</html>
+
+ 
