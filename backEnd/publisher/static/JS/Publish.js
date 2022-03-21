@@ -35,8 +35,18 @@ $(document).ready(function(){
 });
 
 function btsubmit(){
+    data = {
+        "TaskName" : $("#taskname").val(),
+        "DataType" : $("input[name='datatype']:checked").val(),
+        "LabelType" : $("input[name='marktype']:checked").val(),
+        "TaskDeadline" : $("#deadline").val(),
+        "Payment"  : $("#payment").val(),
+        "DataFile" : $('#datafile')[0].files[0],
+        "RuleFile" : $('#markfile')[0].files[0],
+    };
+    console.log(data)
     if(1/*check*/){
-    $.ajax({
+        $.ajax({
             url: publish_url,
             type: "POST",        //请求类型
             data: {
@@ -45,8 +55,8 @@ function btsubmit(){
                 "LabelType" : $("input[name='marktype']:checked").val(),
                 "TaskDeadline" : $("#deadline").val(),
                 "Payment"  : $("#payment").val(),
-                "DataFile" : $('#datafile')[0].files[0],
-                "RuleFile" : $('#markfile')[0].files[0],
+                // "DataFile" : $('#datafile')[0].files[0],
+                // "RuleFile" : $('#markfile')[0].files[0],
             },
             dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
             success: function (data) {
