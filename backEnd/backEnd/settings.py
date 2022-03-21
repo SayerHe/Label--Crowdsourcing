@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'login.apps.LoginConfig',
     'index.apps.IndexConfig',
     'main_menu.apps.MainMenuConfig',
+    'publisher.apps.PublisherConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -62,6 +63,8 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'login/templates'),
             os.path.join(BASE_DIR, 'index/templates'),
             os.path.join(BASE_DIR, 'main_menu/templates'),
+            os.path.join(BASE_DIR, 'publisher/templates'),
+
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -132,6 +135,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'login/static'),
     os.path.join(BASE_DIR, 'index/static'),
     os.path.join(BASE_DIR, 'main_menu/static'),
+    os.path.join(BASE_DIR, 'publisher/static'),
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

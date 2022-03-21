@@ -21,4 +21,5 @@ urlpatterns = [
     path('main_menu/', include('main_menu.urls')),
     path('login/', include('login.urls')),
     path('', include('index.urls')),
+    path('publisher/', include('publisher.urls')),
 ]
