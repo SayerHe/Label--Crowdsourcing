@@ -33,7 +33,7 @@ def estimate_text_difficulty(table_data):
 
 def create_task(request):
     if request.method == 'GET':
-        return render(request, "main_menu/index.html")
+        return render(request, "Publisher/index.html")
     else:
         newTask_param = dict()
         try:

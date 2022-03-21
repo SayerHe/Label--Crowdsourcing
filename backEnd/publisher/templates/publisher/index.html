@@ -3,16 +3,16 @@
     <head>
         <meta charset="utf-8">
         <title></title>
-        <link rel="stylesheet" href="../CSS/Publish.css" type="text/css">
         <script>
-            publish_url = "{% url 'Publisher:index' %}"
+            publish_url = "{% url 'publisher:create_task' %}"
         </script>
+        {% comment %} <link rel="stylesheet" href="../CSS/Publish.css" type="text/css">
         <script type="text/javascript" src="../JS/jquery-3.6.0.js"></script>
-        <script type="text/javascript" src="../JS/Publish.js"></script>
-        <!-- {% load static %}
+        <script type="text/javascript" src="../JS/Publish.js"></script> {% endcomment %}
+        {% load static %}
         <link rel="stylesheet" href="{% static 'CSS/Publish.css' %}" type="text/css">
         <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
-        <script type="text/javascript" src="{% static 'JS/Publish.js' %}"></script> -->
+        <script type="text/javascript" src="{% static 'JS/Publish.js' %}"></script>
     </head>
 
     <body>
