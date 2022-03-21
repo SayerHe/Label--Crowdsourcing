@@ -9,14 +9,14 @@ class LabelTasksBaseInfo(models.Model):
     data_type = models.CharField(max_length=10)
     label_type = models.CharField(max_length=10)
     task_deadline = models.DateTimeField()
-    task_reward = models.IntegerField()
+    task_payment = models.IntegerField()
     rule_file = models.TextField(max_length=500)
     task_difficulty = models.CharField(max_length=50)
 
 class LabelTaskFile(models.Model):
     # 通过外键与BaseInfo关联，级联删除
     task_id = models.ForeignKey(LabelTasksBaseInfo, on_delete=models.CASCADE)
-    task_file = models.TextField()
+    data_file = models.TextField()
 
 
 
