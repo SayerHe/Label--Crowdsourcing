@@ -47,19 +47,21 @@ def create_task(request):
             task_deadline = [int(i) for i in task_deadline.split('-')]
             newTask_param["task_deadline"] = datetime.date(*task_deadline)
             newTask_param["task_payment"] = request.POST["Payment"]
-            print(newTask_param)
 
         except KeyError:
             return JsonResponse({'err': "Basic task information is missing !"})
+        print(newTask_param)
 
-        try:
+
+        """try:
             newTask_param["rule_file"] = request.FILES["RuleFile"]
         except KeyError:
             return JsonResponse({'err': "Rule file is missing!"})
 
         print(newTask_param)
         if newTask_param["data_type"] == "文本":
-            create_text_task(request, **newTask_param)
+            create_text_task(request, **newTask_param)"""
+        return JsonResponse(newTask_param)
 
 
 
