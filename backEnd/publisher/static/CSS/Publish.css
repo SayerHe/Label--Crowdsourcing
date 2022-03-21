@@ -74,8 +74,12 @@
 	box-shadow: 0 0 0 4px #3FB7EB inset;
 }
 
+#deadline{
+	width: 12em
+}
+
 #payment{
-    width: 7em;
+    width: 10em;
 }
 
 input.filetext{
