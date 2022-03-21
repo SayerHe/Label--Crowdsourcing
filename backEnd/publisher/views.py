@@ -40,28 +40,23 @@ def create_task(request):
             newTask_param["publisher_id"] = request.user.id
             newTask_param["task_name"] = request.POST["TaskName"]
             newTask_param["data_type"] = request.POST["DataType"]
-            # newTask_param["data_type"] = "文本"
             newTask_param["label_type"] = request.POST["LabelType"]
-            # newTask_param["label_type"] = "选择"
             task_deadline = request.POST["TaskDeadline"]
             task_deadline = [int(i) for i in task_deadline.split('-')]
             newTask_param["task_deadline"] = datetime.date(*task_deadline)
             newTask_param["task_payment"] = request.POST["Payment"]
-
         except KeyError:
-            return JsonResponse({'err': "Basic task information is missing !"})
-        print(newTask_param)
+            return HttpResponse({'err': "Basic task information is missing !"})
 
-
-        """try:
+        try:
             newTask_param["rule_file"] = request.FILES["RuleFile"]
         except KeyError:
-            return JsonResponse({'err': "Rule file is missing!"})
+            return HttpResponse({'err': "Rule file is missing!"})
 
-        print(newTask_param)
-        if newTask_param["data_type"] == "文本":
+        """if newTask_param["data_type"] == "文本":
             create_text_task(request, **newTask_param)"""
-        return JsonResponse(newTask_param)
+
+        return HttpResponse("newTask_param")
 
 
 

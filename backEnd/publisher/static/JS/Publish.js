@@ -35,30 +35,21 @@ $(document).ready(function(){
 });
 
 function btsubmit(){
-    data = {
-        "TaskName" : $("#taskname").val(),
-        "DataType" : $("input[name='datatype']:checked").val(),
-        "LabelType" : $("input[name='marktype']:checked").val(),
-        "TaskDeadline" : $("#deadline").val(),
-        "Payment"  : $("#payment").val(),
-        "DataFile" : $('#datafile')[0].files[0],
-        "RuleFile" : $('#markfile')[0].files[0],
-    };
-    console.log(data)
     if(1/*check*/){
+        var form_data = new FormData();
+        form_data.append('TaskName'     ,$("#taskname").val());
+        form_data.append('DataType'     ,$("input[name='datatype']:checked").val());
+        form_data.append('LabelType'    ,$("input[name='marktype']:checked").val());
+        form_data.append('TaskDeadline' ,$("#deadline").val());
+        form_data.append('Payment'      ,$("#payment").val());
+        form_data.append('DataFile'     ,$('#datafile')[0].files[0]);
+        form_data.append('RuleFile'     ,$('#markfile')[0].files[0]);
         $.ajax({
             url: publish_url,
             type: "POST",        //请求类型
-            data: {
-                "TaskName" : $("#taskname").val(),
-                "DataType" : $("input[name='datatype']:checked").val(),
-                "LabelType" : $("input[name='marktype']:checked").val(),
-                "TaskDeadline" : $("#deadline").val(),
-                "Payment"  : $("#payment").val(),
-                // "DataFile" : $('#datafile')[0].files[0],
-                // "RuleFile" : $('#markfile')[0].files[0],
-            },
-            dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
+            data: form_data,
+            processData: false,
+            contentType: false,
             success: function (data) {
                 console.log(data)
             },
