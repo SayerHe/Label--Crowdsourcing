@@ -26,7 +26,7 @@ $(document).ready(function(){
 function userform_callback(err)
 {
     //console.log(err)
-    if(err == "NONE"){
+    if(err == "None"){
         alert("Successfully Registered");
         window.location.href = login_url;
     }
