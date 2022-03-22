@@ -49,35 +49,31 @@ def create_task(request):
             return HttpResponse({'err': "Basic task information is missing !"})
 
         try:
-            newTask_param["rule_file"] = request.FILES["RuleFile"]
+            newTask_param["rule_file"] = request.FILES["RuleFile"].read()
         except KeyError:
             return HttpResponse({'err': "Rule file is missing!"})
-
-        """if newTask_param["data_type"] == "文本":
-            create_text_task(request, **newTask_param)"""
-
-        return HttpResponse("newTask_param")
-
-
+        print(newTask_param)
+        if newTask_param["data_type"] == "text":
+            return create_text_task(request, **newTask_param)
+        return HttpResponse({'err': 'None'})
 
 def create_text_task(request, publisher_id, task_name, data_type, rule_file,
                           label_type, task_deadline, task_payment):
+
     try:
         task_file = request.FILES["DataFile"]
         task_file_table = transform_text_file(task_file)
         task_difficulty = estimate_text_difficulty(task_file_table)
         task_file_string = task_file_table.to_string()
     except KeyError:
-        return JsonResponse({'err': "Task file is missing!"})
+        return HttpResponse({'err': "Task file is missing!"})
 
     table_format_permit = ["csv", "xls", "xlsx"]
-    if task_file.spilt(".")[1] not in table_format_permit:
-        return JsonResponse({'err': "Please transform the text data file into csv, xls or xlsx"})
+    if str(task_file).split(".")[1] not in table_format_permit:
+        return HttpResponse({'err': "Support file format: csv, xls and xlsx ."})
 
     new_task = LabelTasksBaseInfo(publisher_id=publisher_id, task_name=task_name, data_type=data_type,rule_file=rule_file,
                                   label_type=label_type, task_deadline=task_deadline, task_payment=task_payment,task_difficulty=task_difficulty)
     new_task.save()
     new_task_file = LabelTaskFile(task_id = new_task, task_file=task_file_string)
     new_task_file.save()
-
-    return JsonResponse({'err': "None"})
