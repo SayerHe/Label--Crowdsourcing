@@ -13,6 +13,9 @@ class LabelTasksBaseInfo(models.Model):
     rule_file = models.TextField(max_length=500)
     task_difficulty = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.task_name
+
 class LabelTaskFile(models.Model):
     # 通过外键与BaseInfo关联，级联删除
     task_id = models.ForeignKey(LabelTasksBaseInfo, on_delete=models.CASCADE)
