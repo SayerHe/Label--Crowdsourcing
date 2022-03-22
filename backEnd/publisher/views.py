@@ -7,6 +7,7 @@ from publisher.models import LabelTasksBaseInfo, LabelTaskFile
 import datetime
 from io import StringIO
 
+#pd.read_csv(StringIO(dfstr), sep='\s+')
 # Create your views here.
 
 def transform_text_file(task_file):
