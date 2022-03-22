@@ -48,7 +48,7 @@ function btsubmit(){
             url: publish_url,
             type: "POST",        //请求类型
             data: form_data,
-            processData: false,
+            // processData: false,
             contentType: false,
             success: function (data) {
                 console.log(data)

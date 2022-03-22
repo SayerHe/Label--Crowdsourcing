@@ -77,3 +77,4 @@ def create_text_task(request, publisher_id, task_name, data_type, rule_file,
     new_task.save()
     new_task_file = LabelTaskFile(task_id = new_task, task_file=task_file_string)
     new_task_file.save()
+    return HttpResponse({'err': 'None'})
