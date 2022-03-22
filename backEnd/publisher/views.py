@@ -55,6 +55,7 @@ def create_task(request):
         print(newTask_param)
         if newTask_param["data_type"] == "text":
             return create_text_task(request, **newTask_param)
+
         return HttpResponse({'err': 'None'})
 
 def create_text_task(request, publisher_id, task_name, data_type, rule_file,
@@ -75,6 +76,7 @@ def create_text_task(request, publisher_id, task_name, data_type, rule_file,
     new_task = LabelTasksBaseInfo(publisher_id=publisher_id, task_name=task_name, data_type=data_type,rule_file=rule_file,
                                   label_type=label_type, task_deadline=task_deadline, task_payment=task_payment,task_difficulty=task_difficulty)
     new_task.save()
-    new_task_file = LabelTaskFile(task_id = new_task, task_file=task_file_string)
+    new_task_file = LabelTaskFile(task_id = new_task, data_file=task_file_string)
     new_task_file.save()
     return HttpResponse({'err': 'None'})
+
