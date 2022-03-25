@@ -17,6 +17,7 @@ body{
     height: 100%;
     object-fit: cover;
     pointer-events: none;
+    user-select: none
 }
 .main{
     height: auto;
