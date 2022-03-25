@@ -64,7 +64,7 @@ body{
 #text{
     position: relative;
     color:#ffffff;
-    font-size: 8em;
+    font-size: 4.5em;
     z-index: 1;
 }
 #road{
@@ -90,6 +90,7 @@ ul[id="navbar"]{
     padding: 10px 0;
     background-color: #0e273d00;
 }
+
 ul[id="navbar"] li{
     list-style: none;
     float: left;
@@ -110,7 +111,7 @@ ul[id="navbar"] img{
 ul[id="navbar"] li a{
     color: #ffffff;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 2em;
+    font-size: 1.5em;
     position: absolute; 
     transform: translate(-50%, 0);
 }
@@ -137,5 +138,5 @@ ul[id="navbar"] li:hover a:before{
     border-bottom: 3px solid lightskyblue;
     transform: scaleX(0.5);
     transition: 0.5s;
-    transform-origin: right;
+    transform-origin: center;
 } 
