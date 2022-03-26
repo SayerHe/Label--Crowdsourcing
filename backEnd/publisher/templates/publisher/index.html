@@ -6,44 +6,86 @@
         <script>
             publish_url = "{% url 'publisher:create_task' %}"
         </script>
-        {% comment %} <link rel="stylesheet" href="../CSS/Publish.css" type="text/css">
-        <script type="text/javascript" src="../JS/jquery-3.6.0.js"></script>
-        <script type="text/javascript" src="../JS/Publish.js"></script> {% endcomment %}
         {% load static %}
         <link rel="stylesheet" href="{% static 'CSS/Publish.css' %}" type="text/css">
+        <link rel="stylesheet" href="{% static 'CSS/kalendae.css' %}" type="text/css">
         <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
         <script type="text/javascript" src="{% static 'JS/Publish.js' %}"></script>
-    </head>
+        <script type="text/javascript" src="{% static 'JS/kalendae.standalone.js' %}"></script>
+</head>
 
     <body>
         <h1 id="title">发布数据</h1>
         <div id="main">
-            <p>任务名称</p>
-            <input type="text" id="taskname" value="数据标注任务"/>
-            <p>数据类型</p>
-            <div class="container">
-                <label><input type="radio" name="datatype" value="text" checked="checked"><span>文本</span></label>
-                <label><input type="radio" name="datatype" value="image"><span>图片</span></label>
-                <label><input type="radio" name="datatype" value="audio"><span>语音</span></label>
-                <label><input type="radio" name="datatype" value="video"><span>视频</span></label>
+            <div class="main_div">
+                <p class="subtitle">任务名称</p>
+                <div class="submodels">
+                    <input type="text" id="taskname" value="数据标注任务" onfocus="this.select()"/>
+                </div>
             </div>
-            <p>标注类型</p>
-            <div class="container">
-                <label><input type="radio" name="marktype" value="score" checked="checked"><span>打分</span></label>
-                <label><input type="radio" name="marktype" value="classify"><span>选择</span></label>
-                <label><input type="radio" name="marktype" value="describe"><span>描述</span></label>
+            
+
+            <div class="main_div">
+                <p class="subtitle">数据类型</p>
+                <div class="submodels">
+                    <div class="container">
+                        <label><input type="radio" name="datatype" value="text" checked="checked"><span>文本</span></label>
+                        <label><input type="radio" name="datatype" value="image"><span>图片</span></label>
+                        <label><input type="radio" name="datatype" value="audio"><span>语音</span></label>
+                        <label><input type="radio" name="datatype" value="video"><span>视频</span></label>
+                    </div>
+                </div>
             </div>
-            <p>截止日期</p>
-            <input type="date" id="deadline"/>
-            <p>单条薪酬</p>
-            <input type="number" id="payment" min="0"/>
-            <span id="unit">元</span>
-            <p>数据文件</p>
-            <input type="text" class="filetext" id="datafiletext" placeholder="请选择文件···" readonly="readonly"/>
-            <input type="file" id="datafile">
-            <p>标注规则</p>
-            <input type="text" class="filetext" id="markfiletext" placeholder="请选择文件···" readonly="readonly"/>
-            <input type="file" id="markfile">
+
+            <div class="main_div">
+                <p class="subtitle">标注类型</p>
+                <div class="submodels">
+                    <div class="container">
+                        <label><input type="radio" name="marktype" value="score" checked="checked"><span>打分</span></label>
+                        <label><input type="radio" name="marktype" value="classify"><span>选择</span></label>
+                        <label><input type="radio" name="marktype" value="describe"><span>描述</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main_div">
+                <p class="subtitle">截止日期</p>
+                <div class="submodels">
+                    <input type="text" class="auto-kal" id="deadline" readonly="readonly" data-kal="
+                        direction: 'future',
+                        side: 'bottom',
+                        dayOutOfMonthClickable: true,
+                        useYearNav: false,
+                        selected: Kalendae.moment().add({d:7}),
+                    "/>
+                </div>
+            </div>
+
+            <div class="main_div">
+                <p class="subtitle">单条薪酬</p>
+                <div class="submodels">
+                    <input type="text" id="payment" value="" onKeyUp="amount(this)" onBlur="overFormat(this)" />
+                    <span id="unit">元</span>
+                </div>
+            </div>
+
+            <div class="main_div">
+                <p class="subtitle">数据文件</p>
+                <div class="submodels">
+                    <input type="text" class="filetext" id="datafiletext" placeholder="请选择文件···" readonly="readonly"/>
+                    <input type="file" id="datafile">
+                </div>
+            </div>
+
+            <div class="main_div">
+                <p class="subtitle">标注规则</p>
+                <div class="submodels">
+                    <textarea id="markrules" rows="10"></textarea><br/>
+                    添加附件：<input type="text" class="filetext" id="markfiletext" placeholder="请选择文件···" readonly="readonly"/>
+                    <input type="file" id="markfile">
+                </div>
+            </div>
+
             <br/><br/><br/>
             <button id="submit" onclick="btsubmit()">提交</button>
         </div>

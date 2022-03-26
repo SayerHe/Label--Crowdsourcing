@@ -7,18 +7,52 @@
     left: 50%;
     transform: translateX(-50%);
     /* padding: 0 100px; */
-    width: 60%;
+    width: auto;
+	/* max-width: 100vw; */
     /* background-color: red; */
 }
 
+.main_div{
+	/* display: block; */
+	position: relative;
+	margin-top: 40px;
+	clear: both;
+	overflow: visible;
+	white-space: nowrap;
+	/* background-color: #3FB7EB; */
+}
+
+/* div.main_div > *{
+} */
+p.subtitle{
+	position: relative;
+	display: inline;
+	float: left;
+	width: 6em;
+	font-weight: bold;
+	font-size: 18px;
+	margin: 0;
+	padding: 0;
+	/* top: 0; */
+	/* background-color: #3FB7EB; */
+}
+.submodels{
+	position: relative;
+	display: inline-block;
+	/* float: none; */
+	/* background-color: #3FB7EB; */
+}
+
 #taskname{
-    width: 380px;
+    width: 580px;
     border: none;
     border-bottom: 1px gray solid;
+	border-radius: 0;
     outline: none;
     background: none;
     height: 20px;
     font-size: 18px;
+	padding: 0;
 }
 
 .container {
@@ -42,7 +76,7 @@
 	/* 让伪元素和文字水平排列 */
 	align-items: center;
 	padding: 5px 10px;
-	margin-bottom: 10px;
+	/* margin-bottom: 10px; */
 	border-radius: 30px;
 	transition: all 0.3s;
 }
@@ -75,7 +109,15 @@
 }
 
 #deadline{
-	width: 12em
+    /* width: 180px;
+    border: none;
+    border-bottom: 1px gray solid;
+	border-radius: 0;
+    outline: none;
+    background: none;
+    height: 20px;
+    font-size: 14px; */
+	padding: 0;
 }
 
 #payment{
@@ -86,7 +128,7 @@ input.filetext{
     padding:3px 0px;
     padding-left:10px;
     border:1px solid #E7EAEC;
-    width: 380px;;
+    width: 580px;;
     height:25px;
     outline: none;
     line-height:25px;
@@ -96,6 +138,26 @@ input.filetext{
     vertical-align: middle;
 }
 input[type='file']{
-    border:0px;
     display:none;
+}
+
+#markfiletext{
+	width: 502px;
+}
+#markrules{
+	resize: none;
+	width: 582px;
+	padding: 5px 6px;
+	font-size: 16px;
+	/* border: none; */
+	/* background-color: #f3f3f3; */
+	border-radius: 3px;
+	outline: none;
+}
+
+#submit{
+	position: absolute;
+	right: 0;
+	/* left: 50%;
+	transform: translateX(-50%); */
 }
