@@ -8,6 +8,7 @@ import datetime
 from io import StringIO
 import json
 
+#pd.read_csv(StringIO(dfstr), sep='\s+')
 # Create your views here.
 
 def transform_text_file(task_file):

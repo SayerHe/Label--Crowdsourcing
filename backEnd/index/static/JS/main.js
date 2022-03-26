@@ -16,6 +16,7 @@ function roll(){
 
 window.onload=function(){
     roll();
+
 }
 
 $(document).ready(function(){
@@ -32,7 +33,7 @@ $(document).ready(function(){
         else{
             bt += "_div"
             $("html, body").animate({
-                scrollTop: $(bt).offset().top - navbarhight + "px"
+                scrollTop:  $(bt).offset().top- navbarhight + "px"
             }, 500);
         }
     });

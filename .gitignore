@@ -127,3 +127,17 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#Pycharm .idea
+Label--Crowdsourcing/.idea/Label--Crowdsourcing.iml
+Label--Crowdsourcing/.idea/misc.xml
+Label--Crowdsourcing/.idea/workspace.xml
+Label--Crowdsourcing/.idea/vcs.xml
+Label--Crowdsourcing/.idea
+Label--Crowdsourcing/backEnd/.idea/backEnd.iml
+Label--Crowdsourcing/backEnd/.idea/misc.xml
+Label--Crowdsourcing/backEnd/.idea/workspace.xml
+Label--Crowdsourcing/backEnd/.idea/vcs.xml
+Label--Crowdsourcing/backEnd/.idea
+.idea/
+

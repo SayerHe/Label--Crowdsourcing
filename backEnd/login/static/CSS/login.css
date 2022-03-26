@@ -17,6 +17,7 @@ body{
     height: 100%;
     object-fit: cover;
     pointer-events: none;
+    user-select: none
 }
 .main{
     height: auto;
@@ -47,7 +48,7 @@ img[id='eyes']{
     right: 0;
 }
 .main .title{
-    color: yellow;
+    color: deepskyblue;
     font-size: 2em;
     font-weight: 600;
     text-align: center;
@@ -106,6 +107,6 @@ button[id='submit']:active{
     margin-bottom: 0;
 }
 .main .signup a{
-    color: #9969f3;
+    color: skyblue;
     text-decoration:none;
 }
