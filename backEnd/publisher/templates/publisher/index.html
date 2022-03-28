@@ -49,6 +49,25 @@
             </div>
 
             <div class="main_div">
+                <p class="subtitle">检验方式</p>
+                <div class="tiptool">
+                    <embed src="{% static 'IMG/publisher/help-circle.svg' %}" type="image/svg+xml" class="help-circle"/>
+                    <span class="tooltiptext">
+                        交叉检验：<br/>
+                        多级检验：<br/>
+                        抽样检验：<br/>
+                    </span>
+                </div>
+                <div class="submodels">
+                    <div class="container">
+                        <label><input type="radio" name="checktype" value="cross" checked="checked"><span>交叉检验</span></label>
+                        <label><input type="radio" name="checktype" value="multilevel"><span>多级检验</span></label>
+                        <label><input type="radio" name="checktype" value="sampling"><span>抽样检验</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main_div">
                 <p class="subtitle">截止日期</p>
                 <div class="submodels">
                     <input type="text" class="auto-kal" id="deadline" readonly="readonly" data-kal="
@@ -61,13 +80,13 @@
                 </div>
             </div>
 
-            <div class="main_div">
+            {% comment %} <div class="main_div">
                 <p class="subtitle">单条薪酬</p>
                 <div class="submodels">
                     <input type="text" id="payment" value="" onKeyUp="amount(this)" onBlur="overFormat(this)" />
                     <span id="unit">元</span>
                 </div>
-            </div>
+            </div> {% endcomment %}
 
             <div class="main_div">
                 <p class="subtitle">数据文件</p>

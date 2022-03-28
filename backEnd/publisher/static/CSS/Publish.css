@@ -39,6 +39,7 @@ p.subtitle{
 .submodels{
 	position: relative;
 	display: inline-block;
+	/* margin-bottom: 100px; */
 	/* float: none; */
 	/* background-color: #3FB7EB; */
 }
@@ -160,4 +161,45 @@ input[type='file']{
 	right: 0;
 	/* left: 50%;
 	transform: translateX(-50%); */
+}
+
+.help-circle{
+	/* float: left; */
+	width: 1em;
+	margin-right: -1.25em;
+	transform: translate(-2em,-2px);
+}
+.tiptool{
+	position: relative;
+	display: inline-block;
+}
+.tiptool .tooltiptext {
+    visibility: hidden;
+    width: 420px;
+    background-color: #f8f8cf;
+    color: black;
+    /* text-align: center; */
+    border-radius: 6px;
+    padding: 5px 6px;
+    position: absolute;
+    z-index: 1000;
+    top: 150%;
+    left: 50%;
+    margin-left: calc(-60px + 30px - 1.5em);
+	margin-top: -5px;
+}
+
+.tiptool .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: calc(-50% + 30px - 5px);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #f8f8cf transparent;
+}
+
+.tiptool:hover .tooltiptext {
+    visibility: visible;
 }
