@@ -49,12 +49,12 @@ def create_task(request):
             newTask_param["task_deadline"] = datetime.date(*task_deadline)
             newTask_param["task_payment"] = request.POST["Payment"]
         except KeyError:
-            return JsonResponse({'err': "Basic task information is missing !"})
+            return JsonResponse({'err': "Basic Info Missing"})
 
         try:
             newTask_param["rule_file"] = request.FILES["RuleFile"].read()
         except KeyError:
-            return JsonResponse({'err': "Rule file is missing!"})
+            return JsonResponse({'err': "Rule File Missing"})
         print(newTask_param)
         if newTask_param["data_type"] == "text":
             return create_text_task(request, **newTask_param)
@@ -70,11 +70,11 @@ def create_text_task(request, publisher_id, task_name, data_type, rule_file,
         task_difficulty = estimate_text_difficulty(task_file_table)
         task_file_string = task_file_table.to_string()
     except KeyError:
-        return JsonResponse({'err': "Task file is missing!"})
+        return JsonResponse({'err': "Task File Missing"})
 
     table_format_permit = ["csv", "xls", "xlsx"]
     if str(task_file).split(".")[1] not in table_format_permit:
-        return JsonResponse({'err': "Support file format: csv, xls and xlsx ."})
+        return JsonResponse({'err': "FileType Error"})
 
     new_task = LabelTasksBaseInfo(publisher_id=publisher_id, task_name=task_name, data_type=data_type,rule_file=rule_file,
                                   label_type=label_type, task_deadline=task_deadline, task_payment=task_payment,task_difficulty=task_difficulty)

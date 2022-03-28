@@ -16,7 +16,7 @@ def index(request):
         user_name = request.POST["username"]
         password = request.POST["password"]
     except:
-        return HttpResponse("error")
+        return JsonResponse({'err':'DataLost'})
     if '@' in user_name:
         try :
             user_name = User.objects.get(email=user_name).username
@@ -48,7 +48,7 @@ def register(request):
         UserName = request.POST["username"]
         Password = request.POST["password"]
     except:
-        return HttpResponse('error')
+        return JsonResponse({'err':'DataLost'})
 
     if User.objects.filter(email=Email):
         return JsonResponse({'err':'Email_repeat'})
