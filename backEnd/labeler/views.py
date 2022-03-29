@@ -6,13 +6,15 @@ from django.http import HttpResponse, JsonResponse
 def show_tasks(request):
     if request.method == 'GET':
         return render(request, "labeler/index.html")
-    tasks = LabelTasksBaseInfo.objects.all()[:10]
-    tasks_info = {'task_name': [i.task_name for i in tasks],
-                  'data_type': [i.data_type for i in tasks],
-                  'label_type': [i.label_type for i in tasks],
-                  'task_reward': [i.task_reward for i in tasks],
-                  'difficulty': [i.task_difficulty for i in tasks],
-                  }
+    else:
+        tasks = LabelTasksBaseInfo.objects.all()[:10]
+        dataList = [{'TaskName': i.task_name,
+                      'DataType': i.data_type,
+                      'LabelType': i.label_type,
+                      'Payment': i.task_reward,
+                      'TaskDifficulty': i.task_difficulty,
+                      } for i in tasks]
+        tasks_info = {"DataList":dataList}
 
-    return JsonResponse(tasks_info)
+        return JsonResponse(tasks_info)
 
