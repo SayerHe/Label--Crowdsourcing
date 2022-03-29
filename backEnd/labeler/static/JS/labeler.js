@@ -123,6 +123,9 @@ function changepage(page){
                                 '<p class="detailtitle">标注规则</p>'+
                                 '<p class="detailcontent">'+Tasks[i].RuleText+'</p>'+
                             '</div>'+
+                            '<div class="details-styling">'+
+                                '<button type="button" class="dotaskbutton" onclick="dotaskbt()">标注规则</p>'+
+                            '</div>'+
                         '</div>'+
                     '</details>';
     }
@@ -131,12 +134,16 @@ function changepage(page){
     tasklist_init(tasklist);
 }
 
+function dotaskbt(){
+    
+}
+
 function totaskclass(data){
     tmpdata = {};
     tmpdata.TaskName = data["TaskName"];
-    tmpdata.DataType = String(CN?DTC[data["DataType".toLowerCase()]]:data["DataType"]);
-    tmpdata.LabelType = String(CN?LTC[data["LabelType".toLowerCase()]]:data["LabelType"]);
-    tmpdata.TaskDifficulty = String(CN?TDC[data["TaskDifficulty".toLowerCase()]]:data["TaskDifficulty"]);
+    tmpdata.DataType = String(CN?DTC[data["DataType"].toLowerCase()]:data["DataType"]);
+    tmpdata.LabelType = String(CN?LTC[data["LabelType"].toLowerCase()]:data["LabelType"]);
+    tmpdata.TaskDifficulty = String(CN?TDC[data["TaskDifficulty"].toLowerCase()]:data["TaskDifficulty"]);
     tmpdata.TaskDeadline = data["TaskDeadline"];
     tmpdata.Payment = data["Payment"];
     tmpdata.RuleText = data["RuleText"];
