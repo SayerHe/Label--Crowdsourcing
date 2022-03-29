@@ -134,9 +134,9 @@ function changepage(page){
 function totaskclass(data){
     tmpdata = {};
     tmpdata.TaskName = data["TaskName"];
-    tmpdata.DataType = String(CN?DTC[data["DataType"]]:data["DataType"]);
-    tmpdata.LabelType = String(CN?LTC[data["LabelType"]]:data["LabelType"]);
-    tmpdata.TaskDifficulty = String(CN?TDC[data["TaskDifficulty"]]:data["TaskDifficulty"]);
+    tmpdata.DataType = String(CN?DTC[data["DataType".toLowerCase()]]:data["DataType"]);
+    tmpdata.LabelType = String(CN?LTC[data["LabelType".toLowerCase()]]:data["LabelType"]);
+    tmpdata.TaskDifficulty = String(CN?TDC[data["TaskDifficulty".toLowerCase()]]:data["TaskDifficulty"]);
     tmpdata.TaskDeadline = data["TaskDeadline"];
     tmpdata.Payment = data["Payment"];
     tmpdata.RuleText = data["RuleText"];
