@@ -37,7 +37,17 @@
 }
 
 .details-styling {
+  position: relative;
   padding: 1em;
+}
+.details-styling .detailtitle{
+  position: relative;
+  left: 0;
+  font-weight: bold;
+}
+.details-styling .detailcontent{
+  position: relative;
+  left: 0;
 }
 .container {
   position: relative;
