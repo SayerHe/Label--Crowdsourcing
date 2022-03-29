@@ -40,7 +40,7 @@ def create_task(request):
         newTask_param = dict()
         try:
             # print(json.loads(request.body))
-            newTask_param["publisher_id"] = request.user.id
+            newTask_param["publisher"] = request.user
             newTask_param["task_name"] = request.POST["TaskName"]
             newTask_param["data_type"] = request.POST["DataType"]
             newTask_param["label_type"] = request.POST["LabelType"]
@@ -61,7 +61,7 @@ def create_task(request):
 
         return JsonResponse({'err': 'None'})
 
-def create_text_task(request, publisher_id, task_name, data_type, rule_file,
+def create_text_task(request, publisher, task_name, data_type, rule_file,
                           label_type, task_deadline, task_payment):
 
     try:
@@ -76,7 +76,7 @@ def create_text_task(request, publisher_id, task_name, data_type, rule_file,
     if str(task_file).split(".")[1] not in table_format_permit:
         return JsonResponse({'err': "FileType Error"})
 
-    new_task = LabelTasksBaseInfo(publisher_id=publisher_id, task_name=task_name, data_type=data_type,rule_file=rule_file,
+    new_task = LabelTasksBaseInfo(publisher_id=publisher, task_name=task_name, data_type=data_type,rule_file=rule_file,
                                   label_type=label_type, task_deadline=task_deadline, task_payment=task_payment,task_difficulty=task_difficulty)
     new_task.save()
     new_task_file = LabelTaskFile(task_id = new_task, data_file=task_file_string)
