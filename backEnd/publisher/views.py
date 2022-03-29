@@ -57,7 +57,8 @@ def create_task(request):
             return JsonResponse({'err': "Basic Info Missing"})
 
         try:
-            newTask_param["rule_file"] = request.FILES["RuleFile"].read()
+            newTask_param["rule_file"] = request.FILES["RuleFile"].read().decode("utf8")
+            print(request.FILES["RuleFile"].read().decode("utf8"))
         except KeyError:
             return JsonResponse({'err': "Rule File Missing"})
 

@@ -18,6 +18,8 @@ def show_tasks(request):
                       'Payment': i.task_payment,
                       'TaskDifficulty': i.task_difficulty,
                      'TaskDeadline':i.task_deadline.astimezone().strftime("%Y/%m/%d"),
+                     'RuleText': i.rule_file,
+                     "TaskID": i.id
                       } for i in tasks]
 
         print(dataList)
