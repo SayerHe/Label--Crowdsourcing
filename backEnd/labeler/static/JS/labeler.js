@@ -124,7 +124,7 @@ function changepage(page){
                                 '<p class="detailcontent">'+Tasks[i].RuleText+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
-                                '<button type="button" class="dotaskbutton" onclick="dotaskbt()">标注规则</p>'+
+                                '<button type="button" class="dotaskbutton" onclick="dotaskbt('+Tasks[i].TaskID+')">开始标注</p>'+
                             '</div>'+
                         '</div>'+
                     '</details>';
@@ -134,12 +134,13 @@ function changepage(page){
     tasklist_init(tasklist);
 }
 
-function dotaskbt(){
-    
+function dotaskbt(TaskID){
+    console.log(TaskID);
 }
 
 function totaskclass(data){
     tmpdata = {};
+    tmpdata.TaskID = data["TaskID"];
     tmpdata.TaskName = data["TaskName"];
     tmpdata.DataType = String(CN?DTC[data["DataType"].toLowerCase()]:data["DataType"]);
     tmpdata.LabelType = String(CN?LTC[data["LabelType"].toLowerCase()]:data["LabelType"]);

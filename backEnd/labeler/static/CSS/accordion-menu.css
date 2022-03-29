@@ -60,6 +60,11 @@
   left: 6em;
   margin: 0;
 }
+.details-styling .dotaskbutton{
+  padding: 1em 2em 0;
+  margin: 0;
+  float: right;
+}
 .details-styling:first-child{
   margin-top: 0;
 }
