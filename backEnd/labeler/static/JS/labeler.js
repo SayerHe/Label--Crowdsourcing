@@ -29,8 +29,8 @@ var testdata = [
 ]
 
 $(document).ready(function(){
-    //askfordata();
-    data_callback(testdata);
+    askfordata();
+    //data_callback(testdata);
 });
 
 window.onload=function(){

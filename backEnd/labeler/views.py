@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from publisher.models import LabelTasksBaseInfo
 from django.http import HttpResponse, JsonResponse
+# from datetime
 # Create your views here.
+
+# def change_tz(ddl):
+
 
 def show_tasks(request):
     if request.method == 'GET':
@@ -11,9 +15,12 @@ def show_tasks(request):
         dataList = [{'TaskName': i.task_name,
                       'DataType': i.data_type,
                       'LabelType': i.label_type,
-                      'Payment': i.task_reward,
+                      'Payment': i.task_payment,
                       'TaskDifficulty': i.task_difficulty,
+                     'TaskDeadline':i.task_deadline.astimezone().strftime("%Y/%m/%d"),
                       } for i in tasks]
+
+        print(dataList)
         tasks_info = {"DataList":dataList}
 
         return JsonResponse(tasks_info)
