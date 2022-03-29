@@ -1,0 +1,18 @@
+#title{
+    text-align: center;
+}
+
+body{
+    margin: 0;
+}
+
+#taskdiv{
+    margin: 0;
+    min-height: calc(100vh - 280px);
+}
+#pagediv{
+    position: relative;
+    text-align: center;
+    /* margin-top: -60px; */
+    margin-bottom: 30px;
+}

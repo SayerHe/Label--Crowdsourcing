@@ -1,0 +1,124 @@
+/*
+  Please wrap your collapsible content in a single element or so help me
+  Must add a transition or it breaks because that's the whole purpose of this
+  Only one transition-duration works (see explanation on line #141 in JS)
+  You can add more to an inner wrapper (.details-styling)
+*/
+.collapse-init summary + * {
+  transition: all 0.25s ease-in-out;
+  overflow: hidden;
+}
+
+/*
+  Closed state. Any CSS transitions work here
+  The JS has a height calculation to make sliding opened/closed easier, but it's not necessary
+  Remove the height prop for a simple toggle on/off (after all that work I did for you?)
+*/
+.collapse-init :not(.panel-active) summary + * {
+  height: 0;
+  opacity: 0;
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
+  -webkit-transform-origin: bottom center;
+          transform-origin: bottom center;
+}
+
+.collapse-init summary {
+  list-style: none;
+}
+.collapse-init summary::-webkit-details-marker {
+  display: none;
+}
+.collapse-init summary::before {
+  display: none;
+}
+.collapse-init summary {
+  cursor: pointer;
+}
+
+.details-styling {
+  padding: 1em;
+}
+.container {
+  position: relative;
+  box-shadow: 0.2em 1em 2em -1em #d6d1e0;
+  margin: 2.4em auto;
+  width: 80vw;
+  /* min-height: calc(100vh - 260px); */
+}
+
+details {
+  background: #fff;
+  border: 1px solid #d6d1e0;
+  border-bottom: 0;
+  list-style: none;
+}
+details:first-child {
+  border-radius: 3px 3px 0 0;
+}
+details:last-child {
+  border-bottom: 1px solid #d6d1e0;
+  border-radius: 0 0 3px 3px;
+}
+
+summary {
+  display: block;
+  transition: 0.2s;
+  font-weight: 700;
+  padding: 1em;
+}
+summary h3{
+  margin-top: 0;
+}
+.tasklabel{
+  font-size: 14px;
+  padding: 2px 5px;
+  border-radius: 5px;
+  margin: 0;
+  margin-right: 5px;
+  color: #ffffff;
+  background-color:darkcyan;
+}
+.taskdeadline{
+  font-size: 14px;
+  font-weight: lighter;
+  color:gray;
+  margin-left: calc(50% - 12em);
+}
+.taskpayment{
+  font-size: 32px;
+  font-weight: lighter;
+  float: right;
+  margin-right: 20px;
+  margin-top: -1em;
+}
+.taskpayment .lower{
+  font-size: 18px;
+}
+[open] .tasklabel, [open] .taskdeadline, [open] .taskpayment{
+  display: none;
+}
+/* summary:focus {
+  outline: 2px solid #fff;
+} */
+/* [open] summary {
+  background: #fff;
+  color: #f8f5fe;
+} */
+/* .collapse-init summary::after {
+  border-right: 2px solid;
+  border-bottom: 2px solid;
+  content: '';
+  float: right;
+  width: 0.5em;
+  height: 0.5em;
+  margin-top: 0.25em;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  transition: inherit;
+}
+[open] summary::after {
+  margin-top: 0.5em;
+  -webkit-transform: rotate(225deg);
+          transform: rotate(225deg);
+} */

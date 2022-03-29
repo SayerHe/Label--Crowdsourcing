@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="{% static 'CSS/main_menu.css' %}" type="text/css">
         <script>
             var UserName = '{{ UserName }}';
-            var user_url = "{% url 'user:show_tasks' %}"
+            var user_url = "{% url 'labeler:show_tasks' %}"
             var publish_url = "{% url 'publisher:create_task' %}"
         </script>
         <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>

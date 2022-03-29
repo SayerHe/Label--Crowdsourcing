@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script>
+            var user_url = "{% url 'labeler:show_tasks' %}"
+        </script>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'CSS/labeler.css' %}" type="text/css">
+        <link rel="stylesheet" href="{% static 'CSS/accordion-menu.css' %}" type="text/css">
+        <link rel="stylesheet" href="{% static 'CSS/pagination.css' %}" type="text/css">
+        <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
+        <script type="text/javascript" src="{% static 'JS/labeler.js' %}"></script>
+        <script type="text/javascript" src="{% static 'JS/pagination.js' %}"></script>
+        <script type="text/javascript" src="{% static 'JS/accordion-menu.js' %}"></script>
+    </head>
+
+    <body>
+        <h1 id="title">查看任务</h1>
+        <div class="Search">
+            <h2 style="text-align:center">这里是搜索筛选排序</h2>
+        </div>
+        <div id="taskdiv"><div class="container collapse" id="tasks"></div></div>
+        <div id="pagediv"><div id="pagination" size="10" on-change="changepage"></div></div>
+    </body>
+</html>
+
+ 
