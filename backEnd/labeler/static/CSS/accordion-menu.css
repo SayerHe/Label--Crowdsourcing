@@ -7,6 +7,8 @@
 .collapse-init summary + * {
   transition: all 0.25s ease-in-out;
   overflow: hidden;
+  margin-top: -2em;
+  padding-bottom: 2em;
 }
 
 /*
@@ -38,17 +40,30 @@
 
 .details-styling {
   position: relative;
-  padding: 1em;
+  padding: 0;
+  margin: 0 2em 1em;
+  z-index: 1;
 }
 .details-styling .detailtitle{
   position: relative;
+  display: inline-block;
   left: 0;
   font-weight: bold;
+  width: 5em;
+  text-align: left;
+  margin: 0;
 }
 .details-styling .detailcontent{
-  position: relative;
-  left: 0;
+  position: absolute;
+  display: inline-block;
+  top: 0;
+  left: 6em;
+  margin: 0;
 }
+.details-styling:first-child{
+  margin-top: 0;
+}
+
 .container {
   position: relative;
   box-shadow: 0.2em 1em 2em -1em #d6d1e0;
@@ -75,9 +90,10 @@ summary {
   display: block;
   transition: 0.2s;
   font-weight: 700;
-  padding: 1em;
+  padding: 1.5rem 2rem;
 }
 summary h3{
+  font-size: 20px;
   margin-top: 0;
 }
 .tasklabel{
@@ -99,14 +115,19 @@ summary h3{
   font-size: 32px;
   font-weight: lighter;
   float: right;
-  margin-right: 20px;
+  margin-right: 0;
   margin-top: -1em;
 }
 .taskpayment .lower{
   font-size: 18px;
 }
+
+.tasklabel, .taskdeadline, .taskpayment{
+  transition: opacity 0.3s;
+}
 [open] .tasklabel, [open] .taskdeadline, [open] .taskpayment{
-  display: none;
+  transition: opacity 0s;
+  opacity: 0;
 }
 /* summary:focus {
   outline: 2px solid #fff;

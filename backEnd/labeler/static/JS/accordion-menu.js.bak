@@ -23,7 +23,8 @@ function _classCallCheck(instance, Constructor) {
 miscPolyfillsForIE();
 
 Collapse = function () {
-	function Collapse(container) {var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};_classCallCheck(this, Collapse);
+	function Collapse(container) {
+		var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};_classCallCheck(this, Collapse);
 		var defaults = {
 			accordion: false,
 			initClass: 'collapse-init',
@@ -47,31 +48,41 @@ Collapse = function () {
 	_createClass(Collapse, [
     { key: '_setPanelHeight', value: function _setPanelHeight(panel) {
         var contents = panel.querySelector("summary + *");
+		console.log((contents))
         contents.style.height = contents.scrollHeight + "px";
     }
 	// Removes height of panel content
 	}, { key: '_removePanelHeight', value: function _removePanelHeight(panel) {
-			var contents = panel.querySelector("summary + *");
-			contents.style.height = null;
+			if (1 || !panel.open){
+				// console.log("height")
+				var contents = panel.querySelector("summary + *");
+				contents.style.height = null;
+			}
 		}
 
 	//=== Open panel
 	}, { key: 'open', value: function open(panel) {
 			panel.dispatchEvent(this.events.openingPanel);
 			panel.open = true;
+			// console.log(panel.open)
 		}
 
 	// Add height and active class, this triggers opening animation
 	}, { key: '_afterOpen', value: function _afterOpen(panel) {
+			// console.log(panel)
 			this._setPanelHeight(panel);
 			panel.classList.add(this.settings.activeClass);
-            // console.log(1)
+            // console.log(panel.querySelector("summary + *").style.scrollHeight)
 		}
 
 	// Remove height on animation end since it's no longer needed
 	}, { key: '_endOpen', value: function _endOpen(panel) {
-			panel.dispatchEvent(this.events.openedPanel);
-			// this._removePanelHeight(panel);
+			// panel.dispatchEvent(this.events.openedPanel);
+			var _this = this;
+			setTimeout(function () {
+				_this._removePanelHeight(panel);
+			}, 1000); //help, this is buggy and hacky
+			console.log("haha")
 		}
 
 	//=== Close panel, not toggling the actual [open] attr!
@@ -86,7 +97,11 @@ Collapse = function () {
 			this._setPanelHeight(panel);
 
 			setTimeout(function () {
+				if (panel.classList.contains(_this.settings.activeClass)){
+						// console.log("closed");
+					}
 				panel.classList.remove(_this.settings.activeClass);
+				panel.open = false;
 				_this._removePanelHeight(panel);
 			}, 100); //help, this is buggy and hacky
 		}
@@ -94,7 +109,6 @@ Collapse = function () {
 	// Actually closes panel once animation finishes
 	}, { key: '_endClose', value: function _endClose(panel) {
 			panel.dispatchEvent(this.events.closedPanel);
-
 			panel.open = false;
 		}
 
@@ -143,13 +157,14 @@ Collapse = function () {
 					var isReadingHeight = panel.classList.contains(_this5.settings.heightClass);
 
 					if (panel.open && !isReadingHeight) {
+						// console.log("toggle");
 						_this5._afterOpen(panel);
 					}
 				});
-
 				toggler.addEventListener("click", function (e) {
 					// If accordion, stop default toggle behavior
 					if (_this5.settings.accordion) {
+						// console.log(2)
 						_this5.openSinglePanel(panel);
 						e.preventDefault();
 					}
@@ -178,7 +193,7 @@ Collapse = function () {
 					if (e.target !== contents) {
 						return;
 					}
-
+					// console.log(e.propertyName)
 					// Set property to watch on first fire
 					if (!propToWatch) propToWatch = e.propertyName;
 
@@ -208,9 +223,9 @@ Collapse = function () {
     return Collapse;
 }();
 
-var accordion;
+
 function tasklist_init(makeMePretty){
-	accordion = new Collapse(makeMePretty, { accordion: true }).init();
+	var accordion = new Collapse(makeMePretty, { accordion: true }).init();
 }
 
 // Toggle accordion behavior
@@ -235,5 +250,5 @@ function miscPolyfillsForIE() {
 
 	// CustomEvent polyfill
 	// https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent
-	!function () {if ("function" == typeof window.CustomEvent) return !1;function t(t, e) {e = e || { bubbles: !1, cancelable: !1, detail: void 0 };var n = document.createEvent("CustomEvent");return n.initCustomEvent(t, e.bubbles, e.cancelable, e.detail), n;}t.prototype = window.Event.prototype, window.CustomEvent = t;}();
+	// !function () {if ("function" == typeof window.CustomEvent) return !1;function t(t, e) {e = e || { bubbles: !1, cancelable: !1, detail: void 0 };var n = document.createEvent("CustomEvent");return n.initCustomEvent(t, e.bubbles, e.cancelable, e.detail), n;}t.prototype = window.Event.prototype, window.CustomEvent = t;}();
 }
