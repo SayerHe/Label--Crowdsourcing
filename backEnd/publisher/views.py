@@ -5,6 +5,7 @@ from django.urls import reverse
 import pandas as pd
 from publisher.models import LabelTasksBaseInfo, LabelTaskFile
 import datetime
+from django.utils import datastructures
 from io import StringIO
 import json
 
@@ -41,6 +42,7 @@ def create_task(request):
     if request.method == 'GET':
         return render(request, "Publisher/index.html")
     else:
+        print(request.POST)
         newTask_param = dict()
         try:
             # print(json.loads(request.body))
@@ -55,14 +57,14 @@ def create_task(request):
             newTask_param["task_payment"] = determine_payment()
         except KeyError:
             return JsonResponse({'err': "Basic Info Missing"})
-
         try:
             newTask_param["rule_file"] = request.FILES["RuleFile"].read().decode("utf8")
-            print(request.FILES["RuleFile"].read().decode("utf8"))
         except KeyError:
-            return JsonResponse({'err': "Rule File Missing"})
-
-        print(newTask_param)
+            rule_text = request.POST["RuleText"]
+            if rule_text:
+                newTask_param["rule_file"] = rule_text
+            else:
+                return JsonResponse({"err": "Rule File Missing"})
 
         if newTask_param["data_type"] == "text":
             return create_text_task(request, **newTask_param)
