@@ -35,7 +35,7 @@ function btsubmit(){
         form_data.append('DataType'     ,$("input[name='datatype']:checked").val());
         form_data.append('LabelType'    ,$("input[name='marktype']:checked").val());
         form_data.append('TaskDeadline' ,$("#deadline")[0].value);
-        form_data.append('Payment'      ,$("#payment").val());
+        form_data.append('InspectionMethod'      ,$("input[name='checktype']:checked").val());
         form_data.append('DataFile'     ,$('#datafile')[0].files[0]);
         form_data.append('RuleText'     ,$('#markrules').val());
         form_data.append('RuleFile'     ,$('#markfile')[0].files[0]);

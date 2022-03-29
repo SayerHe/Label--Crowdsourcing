@@ -13,6 +13,8 @@ class LabelTasksBaseInfo(models.Model):
     task_payment = models.IntegerField()
     rule_file = models.TextField(max_length=500)
     task_difficulty = models.CharField(max_length=50)
+    inspect_method = models.CharField(max_length=10, default="cross")
+    test = models.CharField(max_length=10, default="")
 
     def __str__(self):
         return self.task_name
