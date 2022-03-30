@@ -73,6 +73,7 @@
   overflow: hidden;
   margin-top: -2em;
   padding-bottom: 2em;
+  
 }
 .collapse-init :not(.panel-active) summary + * {
   height: 0;
