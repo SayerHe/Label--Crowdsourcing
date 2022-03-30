@@ -33,7 +33,7 @@ def show_tasks(request):
             pass
         try:
             labeltype = request.POST["LabelType"]
-            tasks = tasks..filter(LabelType__contain=labeltype)
+            tasks = tasks.filter(LabelType__contain=labeltype)
         except:
             pass
         try:
