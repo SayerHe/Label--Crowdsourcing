@@ -75,8 +75,10 @@ function askfordata(data){
         url: labeler_url,
         type: "POST",        //请求类型
         data: data,
+        // ConvertEmptyStringToNull: false,
         dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
         success: function (returndata) {
+            console.log(returndata)
             data_callback(returndata, data["Page"])
         },
         error: function () {
@@ -89,6 +91,7 @@ function data_callback(data, page){
     // 将data分页
     pagedata = data["DataNumber"];
     taskdata = data['DataList'];
+    console.log(taskdata)
     // const TaskNumOnOnePage = 10;
     var tasks = [];
     for(var i = 0; i < taskdata.length; i ++){
