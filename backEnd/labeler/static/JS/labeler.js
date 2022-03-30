@@ -31,7 +31,7 @@ var testdata = [
 $(document).ready(function(){
     askfordata({
         "Page": -1,
-        "Datatype": [],
+        "DataType": [],
         "Labeltype": [],
         "TaskDifficulty": [],
         "Keyword": '',
@@ -39,14 +39,16 @@ $(document).ready(function(){
     $(".checkboxclass").click(function(){
         askfordata(getsss(-1));
     });
+    $("#searchsubmit").click(function(){
+        askfordata(getsss(-1));
+    })
 });
 
 window.onload=function(){
 }
 
 function changepage(page){
-    Page = page;
-    askfordata(getsss(page));
+    askfordata(getsss(page-1));
 }
 
 const DTC = {
@@ -70,7 +72,6 @@ var Tasks = [],
 const CN = true;
 
 function askfordata(data){
-    console.log(data)
     $.ajax({
         url: labeler_url,
         type: "POST",        //请求类型
@@ -182,9 +183,9 @@ function getsss(page){
     }
     return {
         "Page": page,
-        "Datatype": datatype,
-        "Labeltype": marktype,
-        "TaskDifficulty": taskdifficulty,
+        "DataType": JSON.stringify(datatype),
+        "LabelType": JSON.stringify(marktype),
+        "TaskDifficulty": JSON.stringify(taskdifficulty),
         "Keyword": keyword,
     }
 }

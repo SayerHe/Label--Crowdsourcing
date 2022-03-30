@@ -14,28 +14,28 @@ def show_tasks(request):
         
     try:
         page = int(request.POST["Page"])
+        print(request.POST)
     except:
         return JsonResponse({'err': 'DataLost'})
 
     tasks = LabelTasksBaseInfo.objects.all()
     try:
         keyword = request.POST["Keyword"]
-        tasks = tasks.filter(TaskName__contains=keyword)
+        datatype = eval(request.POST["DataType"])
+        labeltype = eval(request.POST["LabelType"])
+        taskdifficulty = eval(request.POST["TaskDifficulty"])
     except:
         pass
     try:
-        datatype = request.POST["DataType"]
-        tasks = tasks.filter(DataType__in=datatype)
-    except:
-        pass
-    try:
-        labeltype = request.POST["LabelType"]
-        tasks = tasks.filter(LabelType__in=labeltype)
-    except:
-        pass
-    try:
-        taskdifficulty = request.POST["TaskDifficulty"]
-        tasks = tasks.filter(TaskDifficulty__in=taskdifficulty)
+        if keyword:
+            tasks = tasks.filter(task_name__icontains=keyword)
+        if datatype:
+            # print(type(datatype))
+            tasks = tasks.filter(data_type__in=datatype)
+        if labeltype:
+            tasks = tasks.filter(label_type__in=labeltype)
+        if taskdifficulty:
+            tasks = tasks.filter(task_difficulty__in=taskdifficulty)
     except:
         pass
     if page==-1:
