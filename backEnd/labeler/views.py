@@ -8,40 +8,41 @@ from django.http import HttpResponse, JsonResponse
 
 
 def show_tasks(request):
-    global tasks
     DATA_ON_ONE_PAGE = 10
     if request.method == 'GET':
         return render(request, "labeler/index.html")
         
     try:
-        page = request.POST["Page"]
+        page = int(request.POST["Page"])
     except:
         return JsonResponse({'err': 'DataLost'})
 
+    tasks = LabelTasksBaseInfo.objects.all()
+    try:
+        keyword = request.POST["Keyword"]
+        tasks = tasks.filter(TaskName__contain=keyword)
+    except:
+        pass
+    try:
+        datatype = request.POST["DataType"]
+        for i in datatype:
+            tasks = tasks.filter(DataType__contain=i)
+    except:
+        pass
+    try:
+        labeltype = request.POST["LabelType"]
+        for i in labeltype
+            tasks = tasks.filter(LabelType__contain=i)
+    except:
+        pass
+    try:
+        taskdifficulty = request.POST["TaskDifficulty"]
+        for i in taskdifficulty:
+            tasks = tasks.filter(TaskDifficulty__contain=i)
+    except:
+        pass
     if page==-1:
-        page = 0
-        tasks = LabelTasksBaseInfo.objects.all()
-        try:
-            keyword = request.POST["Keyword"]
-            tasks = tasks.filter(TaskName__contain=keyword)
-        except:
-            pass
-        try:
-            datatype = request.POST["DataType"]
-            tasks = tasks.filter(DataType__contain=datatype)
-        except:
-            pass
-        try:
-            labeltype = request.POST["LabelType"]
-            tasks = tasks..filter(LabelType__contain=labeltype)
-        except:
-            pass
-        try:
-            taskdifficulty = request.POST["TaskDifficulty"]
-            tasks = tasks.filter(TaskDifficulty__contain=taskdifficulty)
-        except:
-            pass
-
+        page=0
 
     dataList = [{'TaskName': i.task_name,
                     'DataType': i.data_type,
