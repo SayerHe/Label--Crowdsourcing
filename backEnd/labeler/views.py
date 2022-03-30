@@ -20,25 +20,22 @@ def show_tasks(request):
     tasks = LabelTasksBaseInfo.objects.all()
     try:
         keyword = request.POST["Keyword"]
-        tasks = tasks.filter(TaskName__contain=keyword)
+        tasks = tasks.filter(TaskName__contains=keyword)
     except:
         pass
     try:
         datatype = request.POST["DataType"]
-        for i in datatype:
-            tasks = tasks.filter(DataType__contain=i)
+        tasks = tasks.filter(DataType__in=datatype)
     except:
         pass
     try:
         labeltype = request.POST["LabelType"]
-        for i in labeltype:
-            tasks = tasks.filter(LabelType__contain=i)
+        tasks = tasks.filter(LabelType__in=labeltype)
     except:
         pass
     try:
         taskdifficulty = request.POST["TaskDifficulty"]
-        for i in taskdifficulty:
-            tasks = tasks.filter(TaskDifficulty__contain=i)
+        tasks = tasks.filter(TaskDifficulty__in=taskdifficulty)
     except:
         pass
     if page==-1:
@@ -52,6 +49,6 @@ def show_tasks(request):
                     'TaskDeadline': i.task_deadline.astimezone().strftime("%Y/%m/%d"),
                     'RuleText': i.rule_file,
                     "TaskID": i.id
-                    } for i in tasks[page*DATA_ON_ONE_PAGE : page*DATA_ON_ONE_PAGE+DATA_ON_ONE_PAGE]]
+                    } for i in tasks[page*DATA_ON_ONE_PAGE :page*DATA_ON_ONE_PAGE+DATA_ON_ONE_PAGE]]
     tasks_info = {"DataNumber": len(tasks), "DataList": dataList}
     return JsonResponse(tasks_info)
