@@ -37,8 +37,7 @@ $(document).ready(function(){
         "Keyword": '',
     });
     $(".checkboxclass").click(function(){
-        console.log(1)
-        askfordata(getsss(-1))
+        askfordata(getsss(-1));
     });
 });
 
@@ -47,7 +46,7 @@ window.onload=function(){
 
 function changepage(page){
     Page = page;
-    getsss(page);
+    askfordata(getsss(page));
 }
 
 const DTC = {
@@ -71,6 +70,7 @@ var Tasks = [],
 const CN = true;
 
 function askfordata(data){
+    console.log(data)
     $.ajax({
         url: labeler_url,
         type: "POST",        //请求类型
@@ -78,7 +78,6 @@ function askfordata(data){
         // ConvertEmptyStringToNull: false,
         dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
         success: function (returndata) {
-            console.log(returndata)
             data_callback(returndata, data["Page"])
         },
         error: function () {
@@ -88,19 +87,18 @@ function askfordata(data){
 }
 
 function data_callback(data, page){
+    const TaskNumOnOnePage = 10;
     // 将data分页
     pagedata = data["DataNumber"];
     taskdata = data['DataList'];
-    console.log(taskdata)
-    // const TaskNumOnOnePage = 10;
     var tasks = [];
     for(var i = 0; i < taskdata.length; i ++){
-        tasks.push(totaskclass(taskdata[t]));
+        tasks.push(totaskclass(taskdata[i]));
     }
     //更新页码
     if(page == -1){
         pagination = document.getElementById("pagination");
-        pagination.setAttribute("size", String(pagedata));
+        pagination.setAttribute("size", String(Math.max(1, Math.ceil(pagedata/TaskNumOnOnePage))));
         Page = 0;
         Pagination_init();
     }
@@ -108,6 +106,7 @@ function data_callback(data, page){
 }
 
 function showhtml(tasks){
+    tmphtml = '';
     for(var i = 0; i < tasks.length; i ++){
         tmphtml +=  '<details>'+
                         '<summary>'+
@@ -162,23 +161,23 @@ function getsss(page){
     var keyword = $("#searchinput").val(),
         datatype = [],
         marktype = [],
-        taskdifficulty = [];
-    dtc = document.getElementsByName("datatype");
-    mtc = document.getElementsByName("marktype");
-    tdc = document.getElementsByName("taskdifficulty");
+        taskdifficulty = [],
+        dtc = document.getElementsByName("datatype"),
+        mtc = document.getElementsByName("marktype"),
+        tdc = document.getElementsByName("taskdifficulty");
     for(var i = 0; i < dtc.length; i ++){
         if(dtc[i].checked){
-            datatype.push(dtc[i].getattribute("value"));
+            datatype.push(dtc[i].value);
         }
     }
     for(var i = 0; i < mtc.length; i ++){
         if(mtc[i].checked){
-            marktype.push(mtc[i].getattribute("value"));
+            marktype.push(mtc[i].value);
         }
     }
     for(var i = 0; i < tdc.length; i ++){
         if(tdc[i].checked){
-            taskdifficulty.push(tdc[i].getattribute("value"));
+            taskdifficulty.push(tdc[i].value);
         }
     }
     return {

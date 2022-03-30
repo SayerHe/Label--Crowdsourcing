@@ -186,7 +186,7 @@ summary h3{
 }
 .details-styling .dotaskbutton{
   padding: 1em 2em 0;
-  margin: 0;
+  margin: 3em 0 0;
   float: right;
 }
 .details-styling:first-child{
@@ -196,7 +196,6 @@ summary h3{
 .checkboxclass {
 	display: none;
 }
-
 .checkboxclass + label {
 	cursor: pointer;
 	font-size: 1em;

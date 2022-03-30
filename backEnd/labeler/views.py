@@ -31,7 +31,7 @@ def show_tasks(request):
         pass
     try:
         labeltype = request.POST["LabelType"]
-        for i in labeltype
+        for i in labeltype:
             tasks = tasks.filter(LabelType__contain=i)
     except:
         pass
