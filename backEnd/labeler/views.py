@@ -26,9 +26,23 @@ def show_tasks(request):
             tasks = tasks.filter(TaskName__contain=keyword)
         except:
             pass
-        datatype = request.POST["DataType"]
-        labeltype = request.POST["LabelType"]
-        taskdifficulty = request.POST["TaskDifficulty"]
+        try:
+            datatype = request.POST["DataType"]
+            tasks = tasks.filter(DataType__contain=datatype)
+        except:
+            pass
+        try:
+            labeltype = request.POST["LabelType"]
+            tasks = tasks..filter(LabelType__contain=labeltype)
+        except:
+            pass
+        try:
+            taskdifficulty = request.POST["TaskDifficulty"]
+            tasks = tasks.filter(TaskDifficulty__contain=taskdifficulty)
+        except:
+            pass
+
+
     dataList = [{'TaskName': i.task_name,
                     'DataType': i.data_type,
                     'LabelType': i.label_type,
