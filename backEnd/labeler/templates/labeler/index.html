@@ -18,8 +18,39 @@
 
     <body>
         <h1 id="title">查看任务</h1>
-        <div class="Search">
-            <h2 style="text-align:center">这里是搜索筛选排序</h2>
+        <div class="sss">
+            <div class="searchdiv">
+                <h3 class="ssstitle">查找任务</h3>
+                <form id="searchform">
+                    <input type="text" placeholder="输入任务标题包含的关键词"/>
+                    <button type="submit"></button>
+                </form>
+            </div>
+            <div class="selectdiv">
+                <h3 class="ssstitle">数据类型</h3>
+                <div id="selectcheckbox">
+                    <input type="checkbox" class="checkboxclass" id="datatype-text" ><label for="datatype-text" ><span>文本</span></label>
+                    <input type="checkbox" class="checkboxclass" id="datatype-image"><label for="datatype-image"><span>图片</span></label>
+                    <input type="checkbox" class="checkboxclass" id="datatype-audio"><label for="datatype-audio"><span>音频</span></label>
+                    <input type="checkbox" class="checkboxclass" id="datatype-video"><label for="datatype-video"><span>视频</span></label>
+                </div>
+            </div>
+            <div class="selectdiv">
+                <h3 class="ssstitle">标注类型</h3>
+                <div id="selectcheckbox">
+                    <input type="checkbox" class="checkboxclass" id="marktype-score"   ><label for="marktype-score" ><span>打分</span></label>
+                    <input type="checkbox" class="checkboxclass" id="marktype-classify"><label for="marktype-classify"><span>分类</span></label>
+                    <input type="checkbox" class="checkboxclass" id="marktype-describe"><label for="marktype-describe"><span>描述</span></label>
+                </div>
+            </div>
+            <div class="selectdiv">
+                <h3 class="ssstitle">任务难度</h3>
+                <div id="selectcheckbox">
+                    <input type="checkbox" class="checkboxclass" id="taskdifficulty-easy"     ><label for="taskdifficulty-easy" ><span>简单</span></label>
+                    <input type="checkbox" class="checkboxclass" id="taskdifficulty-medium"   ><label for="taskdifficulty-medium"><span>中等</span></label>
+                    <input type="checkbox" class="checkboxclass" id="taskdifficulty-difficult"><label for="taskdifficulty-difficult"><span>复杂</span></label>
+                </div>
+            </div>
         </div>
         <div id="taskdiv"><div class="container collapse" id="tasks"></div></div>
         <div id="pagediv"><div id="pagination" size="10" on-change="changepage"></div></div>

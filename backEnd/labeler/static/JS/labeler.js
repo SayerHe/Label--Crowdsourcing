@@ -66,7 +66,7 @@ function data_callback(data){
     pagination = document.getElementById("pagination");
     pagination.setAttribute("size", String(AllTasks.length));
     changepage(1);
-    Pagination_init()
+    Pagination_init();
     //显示第一页内容
 }
 
@@ -74,10 +74,12 @@ function askfordata(){
     $.ajax({
         url: labeler_url,
         type: "POST",        //请求类型
-        data: {"data":"data"},
+        data: {
+            "data":"data",
+        },
         dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
         success: function (data) {
-            data_callback(data["DataList"])
+            data_callback(data)
         },
         error: function () {
             //当请求错误之后，自动调用
@@ -108,7 +110,7 @@ function changepage(page){
                                 '<p class="detailcontent">'+Tasks[i].LabelType+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
-                                '<p class="detailtitle">任务复杂度</p>'+
+                                '<p class="detailtitle">任务难度</p>'+
                                 '<p class="detailcontent">'+Tasks[i].TaskDifficulty+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
