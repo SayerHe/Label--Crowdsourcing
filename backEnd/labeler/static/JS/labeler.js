@@ -29,12 +29,27 @@ var testdata = [
 ]
 
 $(document).ready(function(){
-    askfordata();
-    //data_callback(testdata);
+    askfordata({
+        "Page": -1,
+        "Datatype": [],
+        "Labeltype": [],
+        "TaskDifficulty": [],
+        "Keyword": '',
+    });
+    $(".checkboxclass").click(function(){
+        console.log(1)
+        askfordata(getsss(-1))
+    });
 });
 
 window.onload=function(){
 }
+
+function changepage(page){
+    Page = page;
+    getsss(page);
+}
+
 const DTC = {
     "text":"文本",
     "image":"图像",
@@ -51,35 +66,18 @@ TDC = {
     "medium":"中等",
     "difficult":"复杂",
 };
-var AllTasks = [], 
-    CN = true;
-function data_callback(data){
-    // 将data分页
-    const TaskNumOnOnePage = 10;
-    for(var i = 0, t = 0; t < data.length; i ++){
-        AllTasks.push([]);
-        for(var j = 0; j < TaskNumOnOnePage && t < data.length; j ++, t ++){
-            AllTasks[i].push(totaskclass(data[t]));
-        }
-    }
-    //设置页码模块页数
-    pagination = document.getElementById("pagination");
-    pagination.setAttribute("size", String(AllTasks.length));
-    changepage(1);
-    Pagination_init();
-    //显示第一页内容
-}
+var Tasks = [],
+    Page = 0;
+const CN = true;
 
-function askfordata(){
+function askfordata(data){
     $.ajax({
         url: labeler_url,
         type: "POST",        //请求类型
-        data: {
-            "data":"data",
-        },
+        data: data,
         dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
-        success: function (data) {
-            data_callback(data)
+        success: function (returndata) {
+            data_callback(returndata, data["Page"])
         },
         error: function () {
             //当请求错误之后，自动调用
@@ -87,46 +85,63 @@ function askfordata(){
     });
 }
 
-function changepage(page){
-    var Tasks = AllTasks[page - 1],
-        tmphtml = '';
-    for(var i = 0; i < Tasks.length; i ++){
+function data_callback(data, page){
+    // 将data分页
+    pagedata = data["DataNumber"];
+    taskdata = data['DataList'];
+    // const TaskNumOnOnePage = 10;
+    var tasks = [];
+    for(var i = 0; i < taskdata.length; i ++){
+        tasks.push(totaskclass(taskdata[t]));
+    }
+    //更新页码
+    if(page == -1){
+        pagination = document.getElementById("pagination");
+        pagination.setAttribute("size", String(pagedata));
+        Page = 0;
+        Pagination_init();
+    }
+    showhtml(tasks);
+}
+
+function showhtml(tasks){
+    for(var i = 0; i < tasks.length; i ++){
         tmphtml +=  '<details>'+
                         '<summary>'+
-                            '<h3>'+Tasks[i].TaskName+'</h3>'+
-                            '<span class="tasklabel">'+Tasks[i].DataType+'</span>'+
-                            '<span class="tasklabel">'+Tasks[i].LabelType+'</span>'+
-                            '<span class="tasklabel">'+Tasks[i].TaskDifficulty+'</span>'+
-                            '<span class="taskdeadline">'+String(CN?'截止日期：':'Deadline: ')+Tasks[i].TaskDeadline+'</span>'+
-                            '<span class="taskpayment">'+'￥'+toprice(Tasks[i].Payment)+'</span>'+
+                            '<h3>'+tasks[i].TaskName+'</h3>'+
+                            '<span class="tasklabel">'+tasks[i].DataType+'</span>'+
+                            '<span class="tasklabel">'+tasks[i].LabelType+'</span>'+
+                            '<span class="tasklabel">'+tasks[i].TaskDifficulty+'</span>'+
+                            '<span class="taskdeadline">'+String(CN?'截止日期：':'Deadline: ')+tasks[i].TaskDeadline+'</span>'+
+                            '<span class="taskpayment">'+'￥'+toprice(tasks[i].Payment)+'</span>'+
                         '</summary>'+
                         '<div class="details-wrapper">'+
                             '<div class="details-styling">'+
                                 '<p class="detailtitle">任务类型</p>'+
-                                '<p class="detailcontent">'+Tasks[i].DataType+'</p>'+
+                                '<p class="detailcontent">'+tasks[i].DataType+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
                                 '<p class="detailtitle">标注类型</p>'+
-                                '<p class="detailcontent">'+Tasks[i].LabelType+'</p>'+
+                                '<p class="detailcontent">'+tasks[i].LabelType+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
                                 '<p class="detailtitle">任务难度</p>'+
-                                '<p class="detailcontent">'+Tasks[i].TaskDifficulty+'</p>'+
+                                '<p class="detailcontent">'+tasks[i].TaskDifficulty+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
                                 '<p class="detailtitle">截止日期</p>'+
-                                '<p class="detailcontent">'+Tasks[i].TaskDeadline+'</p>'+
+                                '<p class="detailcontent">'+tasks[i].TaskDeadline+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
                                 '<p class="detailtitle">薪酬</p>'+
-                                '<p class="detailcontent">'+'￥'+Tasks[i].Payment+'</p>'+
+                                '<p class="detailcontent">'+'￥'+tasks[i].Payment+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
                                 '<p class="detailtitle">标注规则</p>'+
-                                '<p class="detailcontent">'+Tasks[i].RuleText+'</p>'+
+                                '<p class="detailcontent">'+tasks[i].RuleText+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
-                                '<button type="button" class="dotaskbutton" onclick="dotaskbt('+Tasks[i].TaskID+')">开始标注</p>'+
+                                '<button type="button" class="dotaskbutton" onclick="dotaskbt('+tasks[i].TaskID+')">开始标注</p>'+
                             '</div>'+
                         '</div>'+
                     '</details>';
@@ -136,8 +151,40 @@ function changepage(page){
     tasklist_init(tasklist);
 }
 
-function dotaskbt(TaskID){
-    console.log(TaskID);
+function dotaskbt(taskid){
+    console.log(taskid);
+}
+
+function getsss(page){
+    var keyword = $("#searchinput").val(),
+        datatype = [],
+        marktype = [],
+        taskdifficulty = [];
+    dtc = document.getElementsByName("datatype");
+    mtc = document.getElementsByName("marktype");
+    tdc = document.getElementsByName("taskdifficulty");
+    for(var i = 0; i < dtc.length; i ++){
+        if(dtc[i].checked){
+            datatype.push(dtc[i].getattribute("value"));
+        }
+    }
+    for(var i = 0; i < mtc.length; i ++){
+        if(mtc[i].checked){
+            marktype.push(mtc[i].getattribute("value"));
+        }
+    }
+    for(var i = 0; i < tdc.length; i ++){
+        if(tdc[i].checked){
+            taskdifficulty.push(tdc[i].getattribute("value"));
+        }
+    }
+    return {
+        "Page": page,
+        "Datatype": datatype,
+        "Labeltype": marktype,
+        "TaskDifficulty": taskdifficulty,
+        "Keyword": keyword,
+    }
 }
 
 function totaskclass(data){
