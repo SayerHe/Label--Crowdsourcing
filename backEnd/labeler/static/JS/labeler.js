@@ -29,18 +29,12 @@ var testdata = [
 ]
 
 $(document).ready(function(){
-    askfordata({
-        "Page": -1,
-        "DataType": [],
-        "Labeltype": [],
-        "TaskDifficulty": [],
-        "Keyword": '',
-    });
+    askfordata('');
     $(".checkboxclass").click(function(){
-        askfordata(getsss(-1));
+        askfordata(getsss(0));
     });
     $("#searchsubmit").click(function(){
-        askfordata(getsss(-1));
+        askfordata(getsss(0));
     })
 });
 
@@ -72,10 +66,11 @@ var Tasks = [],
 const CN = true;
 
 function askfordata(data){
+    console.log(labeler_url)
     $.ajax({
-        url: labeler_url,
-        type: "POST",        //请求类型
-        data: data,
+        url: labeler_url+data,
+        type: "GET",        //请求类型
+        // data: data,
         // ConvertEmptyStringToNull: false,
         dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
         success: function (returndata) {
@@ -160,34 +155,34 @@ function dotaskbt(taskid){
 
 function getsss(page){
     var keyword = $("#searchinput").val(),
-        datatype = [],
-        marktype = [],
-        taskdifficulty = [],
+        datatype = 0,
+        marktype = 0,
+        taskdifficulty = 0,
         dtc = document.getElementsByName("datatype"),
         mtc = document.getElementsByName("marktype"),
         tdc = document.getElementsByName("taskdifficulty");
     for(var i = 0; i < dtc.length; i ++){
         if(dtc[i].checked){
-            datatype.push(dtc[i].value);
+            datatype |= (1<<i);
         }
     }
     for(var i = 0; i < mtc.length; i ++){
         if(mtc[i].checked){
-            marktype.push(mtc[i].value);
+            marktype |= (1<<i);
         }
     }
     for(var i = 0; i < tdc.length; i ++){
         if(tdc[i].checked){
-            taskdifficulty.push(tdc[i].value);
+            taskdifficulty |= (1<<i);
         }
     }
-    return {
-        "Page": page,
-        "DataType": JSON.stringify(datatype),
-        "LabelType": JSON.stringify(marktype),
-        "TaskDifficulty": JSON.stringify(taskdifficulty),
-        "Keyword": keyword,
+    page &= (1<<8)-1
+    select = ('00000000'+((page<<24) | (taskdifficulty<<16) | (marktype<<8) | datatype).toString(16)).slice(-8);
+    data = '?select='+select
+    if(keyword){
+        data += '&keyword='+keyword;
     }
+    return data;
 }
 
 function totaskclass(data){
