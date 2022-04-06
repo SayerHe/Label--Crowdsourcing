@@ -84,4 +84,5 @@ def show_tasks(request):
                         "TaskID": i.id
                         } for i in tasks[page*DATA_ON_ONE_PAGE :page*DATA_ON_ONE_PAGE+DATA_ON_ONE_PAGE]]
         tasks_info = {"DataNumber": len(tasks), "DataList": dataList}
+        print("hello world")
         return JsonResponse(tasks_info)

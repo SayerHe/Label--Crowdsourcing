@@ -20,7 +20,7 @@ def transform_text_file(task_file):
     table_data = table_data[1:]
     table_data = pd.DataFrame(table_data)
     table_data.columns = columns
-    print(table_data.to_string())
+    # print(table_data.to_string())
     return table_data
 
 def estimate_text_difficulty(table_data):
@@ -42,7 +42,7 @@ def create_task(request):
     if request.method == 'GET':
         return render(request, "Publisher/index.html")
     else:
-        print(request.POST)
+        # print(request.POST)
         newTask_param = dict()
         try:
             # print(json.loads(request.body))
