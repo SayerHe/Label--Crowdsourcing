@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from matplotlib.font_manager import json_dump
 from publisher.models import LabelTasksBaseInfo
 from django.http import HttpResponse, JsonResponse
+import json
 # from datetime
 # Create your views here.
 
@@ -20,39 +22,39 @@ def show_tasks(request):
             t >>= 8
             page = t & (1 << 8 - 1)
         except:
-            datatype,label_type,TaskDifficulty=False
+            datatype=label_type=TaskDifficulty = None
             page=0
         try:
             keyword = request.GET['keyword']
         except:
-            keyword = False
+            keyword = None
 
         tasks = LabelTasksBaseInfo.objects.all()
 
         datatypelist = []
-        if datatype & (1 << 0):
+        if datatype and datatype & (1 << 0):
             datatypelist.append('text')
-        if datatype & (1 << 1):
+        if datatype and datatype & (1 << 1):
             datatypelist.append('image')
-        if datatype & (1 << 2):
+        if datatype and datatype & (1 << 2):
             datatypelist.append('audio')
-        if datatype & (1 << 3):
+        if datatype and datatype & (1 << 3):
             datatypelist.append('video')
 
         labeltypelist = []
-        if label_type & (1 << 0):
+        if label_type and label_type & (1 << 0):
             labeltypelist.append('score')
-        if label_type & (1 << 1):
+        if label_type and label_type & (1 << 1):
             labeltypelist.append('classify')
-        if label_type & (1 << 2):
+        if label_type and label_type & (1 << 2):
             labeltypelist.append('describe')
 
         TaskDifficultyList = []
-        if TaskDifficulty & (1 << 0):
+        if TaskDifficulty and TaskDifficulty & (1 << 0):
             TaskDifficultyList.append('easy')
-        if TaskDifficulty & (1 << 1):
+        if TaskDifficulty and TaskDifficulty & (1 << 1):
             TaskDifficultyList.append('medium')
-        if TaskDifficulty & (1 << 2):
+        if TaskDifficulty and TaskDifficulty & (1 << 2):
             TaskDifficultyList.append('difficult')
         try:
             if keyword:
@@ -67,14 +69,15 @@ def show_tasks(request):
         except:
             pass
 
-        dataList = [{'TaskName': i.task_name,
-                        'DataType': i.data_type,
-                        'LabelType': i.label_type,
-                        'Payment': i.task_payment,
-                        'TaskDifficulty': i.task_difficulty,
-                        'TaskDeadline': i.task_deadline.astimezone().strftime("%Y/%m/%d"),
-                        'RuleText': i.rule_file,
+        dataList = [{   "TaskName": i.task_name,
+                        "DataType": i.data_type,
+                        "LabelType": i.label_type,
+                        "Payment": "%.2f"%(i.task_payment),
+                        "TaskDifficulty": i.task_difficulty,
+                        "TaskDeadline": i.task_deadline.astimezone().strftime("%Y/%m/%d"),
+                        "RuleText": json.dumps(i.rule_file).replace('\"', '\\"'),
                         "TaskID": i.id
-                        } for i in tasks[page*DATA_ON_ONE_PAGE :page*DATA_ON_ONE_PAGE+DATA_ON_ONE_PAGE]]
-        tasks_info = {"DataNumber": len(tasks), "DataList": dataList}
-        return JsonResponse(tasks_info)
+                        } for i in tasks[len(tasks)-1:len(tasks)]]
+        tasks_info = {"DataNumber": len(tasks), "DataList": json.dumps(dataList)}
+        print(json.dumps(dataList))
+        return render(request, 'labeler/index.html', tasks_info)

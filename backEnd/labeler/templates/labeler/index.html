@@ -4,7 +4,13 @@
         <meta charset="utf-8">
         <title></title>
         <script>
-            var labeler_url = "{% url 'labeler:show_tasks' %}"
+            var labeler_url = "{% url 'labeler:show_tasks' %}";
+            var DataNumber, DataList;
+            function GetDjangoData(){
+                PageChanged = (DataNumber != "{{DataNumber}}");
+                DataNumber = "{{DataNumber}}", DataList = "{{DataList}}";
+                return PageChanged;
+            }
         </script>
         {% load static %}
         <link rel="stylesheet" href="{% static 'CSS/labeler.css' %}" type="text/css">

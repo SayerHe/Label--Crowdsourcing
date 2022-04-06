@@ -29,7 +29,7 @@ var testdata = [
 ]
 
 $(document).ready(function(){
-    askfordata('');
+    // askfordata('');
     $(".checkboxclass").click(function(){
         askfordata(getsss(0));
     });
@@ -67,34 +67,33 @@ const CN = true;
 
 function askfordata(data){
     console.log(labeler_url)
-    $.ajax({
-        url: labeler_url+data,
-        type: "GET",        //请求类型
+    $.get(
+        url = labeler_url+data,
+        // type: "GET",        //请求类型
         // data: data,
         // ConvertEmptyStringToNull: false,
-        dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
-        success: function (returndata) {
-            data_callback(returndata, data["Page"])
-        },
-        error: function () {
-            //当请求错误之后，自动调用
+        // dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
+        success = function () {
+            data_callback(GetDjangoData())
+            console.log(DataList.replace(new RegExp('&quot;',"gm"),'"'))
+            console.log(JSON.parse(DataList.replace(new RegExp('&quot;',"gm"),'"')))
         }
-    });
+    );
 }
 
-function data_callback(data, page){
+function data_callback(PageChanged){
+    return
     const TaskNumOnOnePage = 10;
-    // 将data分页
-    pagedata = data["DataNumber"];
-    taskdata = data['DataList'];
+    // 将data格式化
+    taskdata = DataList;
     var tasks = [];
     for(var i = 0; i < taskdata.length; i ++){
         tasks.push(totaskclass(taskdata[i]));
     }
     //更新页码
-    if(page == -1){
+    if(PageChanged){
         pagination = document.getElementById("pagination");
-        pagination.setAttribute("size", String(Math.max(1, Math.ceil(pagedata/TaskNumOnOnePage))));
+        pagination.setAttribute("size", String(Math.max(1, Math.ceil(DataNumber/TaskNumOnOnePage))));
         Page = 0;
         Pagination_init();
     }
