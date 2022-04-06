@@ -29,20 +29,28 @@ var testdata = [
 ]
 
 $(document).ready(function(){
-    askfordata('');
     $(".checkboxclass").click(function(){
-        askfordata(getsss(0));
+        askfordata(getsss(1));
     });
     $("#searchsubmit").click(function(){
-        askfordata(getsss(0));
+        askfordata(getsss(1));
+    })
+    $("input").keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13')
+        {
+            askfordata(getsss(1));
+        }
     })
 });
 
 window.onload=function(){
+    askfordata(StringToData(document.location.search));
 }
 
 function changepage(page){
-    askfordata(getsss(page-1));
+    // Page = page;
+    askfordata(getsss(page));
 }
 
 const DTC = {
@@ -62,19 +70,23 @@ TDC = {
     "difficult":"复杂",
 };
 var Tasks = [],
-    Page = 0;
+    Page = 1;
 const CN = true;
 
 function askfordata(data){
-    console.log(labeler_url)
+    window.parent.history.pushState(
+        data,
+        document.title,
+        window.parent.location.pathname+DataToString(data)
+    );
     $.ajax({
-        url: labeler_url+data,
+        url: labeler_url,
         type: "GET",        //请求类型
-        // data: data,
+        data: data,
         // ConvertEmptyStringToNull: false,
         dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
         success: function (returndata) {
-            data_callback(returndata, data["Page"])
+            data_callback(returndata)
         },
         error: function () {
             //当请求错误之后，自动调用
@@ -82,20 +94,20 @@ function askfordata(data){
     });
 }
 
-function data_callback(data, page){
+function data_callback(data){
     const TaskNumOnOnePage = 10;
     // 将data分页
-    pagedata = data["DataNumber"];
+    pagedata = Math.max(1, Math.ceil(data["DataNumber"]/TaskNumOnOnePage));
     taskdata = data['DataList'];
     var tasks = [];
     for(var i = 0; i < taskdata.length; i ++){
         tasks.push(totaskclass(taskdata[i]));
     }
     //更新页码
-    if(page == -1){
+    if(pagedata != document.getElementById("pagination").getAttribute("size")){
         pagination = document.getElementById("pagination");
-        pagination.setAttribute("size", String(Math.max(1, Math.ceil(pagedata/TaskNumOnOnePage))));
-        Page = 0;
+        pagination.setAttribute("size", pagedata);
+        pagination.setAttribute("page", Page);
         Pagination_init();
     }
     showhtml(tasks);
@@ -176,13 +188,50 @@ function getsss(page){
             taskdifficulty |= (1<<i);
         }
     }
-    page &= (1<<8)-1
+    page &= (1<<8)-1;
+    Page = page;
     select = ('00000000'+((page<<24) | (taskdifficulty<<16) | (marktype<<8) | datatype).toString(16)).slice(-8);
-    data = '?select='+select
-    if(keyword){
-        data += '&keyword='+keyword;
+    var data = {'RequestData':true};
+    if(select != '01000000'){
+        data['Select'] = select;
+    }
+    if(keyword != ''){
+        data['Keyword'] = keyword;
     }
     return data;
+}
+function initsss(data){
+    if('Keyword' in data){
+        $("#searchinput").val(data['Keyword']);
+    }
+    if('Select' in data){
+        t = parseInt(data['Select'], 16);
+        datatype = t & ((1<<8)-1);
+        t >>= 8;
+        marktype = t & ((1<<8)-1);
+        t >>= 8;
+        taskdifficulty = t & ((1<<8)-1);
+        t >>= 8;
+        Page = t & ((1<<8)-1);
+        dtc = document.getElementsByName("datatype"),
+        mtc = document.getElementsByName("marktype"),
+        tdc = document.getElementsByName("taskdifficulty");
+        for(var i = 0; i < dtc.length; i ++){
+            if(datatype & (1<<i)){
+                dtc[i].checked = true;
+            }
+        }
+        for(var i = 0; i < mtc.length; i ++){
+            if(marktype & (1<<i)){
+                mtc[i].checked = true;
+            }
+        }
+        for(var i = 0; i < tdc.length; i ++){
+            if(taskdifficulty & (1<<i)){
+                tdc[i].checked = true;
+            }
+        }
+    }
 }
 
 function totaskclass(data){
@@ -203,4 +252,31 @@ function toprice(num){
     num_float = parseInt((num-num_int+0.001)*100);
     num_float = ('0'+num_float).slice(-2);
     return num_int+'<span class="lower">.'+num_float+'</span>';
+}
+
+function StringToData(urlString){
+    var data = {'RequestData':true};
+    if (urlString && urlString != '?=') {
+        params = urlString.substring(1).split('&amp;');
+        for(var x in params){
+            k = params[x].indexOf('=');
+            data[params[x].substring(0, k)] = params[x].substring(k+1);
+        }
+    }
+    initsss(data);
+    return data;
+}
+function DataToString(data){
+    var datastring = '?',
+        keys = Object.keys(data),
+        len_1 = keys.length-1;
+    if(len_1 <= 0){
+        return '';
+    }
+    // console.log(data)
+    for(var i = 1; i < len_1; i ++){
+        datastring += keys[i]+'='+data[keys[i]]+'&';
+    }
+    datastring += keys[len_1]+'='+data[keys[len_1]];
+    return datastring;
 }
