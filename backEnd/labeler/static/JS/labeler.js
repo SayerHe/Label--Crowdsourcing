@@ -49,8 +49,10 @@ window.onload=function(){
 }
 
 function changepage(page){
-    // Page = page;
     askfordata(getsss(page));
+    $("html,body").animate({
+        scrollTop: "0px"
+    }, 100);
 }
 
 const DTC = {
