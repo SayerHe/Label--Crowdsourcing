@@ -5,6 +5,7 @@ from django.urls import reverse
 import pandas as pd
 from publisher.models import LabelTasksBaseInfo, LabelTaskFile
 import datetime
+from django.utils import datastructures
 from io import StringIO
 import json
 
@@ -19,7 +20,7 @@ def transform_text_file(task_file):
     table_data = table_data[1:]
     table_data = pd.DataFrame(table_data)
     table_data.columns = columns
-    print(table_data.to_string())
+    # print(table_data.to_string())
     return table_data
 
 def estimate_text_difficulty(table_data):
@@ -33,10 +34,15 @@ def estimate_text_difficulty(table_data):
     else:
         return "Difficult"
 
+def determine_payment(*args):
+    # 后面加
+    return 1
+
 def create_task(request):
     if request.method == 'GET':
         return render(request, "Publisher/index.html")
     else:
+        # print(request.POST)
         newTask_param = dict()
         try:
             # print(json.loads(request.body))
@@ -47,21 +53,25 @@ def create_task(request):
             task_deadline = request.POST["TaskDeadline"]
             task_deadline = [int(i) for i in task_deadline.split('/')]
             newTask_param["task_deadline"] = datetime.date(*task_deadline)
-            newTask_param["task_payment"] = request.POST["Payment"]
+            newTask_param["inspect_method"] = request.POST["InspectionMethod"]
+            newTask_param["task_payment"] = determine_payment()
         except KeyError:
             return JsonResponse({'err': "Basic Info Missing"})
-
         try:
-            newTask_param["rule_file"] = request.FILES["RuleFile"].read()
+            newTask_param["rule_file"] = request.FILES["RuleFile"].read().decode("utf8")
         except KeyError:
-            return JsonResponse({'err': "Rule File Missing"})
-        print(newTask_param)
+            rule_text = request.POST["RuleText"]
+            if rule_text:
+                newTask_param["rule_file"] = rule_text
+            else:
+                return JsonResponse({"err": "Rule File Missing"})
+
         if newTask_param["data_type"] == "text":
             return create_text_task(request, **newTask_param)
 
         return JsonResponse({'err': 'None'})
 
-def create_text_task(request, publisher, task_name, data_type, rule_file,
+def create_text_task(request, inspect_method, publisher, task_name, data_type, rule_file,
                           label_type, task_deadline, task_payment):
 
     try:
@@ -76,7 +86,7 @@ def create_text_task(request, publisher, task_name, data_type, rule_file,
     if str(task_file).split(".")[1] not in table_format_permit:
         return JsonResponse({'err': "FileType Error"})
 
-    new_task = LabelTasksBaseInfo(publisher_id=publisher, task_name=task_name, data_type=data_type,rule_file=rule_file,
+    new_task = LabelTasksBaseInfo(inspect_method=inspect_method, publisher=publisher, task_name=task_name, data_type=data_type,rule_file=rule_file,
                                   label_type=label_type, task_deadline=task_deadline, task_payment=task_payment,task_difficulty=task_difficulty)
     new_task.save()
     new_task_file = LabelTaskFile(task_id = new_task, data_file=task_file_string)

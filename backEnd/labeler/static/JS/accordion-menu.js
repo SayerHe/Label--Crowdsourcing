@@ -47,13 +47,11 @@ Collapse = function () {
 	_createClass(Collapse, [
     { key: '_setPanelHeight', value: function _setPanelHeight(panel) {
         var contents = panel.querySelector("summary + *");
-
         contents.style.height = contents.scrollHeight + "px";
     }
 	// Removes height of panel content
 	}, { key: '_removePanelHeight', value: function _removePanelHeight(panel) {
 			var contents = panel.querySelector("summary + *");
-
 			contents.style.height = null;
 		}
 
@@ -73,7 +71,7 @@ Collapse = function () {
 	// Remove height on animation end since it's no longer needed
 	}, { key: '_endOpen', value: function _endOpen(panel) {
 			panel.dispatchEvent(this.events.openedPanel);
-			this._removePanelHeight(panel);
+			// this._removePanelHeight(panel);
 		}
 
 	//=== Close panel, not toggling the actual [open] attr!
@@ -210,9 +208,9 @@ Collapse = function () {
     return Collapse;
 }();
 
-
+var accordion;
 function tasklist_init(makeMePretty){
-	var accordion = new Collapse(makeMePretty, { accordion: true }).init();
+	accordion = new Collapse(makeMePretty, { accordion: true }).init();
 }
 
 // Toggle accordion behavior

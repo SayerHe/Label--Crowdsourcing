@@ -6,9 +6,10 @@
         <title>Welcome</title>
         <link rel="stylesheet" href="{% static 'CSS/main_menu.css' %}" type="text/css">
         <script>
-            var UserName = '{{ UserName }}';
-            var user_url = "{% url 'labeler:show_tasks' %}"
-            var publish_url = "{% url 'publisher:create_task' %}"
+            var UserName = '{{ UserName }}', APPName = '{{ APPName }}', Params = '{{Params}}';
+            var main_menu_url = "{% url 'main_menu:index' %}";
+            var user_url = "{% url 'labeler:show_tasks' %}";
+            var publish_url = "{% url 'publisher:create_task' %}";
         </script>
         <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
         <script type="text/javascript" src="{% static 'JS/main_menu.js' %}"></script>
@@ -29,7 +30,7 @@
                 <li class="menubt" id="Account"><a>账户余额</a></li>
             </ul>
         </div>
-        <iframe id="SUBHTML" src="{% url 'publisher:create_task' %}" frameborder="0"></iframe>
+        <iframe id="SUBHTML" src="" frameborder="0"></iframe>
 
     </body>
 </html>

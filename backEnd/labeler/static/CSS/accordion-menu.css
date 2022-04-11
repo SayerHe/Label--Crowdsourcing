@@ -1,19 +1,80 @@
-/*
-  Please wrap your collapsible content in a single element or so help me
-  Must add a transition or it breaks because that's the whole purpose of this
-  Only one transition-duration works (see explanation on line #141 in JS)
-  You can add more to an inner wrapper (.details-styling)
-*/
+/*** 搜索筛选排序 ***/
+.sss{
+  position: relative;
+  width: calc(80vw - 2px);
+  padding: 0;
+  margin: 0 auto 1em;
+  border: 1px solid #d6d1e0;
+  border-radius: 3px;
+  box-shadow: 0.2em 1em 0.2em -1em #d6d1e0;
+}
+.sss .searchdiv{
+  margin: 2em 2em;
+}
+.sss .selectdiv{
+  margin: 1em 2em;
+}
+.ssstitle{
+  position: relative;
+  display: inline-block;
+  /* float: left; */
+  font-size: 18px;
+  margin: 0;
+  padding: 3px 0 0;
+}
+#searchform, #selectcheckbox{
+  position: absolute;
+  display: inline-block;
+  left: 8em;
+  margin: 0;
+  width: 70%;
+}
+.selectlabel .tasklabel{
+  font-size: 16px;
+  font-weight: bold;
+  padding: 3px 5px;
+}
+/* #searchform {background: #A3D0C3;} */
+#searchform input {
+  width: 100%;
+  font-size: 18px;
+  height: 1.5em;
+  padding: 0;
+  padding-left: 10px;
+  margin: 0;
+  border: 2px solid #7BA7AB;
+  border-radius: 3px;
+  outline: none;
+  /* background: #F9F0DA; */
+  color: #474747;
+}
+#searchform button {
+  position: absolute; 
+  top: 0;
+  right: 0px;
+  width: 72px;
+  height: 31px;
+  border: none;
+  margin-right: -13px;
+  background: #7BA7AB;
+  border-radius: 0 3px 3px 0;
+  cursor: pointer;
+}
+#searchform button::before {
+  /* content: url("../IMG/labeler/search.svg"); */
+  content: "search";
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/*** 任务列表 ***/
 .collapse-init summary + * {
   transition: all 0.25s ease-in-out;
   overflow: hidden;
+  margin-top: -2em;
+  padding-bottom: 2em;
+  
 }
-
-/*
-  Closed state. Any CSS transitions work here
-  The JS has a height calculation to make sliding opened/closed easier, but it's not necessary
-  Remove the height prop for a simple toggle on/off (after all that work I did for you?)
-*/
 .collapse-init :not(.panel-active) summary + * {
   height: 0;
   opacity: 0;
@@ -22,7 +83,6 @@
   -webkit-transform-origin: bottom center;
           transform-origin: bottom center;
 }
-
 .collapse-init summary {
   list-style: none;
 }
@@ -36,23 +96,10 @@
   cursor: pointer;
 }
 
-.details-styling {
-  position: relative;
-  padding: 1em;
-}
-.details-styling .detailtitle{
-  position: relative;
-  left: 0;
-  font-weight: bold;
-}
-.details-styling .detailcontent{
-  position: relative;
-  left: 0;
-}
 .container {
   position: relative;
   box-shadow: 0.2em 1em 2em -1em #d6d1e0;
-  margin: 2.4em auto;
+  margin: 0 auto;
   width: 80vw;
   /* min-height: calc(100vh - 260px); */
 }
@@ -75,9 +122,10 @@ summary {
   display: block;
   transition: 0.2s;
   font-weight: 700;
-  padding: 1em;
+  padding: 1.5rem 2rem;
 }
 summary h3{
+  font-size: 20px;
   margin-top: 0;
 }
 .tasklabel{
@@ -99,36 +147,131 @@ summary h3{
   font-size: 32px;
   font-weight: lighter;
   float: right;
-  margin-right: 20px;
+  margin-right: 0;
   margin-top: -1em;
 }
 .taskpayment .lower{
   font-size: 18px;
 }
+
+.tasklabel, .taskdeadline, .taskpayment{
+  transition: opacity 0.3s;
+}
 [open] .tasklabel, [open] .taskdeadline, [open] .taskpayment{
-  display: none;
+  transition: opacity 0s;
+  opacity: 0;
 }
-/* summary:focus {
-  outline: 2px solid #fff;
-} */
-/* [open] summary {
-  background: #fff;
-  color: #f8f5fe;
-} */
-/* .collapse-init summary::after {
-  border-right: 2px solid;
-  border-bottom: 2px solid;
-  content: '';
+
+.details-styling {
+  position: relative;
+  padding: 0;
+  margin: 0 2em 1em;
+  z-index: 1;
+}
+.details-styling .detailtitle{
+  position: relative;
+  display: inline-block;
+  left: 0;
+  font-weight: bold;
+  width: 5em;
+  text-align: left;
+  margin: 0;
+}
+.details-styling .detailcontent{
+  position: absolute;
+  display: inline-block;
+  top: 0;
+  left: 6em;
+  margin: 0;
+}
+.details-styling .dotaskbutton{
+  padding: 1em 2em 0;
+  margin: 3em 0 0;
   float: right;
-  width: 0.5em;
-  height: 0.5em;
-  margin-top: 0.25em;
-  -webkit-transform: rotate(45deg);
-          transform: rotate(45deg);
-  transition: inherit;
 }
-[open] summary::after {
-  margin-top: 0.5em;
-  -webkit-transform: rotate(225deg);
-          transform: rotate(225deg);
+.details-styling:first-child{
+  margin-top: 0;
+}
+
+.checkboxclass {
+	display: none;
+}
+.checkboxclass + label {
+	cursor: pointer;
+	font-size: 1em;
+}
+.checkboxclass + label {
+	background-color: #FFF;
+	padding: 6px 24px 8px 9px;
+	border-radius: 5px;
+	display: inline-block;
+	position: relative;
+	margin-right: 30px;
+	/* box-shadow: 0 0 2px rgba(0,0,0,0.3); */
+	height: 17px;
+	overflow: hidden;
+	font-size: 1em !important;
+	color: #464E50;
+	-webkit-transition: all 0.2s linear, color 0 linear;
+	transition: all 0.2s linear, color 0 linear;
+}
+
+.checkboxclass + label:after {
+	content: '';
+	position: absolute;
+	/* background: #FFF; */
+	top: 0px;
+	right: 4px;
+	width: 16px;
+	display: block;
+	font-size: 1em !important;
+	height: 16px;
+	/* border-radius: 3px;
+	box-shadow: 0 0 1px rgba(0, 0, 0, 0.6), inset 0 -18px 15px -10px rgba(0, 0, 0, 0.05); */
+	padding: 4px 0px;
+	text-align: center;
+	color: #496F7A;
+}
+
+.checkboxclass:checked + label {
+	color: #fff;
+}
+
+.checkboxclass + label > span {
+	position: relative;
+  padding: 0;
+  margin: 0;
+	z-index: 99;
+	font-family: 'adelle-sans', sans-serif;
+}
+
+/* .checkboxclass:active + label:after {
+	box-shadow: 0 0 1px rgba(0, 0, 0, 0.6), inset 0 2px 6px rgba(0, 0, 0, 0.1), inset 0 -18px 15px -10px rgba(0, 0, 0, 0.05);
+
 } */
+
+.checkboxclass:checked + label:after {
+	content: '✖';
+}
+
+.checkboxclass + label:before {
+	content: '';
+	position: absolute;
+	background: #6AC6DD;
+	width: 0%;
+	height: 100%;
+	top: 0;
+	-webkit-transition: all 0.2s ease-in;
+	transition: all 0.2s ease-in;
+	left: 0;
+}
+
+.checkboxclass:checked + label:before {
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	text-shadow: 0 1px 0 rgba(0,0,0,0.1);
+	top: 0;
+	left: 0;
+}

@@ -253,6 +253,7 @@ Kalendae.prototype = {
 		selected              :null,            /* dates already selected.  can be string, date, or array of strings or dates. */
 		mode                  :'single',        /* single, multiple, range */
 		dayOutOfMonthClickable:false,
+        closeonclick          :false,
 		format                :null,            /* string used for parsing dates. */
 		subscribe             :null,            /* object containing events to subscribe to */
 
@@ -904,6 +905,11 @@ Kalendae.Input = function (targetElement, options) {
 		}
 		$input.value = self.getSelected();
 		util.fireEvent($input, 'change');
+        if(this.settings.closeonclick){
+            setTimeout(function () {
+                $input.blur();
+            }, 100);
+        }
 	});
 
 };

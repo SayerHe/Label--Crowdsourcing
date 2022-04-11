@@ -1,45 +1,60 @@
+var verylongstring = "helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld "
++"helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld "
 var testdata = [
-    {TaskName:"标注任务a标注任务a标注任务a标注任务a", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10.35, RuleText:"helloworld"},
-    {TaskName:"标注任务b标注任务b标注任务b标注任务b", TaskDifficulty:"medium", DataType:"image", LabelType:"classify", TaskDeadline:"2022/04/01", Payment:5.99, RuleText:"helloworld"},
-    {TaskName:"标注任务c标注任务c标注任务c标注任务c", TaskDifficulty:"difficult", DataType:"audio", LabelType:"describe", TaskDeadline:"2022/04/01", Payment:20, RuleText:"helloworld"},
-    {TaskName:"标注任务d标注任务d标注任务d标注任务d", TaskDifficulty:"easy", DataType:"video", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务e标注任务e标注任务e标注任务e", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务f标注任务f标注任务f标注任务f", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务g标注任务g标注任务g标注任务g", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务h标注任务h标注任务h标注任务h", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务a标注任务a标注任务a标注任务a", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务b标注任务b标注任务b标注任务b", TaskDifficulty:"easy", DataType:"image", LabelType:"classify", TaskDeadline:"2022/04/01", Payment:5, RuleText:"helloworld"},
-    {TaskName:"标注任务c标注任务c标注任务c标注任务c", TaskDifficulty:"easy", DataType:"audio", LabelType:"describe", TaskDeadline:"2022/04/01", Payment:20, RuleText:"helloworld"},
-    {TaskName:"标注任务d标注任务d标注任务d标注任务d", TaskDifficulty:"easy", DataType:"video", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务e标注任务e标注任务e标注任务e", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务f标注任务f标注任务f标注任务f", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务g标注任务g标注任务g标注任务g", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务h标注任务h标注任务h标注任务h", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务a标注任务a标注任务a标注任务a", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务b标注任务b标注任务b标注任务b", TaskDifficulty:"easy", DataType:"image", LabelType:"classify", TaskDeadline:"2022/04/01", Payment:5, RuleText:"helloworld"},
-    {TaskName:"标注任务c标注任务c标注任务c标注任务c", TaskDifficulty:"easy", DataType:"audio", LabelType:"describe", TaskDeadline:"2022/04/01", Payment:20, RuleText:"helloworld"},
-    {TaskName:"标注任务d标注任务d标注任务d标注任务d", TaskDifficulty:"easy", DataType:"video", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务e标注任务e标注任务e标注任务e", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务f标注任务f标注任务f标注任务f", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务g标注任务g标注任务g标注任务g", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务h标注任务h标注任务h标注任务h", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务a标注任务a标注任务a标注任务a", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务b标注任务b标注任务b标注任务b", TaskDifficulty:"easy", DataType:"image", LabelType:"classify", TaskDeadline:"2022/04/01", Payment:5, RuleText:"helloworld"},
-    {TaskName:"标注任务c标注任务c标注任务c标注任务c", TaskDifficulty:"easy", DataType:"audio", LabelType:"describe", TaskDeadline:"2022/04/01", Payment:20, RuleText:"helloworld"},
-    {TaskName:"标注任务d标注任务d标注任务d标注任务d", TaskDifficulty:"easy", DataType:"video", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务e标注任务e标注任务e标注任务e", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务f标注任务f标注任务f标注任务f", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务g标注任务g标注任务g标注任务g", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
-    {TaskName:"标注任务h标注任务h标注任务h标注任务h", TaskDifficulty:"easy", DataType:"text", LabelType:"score", TaskDeadline:"2022/04/01", Payment:10, RuleText:"helloworld"},
+    {"TaskName":"标注任务a标注任务a标注任务a标注任务a", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10.35,   "RuleText":verylongstring},
+    {"TaskName":"标注任务b标注任务b标注任务b标注任务b", "TaskDifficulty":"medium",      "DataType":"image",   "LabelType":"classify",   "TaskDeadline":"2022/04/01", "Payment":5.99,    "RuleText":"helloworld"},
+    {"TaskName":"标注任务c标注任务c标注任务c标注任务c", "TaskDifficulty":"difficult",   "DataType":"audio",   "LabelType":"describe",   "TaskDeadline":"2022/04/01", "Payment":20,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务d标注任务d标注任务d标注任务d", "TaskDifficulty":"easy",        "DataType":"video",   "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务e标注任务e标注任务e标注任务e", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务f标注任务f标注任务f标注任务f", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务g标注任务g标注任务g标注任务g", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务h标注任务h标注任务h标注任务h", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务a标注任务a标注任务a标注任务a", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务b标注任务b标注任务b标注任务b", "TaskDifficulty":"easy",        "DataType":"image",   "LabelType":"classify",   "TaskDeadline":"2022/04/01", "Payment":5,       "RuleText":"helloworld"},
+    {"TaskName":"标注任务c标注任务c标注任务c标注任务c", "TaskDifficulty":"easy",        "DataType":"audio",   "LabelType":"describe",   "TaskDeadline":"2022/04/01", "Payment":20,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务d标注任务d标注任务d标注任务d", "TaskDifficulty":"easy",        "DataType":"video",   "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务e标注任务e标注任务e标注任务e", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务f标注任务f标注任务f标注任务f", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务g标注任务g标注任务g标注任务g", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务h标注任务h标注任务h标注任务h", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务a标注任务a标注任务a标注任务a", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务b标注任务b标注任务b标注任务b", "TaskDifficulty":"easy",        "DataType":"image",   "LabelType":"classify",   "TaskDeadline":"2022/04/01", "Payment":5,       "RuleText":"helloworld"},
+    {"TaskName":"标注任务c标注任务c标注任务c标注任务c", "TaskDifficulty":"easy",        "DataType":"audio",   "LabelType":"describe",   "TaskDeadline":"2022/04/01", "Payment":20,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务d标注任务d标注任务d标注任务d", "TaskDifficulty":"easy",        "DataType":"video",   "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务e标注任务e标注任务e标注任务e", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务f标注任务f标注任务f标注任务f", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务g标注任务g标注任务g标注任务g", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务h标注任务h标注任务h标注任务h", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
+    {"TaskName":"标注任务h标注任务h标注任务h标注任务h", "TaskDifficulty":"easy",        "DataType":"text",    "LabelType":"score",      "TaskDeadline":"2022/04/01", "Payment":10,      "RuleText":"helloworld"},
 ]
 
 $(document).ready(function(){
-    askfordata();
-    //data_callback(testdata);
+    $(".checkboxclass").click(function(){
+        askfordata(getsss(1));
+    });
+    $("#searchsubmit").click(function(){
+        askfordata(getsss(1));
+    })
+    $("input").keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13')
+        {
+            askfordata(getsss(1));
+        }
+    })
 });
 
 window.onload=function(){
+    askfordata(StringToData(document.location.search));
 }
+
+function changepage(page){
+    askfordata(getsss(page));
+    $("html,body").animate({
+        scrollTop: "0px"
+    }, 100);
+}
+
 const DTC = {
     "text":"文本",
     "image":"图像",
@@ -56,33 +71,24 @@ TDC = {
     "medium":"中等",
     "difficult":"复杂",
 };
-var AllTasks = [], 
-    CN = true;
-function data_callback(data){
-    // 将data分页
-    const TaskNumOnOnePage = 10;
-    for(var i = 0, t = 0; t < data.length; i ++){
-        AllTasks.push([]);
-        for(var j = 0; j < TaskNumOnOnePage && t < data.length; j ++, t ++){
-            AllTasks[i].push(totaskclass(data[t]));
-        }
-    }
-    //设置页码模块页数
-    pagination = document.getElementById("pagination");
-    pagination.setAttribute("size", String(AllTasks.length));
-    changepage(1);
-    Pagination_init()
-    //显示第一页内容
-}
+var Tasks = [],
+    Page = 1;
+const CN = true;
 
-function askfordata(){
+function askfordata(data){
+    window.parent.history.pushState(
+        data,
+        document.title,
+        window.parent.location.pathname+DataToString(data)
+    );
     $.ajax({
         url: labeler_url,
-        type: "POST",        //请求类型
-        data: {"data":"data"},
+        type: "GET",        //请求类型
+        data: data,
+        // ConvertEmptyStringToNull: false,
         dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
-        success: function (data) {
-            data_callback(data["DataList"])
+        success: function (returndata) {
+            data_callback(returndata)
         },
         error: function () {
             //当请求错误之后，自动调用
@@ -90,43 +96,64 @@ function askfordata(){
     });
 }
 
-function changepage(page){
-    var Tasks = AllTasks[page - 1],
-        tmphtml = '';
-    for(var i = 0; i < Tasks.length; i ++){
+function data_callback(data){
+    const TaskNumOnOnePage = 10;
+    // 将data分页
+    pagedata = Math.max(1, Math.ceil(data["DataNumber"]/TaskNumOnOnePage));
+    taskdata = data['DataList'];
+    var tasks = [];
+    for(var i = 0; i < taskdata.length; i ++){
+        tasks.push(totaskclass(taskdata[i]));
+    }
+    //更新页码
+    if(pagedata != document.getElementById("pagination").getAttribute("size")){
+        pagination = document.getElementById("pagination");
+        pagination.setAttribute("size", pagedata);
+        pagination.setAttribute("page", Page);
+        Pagination_init();
+    }
+    showhtml(tasks);
+}
+
+function showhtml(tasks){
+    tmphtml = '';
+    for(var i = 0; i < tasks.length; i ++){
         tmphtml +=  '<details>'+
                         '<summary>'+
-                            '<h3>'+Tasks[i].TaskName+'</h3>'+
-                            '<span class="tasklabel">'+String(CN?DTC[Tasks[i].DataType]:Tasks[i].DataType)+'</span>'+
-                            '<span class="tasklabel">'+String(CN?LTC[Tasks[i].LabelType]:Tasks[i].LabelType)+'</span>'+
-                            '<span class="tasklabel">'+String(CN?TDC[Tasks[i].TaskDifficulty]:Tasks[i].TaskDifficulty)+'</span>'+
-                            '<span class="taskdeadline">'+String(CN?'截止日期：':'Deadline: ')+Tasks[i].TaskDeadline+'</span>'+
-                            '<span class="taskpayment">'+'￥'+toprice(Tasks[i].Payment)+'</span>'+
+                            '<h3>'+tasks[i].TaskName+'</h3>'+
+                            '<span class="tasklabel">'+tasks[i].DataType+'</span>'+
+                            '<span class="tasklabel">'+tasks[i].LabelType+'</span>'+
+                            '<span class="tasklabel">'+tasks[i].TaskDifficulty+'</span>'+
+                            '<span class="taskdeadline">'+String(CN?'截止日期：':'Deadline: ')+tasks[i].TaskDeadline+'</span>'+
+                            '<span class="taskpayment">'+'￥'+toprice(tasks[i].Payment)+'</span>'+
                         '</summary>'+
                         '<div class="details-wrapper">'+
                             '<div class="details-styling">'+
                                 '<p class="detailtitle">任务类型</p>'+
-                                '<p class="detailcontent">'+'</p>'+
+                                '<p class="detailcontent">'+tasks[i].DataType+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
                                 '<p class="detailtitle">标注类型</p>'+
-                                '<p class="detailcontent">'+'</p>'+
+                                '<p class="detailcontent">'+tasks[i].LabelType+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
-                                '<p class="detailtitle">任务复杂度</p>'+
-                                '<p class="detailcontent">'+'</p>'+
+                                '<p class="detailtitle">任务难度</p>'+
+                                '<p class="detailcontent">'+tasks[i].TaskDifficulty+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
                                 '<p class="detailtitle">截止日期</p>'+
-                                '<p class="detailcontent">'+'</p>'+
+                                '<p class="detailcontent">'+tasks[i].TaskDeadline+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
                                 '<p class="detailtitle">薪酬</p>'+
-                                '<p class="detailcontent">'+'</p>'+
+                                '<p class="detailcontent">'+'￥'+tasks[i].Payment+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
                                 '<p class="detailtitle">标注规则</p>'+
-                                '<p class="detailcontent">'+'</p>'+
+                                '<p class="detailcontent">'+tasks[i].RuleText+'</p>'+
+                            '</div>'+
+                            '<div class="details-styling">'+
+                                '<button type="button" class="dotaskbutton" onclick="dotaskbt('+tasks[i].TaskID+')">开始标注</p>'+
                             '</div>'+
                         '</div>'+
                     '</details>';
@@ -136,15 +163,90 @@ function changepage(page){
     tasklist_init(tasklist);
 }
 
+function dotaskbt(taskid){
+    console.log(taskid);
+}
+
+function getsss(page){
+    var keyword = $("#searchinput").val(),
+        datatype = 0,
+        marktype = 0,
+        taskdifficulty = 0,
+        dtc = document.getElementsByName("datatype"),
+        mtc = document.getElementsByName("marktype"),
+        tdc = document.getElementsByName("taskdifficulty");
+    for(var i = 0; i < dtc.length; i ++){
+        if(dtc[i].checked){
+            datatype |= (1<<i);
+        }
+    }
+    for(var i = 0; i < mtc.length; i ++){
+        if(mtc[i].checked){
+            marktype |= (1<<i);
+        }
+    }
+    for(var i = 0; i < tdc.length; i ++){
+        if(tdc[i].checked){
+            taskdifficulty |= (1<<i);
+        }
+    }
+    page &= (1<<8)-1;
+    Page = page;
+    select = ('00000000'+((page<<24) | (taskdifficulty<<16) | (marktype<<8) | datatype).toString(16)).slice(-8);
+    var data = {'RequestData':true};
+    if(select != '01000000'){
+        data['Select'] = select;
+    }
+    if(keyword != ''){
+        data['Keyword'] = keyword;
+    }
+    return data;
+}
+function initsss(data){
+    if('Keyword' in data){
+        $("#searchinput").val(data['Keyword']);
+    }
+    if('Select' in data){
+        t = parseInt(data['Select'], 16);
+        datatype = t & ((1<<8)-1);
+        t >>= 8;
+        marktype = t & ((1<<8)-1);
+        t >>= 8;
+        taskdifficulty = t & ((1<<8)-1);
+        t >>= 8;
+        Page = t & ((1<<8)-1);
+        dtc = document.getElementsByName("datatype"),
+        mtc = document.getElementsByName("marktype"),
+        tdc = document.getElementsByName("taskdifficulty");
+        for(var i = 0; i < dtc.length; i ++){
+            if(datatype & (1<<i)){
+                dtc[i].checked = true;
+            }
+        }
+        for(var i = 0; i < mtc.length; i ++){
+            if(marktype & (1<<i)){
+                mtc[i].checked = true;
+            }
+        }
+        for(var i = 0; i < tdc.length; i ++){
+            if(taskdifficulty & (1<<i)){
+                tdc[i].checked = true;
+            }
+        }
+    }
+}
+
 function totaskclass(data){
     tmpdata = {};
+    tmpdata.TaskID = data["TaskID"];
     tmpdata.TaskName = data["TaskName"];
-    tmpdata.DataType = data["DataType"]
-    tmpdata.LabelType = data["LabelType"]
-    tmpdata.TaskDifficulty = data["TaskDifficulty"]
-    tmpdata.TaskDeadline = data["TaskDeadline"]
-    tmpdata.Payment = data["Payment"]
-    tmpdata.RuleText = data["RuleText"]
+    tmpdata.DataType = String(CN?DTC[data["DataType"].toLowerCase()]:data["DataType"]);
+    tmpdata.LabelType = String(CN?LTC[data["LabelType"].toLowerCase()]:data["LabelType"]);
+    tmpdata.TaskDifficulty = String(CN?TDC[data["TaskDifficulty"].toLowerCase()]:data["TaskDifficulty"]);
+    tmpdata.TaskDeadline = data["TaskDeadline"];
+    tmpdata.Payment = data["Payment"];
+    tmpdata.RuleText = data["RuleText"];
+    return tmpdata;
 }
 
 function toprice(num){
@@ -152,4 +254,31 @@ function toprice(num){
     num_float = parseInt((num-num_int+0.001)*100);
     num_float = ('0'+num_float).slice(-2);
     return num_int+'<span class="lower">.'+num_float+'</span>';
+}
+
+function StringToData(urlString){
+    var data = {'RequestData':true};
+    if (urlString && urlString != '?=') {
+        params = urlString.substring(1).split('&amp;');
+        for(var x in params){
+            k = params[x].indexOf('=');
+            data[params[x].substring(0, k)] = params[x].substring(k+1);
+        }
+    }
+    initsss(data);
+    return data;
+}
+function DataToString(data){
+    var datastring = '?',
+        keys = Object.keys(data),
+        len_1 = keys.length-1;
+    if(len_1 <= 0){
+        return '';
+    }
+    // console.log(data)
+    for(var i = 1; i < len_1; i ++){
+        datastring += keys[i]+'='+data[keys[i]]+'&';
+    }
+    datastring += keys[len_1]+'='+data[keys[len_1]];
+    return datastring;
 }
