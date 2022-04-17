@@ -92,7 +92,10 @@ def show_tasks(request):
 
 
 def label_task(request):
-    task_id = request.GET["TaskID"]
+    try:
+        task_id = request.GET["TaskID"]
+    except:
+        pass
     task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
     task_rule = task.rule_file
     task_content_all = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file

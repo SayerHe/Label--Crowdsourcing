@@ -165,7 +165,7 @@ function showhtml(tasks){
 
 function dotaskbt(taskid){
     console.log(taskid);
-    window.parent.location.href=label_url+'?taskId='+taskid;
+    window.open(label_url+'?TaskID='+taskid);
 }
 
 function getsss(page){

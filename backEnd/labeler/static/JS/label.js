@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    console.log(RuleText)
+    console.log(DataList)
 });
 
 window.onload=function(){
