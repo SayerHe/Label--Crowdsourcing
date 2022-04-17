@@ -9,11 +9,12 @@ body{
 
 #head{
     position: fixed;
-    background-color: beige;
+    background-color: white;
     width: 100%;
     height: var(--head-height);
     margin: 0;
     padding: 0;
+    box-shadow: 0.2em 1em 0.2em -1em #d6d1e0;
 }
 #Title{
     position: absolute;
