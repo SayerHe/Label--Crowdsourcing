@@ -1,15 +1,9 @@
-import imp
 from django.shortcuts import render
-<<<<<<< HEAD
 from matplotlib.font_manager import json_dump
-from publisher.models import LabelTasksBaseInfo
-from django.http import HttpResponse, JsonResponse
-=======
 from publisher.models import LabelTasksBaseInfo, LabelTaskFile
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from io import StringIO
 import pandas as pd
->>>>>>> 8ffd5b211029d9f282021382cfed316c026748c5
 import json
 # from datetime
 # Create your views here.
