@@ -1,6 +1,9 @@
+import imp
 from django.shortcuts import render
+from matplotlib.font_manager import json_dump
 from publisher.models import LabelTasksBaseInfo
 from django.http import HttpResponse, JsonResponse
+import json
 # from datetime
 # Create your views here.
 
@@ -85,3 +88,19 @@ def show_tasks(request):
                         } for i in tasks[page*DATA_ON_ONE_PAGE :page*DATA_ON_ONE_PAGE+DATA_ON_ONE_PAGE]]
         tasks_info = {"DataNumber": len(tasks), "DataList": dataList}
         return JsonResponse(tasks_info)
+
+def label(request):
+    try:
+        taskId = request.GET['taskId']
+        print(taskId)
+    except:
+        pass
+    DataList = {
+        'a':'a',
+        'b':'b',
+    }
+    Data = {
+        'RuleText' : '&&&',
+        'DataList' : json.dumps(DataList),
+    }
+    return render(request, "labeler/label.html", Data)
