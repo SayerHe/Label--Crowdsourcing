@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title></title>
         <script>
-            var labeler_url = "{% url 'labeler:show_tasks' %}";
+            var label_url = "{% url 'labeler:label_task' %}";
             var RuleText = '{{ RuleText|safe }}',
                 DataList = {{ TaskContent|safe }};
         </script>
