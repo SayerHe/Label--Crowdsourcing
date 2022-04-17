@@ -121,11 +121,8 @@ def label_task(request):
         table = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
         table = pd.read_csv(StringIO(table), sep='\s+')
         for label in labels:
-            table[table["id"] == label["id"]].label = label["label"]
+            table[table["id"] == label["id"]].__Label__ = label["label"]
 
         return JsonResponse({"err": "none"})
-
-
-
 
 

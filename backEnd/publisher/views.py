@@ -21,7 +21,8 @@ def transform_text_file(task_file):
     table_data = pd.DataFrame(table_data)
     table_data.columns = columns
     # print(columns)
-    table_data["Label"] = [None for i in range(len(table_data))]
+    table_data["__Label__"] = [None for i in range(len(table_data))]
+    table_data["__ID__"] = list(table_data.index)
     # print(table_data.to_string())
     return table_data
 
