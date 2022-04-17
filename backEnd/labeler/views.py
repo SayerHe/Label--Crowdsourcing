@@ -92,23 +92,39 @@ def show_tasks(request):
 
 
 def label_task(request):
-    try:
-        task_id = request.GET["TaskID"]
-    except:
-        pass
-    task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
-    task_rule = task.rule_file
-    task_content_all = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
-    task_content_all = pd.read_csv(StringIO(task_content_all), sep='\s+')
-    task_content_not_labeled = task_content_all[task_content_all["Label"]!=None][:3]
-    task_content = [
-        dict(task_content_not_labeled.iloc[i,:]) for i in range(3)
-    ]
-    Data = {
-        "RuleText":task_rule,
-        "TaskContent":json.dumps(task_content),
-    }
-    return render(request, "labeler/label.html", Data)
+    if request.method == "GET":
+        try:
+            task_id = request.GET["TaskID"]
+        except:
+            return JsonResponse({"err": "err !"})
+        task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
+        task_rule = task.rule_file
+        task_content_all = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
+        task_content_all = pd.read_csv(StringIO(task_content_all), sep='\s+')
+        task_content_not_labeled = task_content_all[task_content_all["Label"]!=None][:3]
+        task_content = [
+            dict(task_content_not_labeled.iloc[i,:]) for i in range(3)
+        ]
+        Data = {
+            "RuleText":task_rule,
+            "TaskContent":json.dumps(task_content),
+        }
+        return render(request, "labeler/label.html", Data)
+
+    elif request.method == "POST":
+        try:
+            task_id = request.POST["TaskID"]
+            labels = request.POST["Labels"]
+        except KeyError:
+            return JsonResponse({"err" : "err !"})
+
+        table = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
+        table = pd.read_csv(StringIO(table), sep='\s+')
+        for label in labels:
+            table[table["id"] == label["id"]].label = label["label"]
+
+        return JsonResponse({"err": "none"})
+
 
 
 
