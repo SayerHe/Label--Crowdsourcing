@@ -16,21 +16,6 @@
 
 
 
-**项目进度**：
-
-- **文档方面**，需求文档，任务分发业务流程，任务分发信息结构，平台监控流程信息确定。（见附件--需求文档）        -By Mar  23
-- **系统方面**，用户的登录与注册前后端完成；任务发布前后端完成。                    -By Mar 25
-
-
-
-<img src="C:\Users\10526\AppData\Roaming\Typora\typora-user-images\image-20220328191707616.png" alt="image-20220328191704900" style="zoom: 20%;" />
-
-<center class="half">
-        <img src="C:\Users\10526\AppData\Roaming\Typora\typora-user-images\image-20220328192012193.png" alt="image-20220328192012193" style="zoom:15%;" />
-    <img src="C:\Users\10526\AppData\Roaming\Typora\typora-user-images\image-20220328191437134.png" alt="image-20220328191437134" style="zoom: 25%;" />
-</center>
-
-
 
 ### 贡献者：
 
