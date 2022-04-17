@@ -1,8 +1,15 @@
 import imp
 from django.shortcuts import render
+<<<<<<< HEAD
 from matplotlib.font_manager import json_dump
 from publisher.models import LabelTasksBaseInfo
 from django.http import HttpResponse, JsonResponse
+=======
+from publisher.models import LabelTasksBaseInfo, LabelTaskFile
+from django.http import HttpResponse, JsonResponse
+from io import StringIO
+import pandas as pd
+>>>>>>> 8ffd5b211029d9f282021382cfed316c026748c5
 import json
 # from datetime
 # Create your views here.
@@ -89,18 +96,23 @@ def show_tasks(request):
         tasks_info = {"DataNumber": len(tasks), "DataList": dataList}
         return JsonResponse(tasks_info)
 
-def label(request):
-    try:
-        taskId = request.GET['taskId']
-        print(taskId)
-    except:
-        pass
-    DataList = {
-        'a':'a',
-        'b':'b',
-    }
+
+def label_task(request):
+    task_id = request.GET["TaskID"]
+    task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
+    task_rule = task.rule_file
+    task_content_all = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
+    task_content_all = pd.read_csv(StringIO(task_content_all), sep='\s+')
+    task_content_not_labeled = task_content_all[task_content_all["Label"]!=None][:3]
+    task_content = [
+        dict(task_content_not_labeled.iloc[i,1:]) for i in range(3)
+    ]
     Data = {
-        'RuleText' : '&&&',
-        'DataList' : json.dumps(DataList),
+        "RuleText":task_rule,
+        "TaskContent":json.dumps(task_content),
     }
     return render(request, "labeler/label.html", Data)
+
+
+
+

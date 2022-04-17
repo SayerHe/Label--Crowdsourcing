@@ -6,5 +6,6 @@ app_name = "labeler"
 
 urlpatterns = [
     path('', views.show_tasks, name="show_tasks"),
-    path('label/', views.label, name="label")
+    path('label/', views.label_task, name="label_task"),
+
 ]
