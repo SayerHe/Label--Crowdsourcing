@@ -99,7 +99,7 @@ def label_task(request):
     task_content_all = pd.read_csv(StringIO(task_content_all), sep='\s+')
     task_content_not_labeled = task_content_all[task_content_all["Label"]!=None][:3]
     task_content = [
-        dict(task_content_not_labeled.iloc[i,1:]) for i in range(3)
+        dict(task_content_not_labeled.iloc[i,:]) for i in range(3)
     ]
     Data = {
         "RuleText":task_rule,
