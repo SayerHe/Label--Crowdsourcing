@@ -36,7 +36,7 @@ function taskList_init(){
     }
     ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提交</button>'
 
-    document.getElementById('taskdiv').innerHTML = ih;
+    document.getElementById('tasktablediv').innerHTML = ih;
     $('.datatable').css('width', (14*len)+'em');
 }
 
@@ -51,6 +51,7 @@ function SubmitLabelResult(){
             'label':label_res[i].value
         })
     }
+    labelData = JSON.stringify(labelData)
     console.log(labelData);
     $.ajax({
         url: label_url,
