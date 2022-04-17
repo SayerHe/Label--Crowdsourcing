@@ -20,6 +20,7 @@ def transform_text_file(task_file):
     table_data = table_data[1:]
     table_data = pd.DataFrame(table_data)
     table_data.columns = columns
+    table_data["Label"] = [None for i in range(len(table_data))]
     # print(table_data.to_string())
     return table_data
 

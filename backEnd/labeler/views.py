@@ -1,6 +1,9 @@
 from django.shortcuts import render
-from publisher.models import LabelTasksBaseInfo
+from publisher.models import LabelTasksBaseInfo, LabelTaskFile
 from django.http import HttpResponse, JsonResponse
+from io import StringIO
+import pandas as pd
+import json
 # from datetime
 # Create your views here.
 
@@ -85,3 +88,24 @@ def show_tasks(request):
                         } for i in tasks[page*DATA_ON_ONE_PAGE :page*DATA_ON_ONE_PAGE+DATA_ON_ONE_PAGE]]
         tasks_info = {"DataNumber": len(tasks), "DataList": dataList}
         return JsonResponse(tasks_info)
+
+
+def label_task(request):
+    task_id = request.GET["TaskID"]
+    task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
+    task_rule = task.rule_file
+    task_content_all = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
+    task_content_all = pd.read_csv(StringIO(task_content_all), sep='\s+')
+    task_content_not_labeled = task_content_all[task_content_all["Label"]!=None][:3]
+    task_content = [
+        dict(task_content_not_labeled.iloc[i,1:]) for i in range(3)
+    ]
+    Data = {
+        "RuleText":task_rule,
+        "TaskContent":json.dumps(task_content),
+    }
+    return render(request, "labeler/label.html", Data)
+
+
+
+
