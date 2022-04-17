@@ -95,13 +95,13 @@ def label_task(request):
     if request.method == "GET":
         try:
             task_id = request.GET["TaskID"]
-        except:
+        except KeyError:
             return JsonResponse({"err": "err !"})
         task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
         task_rule = task.rule_file
         task_content_all = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
         task_content_all = pd.read_csv(StringIO(task_content_all), sep='\s+')
-        task_content_not_labeled = task_content_all[task_content_all["Label"]!=None][:3]
+        task_content_not_labeled = task_content_all[task_content_all["__Label__"]!=None][:3]
         task_content = [
             dict(task_content_not_labeled.iloc[i,:]) for i in range(3)
         ]
@@ -109,6 +109,7 @@ def label_task(request):
             "RuleText":task_rule,
             "TaskContent":json.dumps(task_content),
         }
+        print(Data)
         return render(request, "labeler/label.html", Data)
 
     elif request.method == "POST":
