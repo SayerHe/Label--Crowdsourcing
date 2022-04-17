@@ -13,7 +13,7 @@ function taskList_init(){
         ih += '<tr>\n';
         len = 0;
         for(var j in DataList[i]){
-            if(j != '__Label__' && j != '__id__'){
+            if(j != '__Label__' && j != '__ID__'){
                 ih += '<th>'+j+'</th>\n';
                 len += 1;
             }
@@ -22,7 +22,7 @@ function taskList_init(){
         ih += '<tr>\n';
         for(var j in DataList[i]){
             if(j != '__Label__'){
-                if(j == '__id__'){
+                if(j == '__ID__'){
                     id = DataList[i][j];
                 }
                 else{
@@ -42,7 +42,7 @@ function taskList_init(){
 
 function SubmitLabelResult(){
     label_res = document.getElementsByClassName("labelinput");
-    // console.log(label_res);
+    console.log(window.location.search);
     for(var i = 0; i < label_res.length; i ++){
         id = label_res[i].getAttribute('id').slice(6);
     }
