@@ -165,6 +165,7 @@ function showhtml(tasks){
 
 function dotaskbt(taskid){
     console.log(taskid);
+    window.open(label_url+'?TaskID='+taskid);
 }
 
 function getsss(page){

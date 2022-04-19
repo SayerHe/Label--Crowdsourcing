@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script>
+            var label_url = "{% url 'labeler:label_task' %}";
+            var RuleText = '{{ RuleText|safe }}',
+                DataList = {{ TaskContent|safe }};
+        </script>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'CSS/label.css' %}" type="text/css">
+        <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
+        <script type="text/javascript" src="{% static 'JS/label.js' %}"></script>
+    </head>
+
+    <body>
+        <div id='ruletextdiv'>
+            <h3 id='ruletext_h'>标注规则</h3>
+            <p id='ruletext'></p>
+        </div>
+        <div id='taskdiv'>
+            <div id='tasktablediv'></div>
+        </div>
+    </body>
+</html>
+
+ 
