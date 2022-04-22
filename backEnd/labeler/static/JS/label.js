@@ -70,3 +70,43 @@ function SubmitLabelResult(){
         }
     });
 }
+
+function foldbutton_onclick(){
+    bt = $('#foldbutton')
+    // bt = document.getElementById('foldbutton')
+    if(bt[0].getAttribute('show') == '1'){
+        bt[0].setAttribute('show', '0');
+        bt.animate(
+            {left:0},
+            300
+        );
+        bt[0].classList.add('hide');
+
+        $('#ruletextdiv').animate(
+            {width:'0',opacity:'0'},
+            300
+        );
+        $('#taskdiv').animate(
+            {left:'0',width:'100%'},
+            300
+        );
+    }
+    else{
+        bt[0].setAttribute('show', '1');
+        bt.animate(
+            {left:'38.2vw'},
+            300
+        );
+        bt[0].classList.remove('hide');
+
+        $('#ruletextdiv').animate(
+            {width:'38.2vw', opacity:'1'},
+            300
+        );
+        $('#taskdiv').animate(
+            {left:'38.2vw',width:'61.8%'},
+            300
+        );
+    }
+    console.log(bt[0].getAttribute('show'));
+}

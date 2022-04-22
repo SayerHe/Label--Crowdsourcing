@@ -37,7 +37,7 @@ body{
     /* background-color: grey; */
 }
 #tasktablediv{
-    position: absolute;
+    /* position: absolute; */
     top: 2em;
 }
 .datatable{
@@ -63,4 +63,33 @@ body{
     display: block;
     left: 1.3em;
     margin-top: 3em;
+}
+
+#foldbutton {
+    position: absolute; 
+    top: 50vh;
+    left: 38.2vw;
+    transform: translateY(-50%) perspective(2em) rotateY(30deg);
+    width: 10px;
+    height: 80px;
+    border: none;
+    /* margin: 10px 0; */
+    background: rgb(228, 228, 228);
+    cursor: pointer;
+    z-index: 1;
+    transition: opacity 0.3s;
+    opacity: 0;
+}
+#foldbutton::before {
+    content: url("../IMG/labeler/chevron-left.svg");
+    margin-left: -11px;
+    font-weight: bold;
+    font-size: 14px;
+}
+#foldbutton.hide::before {
+    content: url("../IMG/labeler/chevron-right.svg");
+}
+#foldbutton:hover {
+    transition: opacity 0.3s;
+    opacity: 1;
 }
