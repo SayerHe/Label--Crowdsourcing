@@ -93,3 +93,23 @@ body{
     transition: opacity 0.3s;
     opacity: 1;
 }
+
+#taskprogress{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    height: 10px;
+    color: blue;
+    background:#d7d7d7;
+}
+
+#taskprogress::-webkit-progress-bar{
+   background:#d7d7d7;
+}
+
+#taskprogress::-webkit-progress-value{
+    background:blue;
+}

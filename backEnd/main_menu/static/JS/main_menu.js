@@ -47,3 +47,23 @@ function menu_init(e){
     $(_active).css("pointer-events", "none");
     $("#SUBHTML").attr("src", urls[_active]+Params);
 }
+
+function Logout(){
+    if(confirm('确认注销账户？')){
+        console.log(1)
+        $.ajax({
+            url: main_menu_url,
+            type: "POST",        //请求类型
+            data: {"instruction":"Logout"},
+            dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
+            success: function (callback) {
+                if(callback['err'] == 'None'){
+                    window.location.href = login_url;
+                }
+            },
+            error: function () {
+                //当请求错误之后，自动调用
+            }
+        });
+    }
+}

@@ -10,15 +10,26 @@
             var main_menu_url = "{% url 'main_menu:index' %}";
             var user_url = "{% url 'labeler:show_tasks' %}";
             var publish_url = "{% url 'publisher:create_task' %}";
+            var login_url = "{% url 'login:index' %}";
         </script>
         <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
         <script type="text/javascript" src="{% static 'JS/main_menu.js' %}"></script>
     </head>
 
     <body>
+        <iframe id="SUBHTML" src="" frameborder="0"></iframe>
         <div id="head">
             <a id="Title"><p><b>数据标注平台</b></p></a>
-            <a id="User"><p id="UserName">UserName</p></a>
+            <div id="userdiv">
+                <a id="User"><p id="UserName">UserName</p></a>
+                <div id="usermenu">
+                    <ul>
+                        <li><a href="javascript:">个人中心</a></li>
+                        <li><a href="javascript:">账号管理</a></li>
+                        <li><a href="javascript:Logout()">退出登录</a></li>
+                    </ul>   
+                </div>
+            </div>
         </div>
         <div id="menu">
             <div id="menu_active"><a></a></div>
@@ -30,7 +41,6 @@
                 <li class="menubt" id="Account"><a>账户余额</a></li>
             </ul>
         </div>
-        <iframe id="SUBHTML" src="" frameborder="0"></iframe>
 
     </body>
 </html>

@@ -1,0 +1,154 @@
+ul, li {
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 21px;
+    text-align: left;
+}
+
+
+/* Navigation Bar */
+
+#usermenu {
+    list-style: none;
+    width: 940px;
+    margin: 30px auto 0 auto;
+    height: 43px;
+    padding: 0 20px;
+    border-radius: 10px;
+    background: #014464;
+    border: 1px solid #002232;
+    box-shadow: inset 0 0 1px #edf9ff;
+    z-index: 1;
+}
+
+#usermenu li {
+    float: left;
+    text-align: center;
+    position: relative;
+    padding: 4px 10px;
+    margin-right: 30px;
+    margin-top: 7px;
+    border: none;
+}
+
+#usermenu li:hover {
+    border: 1px solid #777777;
+    padding: 4px 9px;
+    background: #F4F4F4;
+    border-radius: 5px 5px 0 0;
+}
+
+#usermenu li a {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #EEEEEE;
+    display: block;
+    outline: 0;
+    text-decoration: none;
+    text-shadow: 1px 1px 1px black;
+}
+
+#usermenu li:hover a {
+    color: #161616;
+    text-shadow: 1px 1px 1px #FFFFFF;
+}
+
+/* #usermenu li .drop {
+    padding-right: 21px;
+    background: url("img/drop.png") no-repeat right 8px;
+}
+
+#usermenu li:hover .drop {
+    background: url("img/drop.png") no-repeat right 7px;
+} */
+
+
+/* Drop Down */
+
+.dropdown_1column{
+    margin: 4px auto;
+    float: left;
+    position: absolute;
+    left: -999em;
+    text-align: left;
+    padding: 10px 5px;
+    border: 1px solid #777777;
+    border-top: none;
+    background: #F4F4F4;
+    border-radius: 0 5px 5px 5px;
+}
+
+.dropdown_1column {
+    width: 140px;
+}
+
+#usermenu li:hover .dropdown_1column{
+    left: -1px;
+    top: auto;
+}
+
+
+/* Columns */
+
+.col_1{
+    display: inline;
+    float: left;
+    position: relative;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.col_1 {
+    width: 130px;
+}
+
+#usermenu .menu_right {
+    float: right;
+    margin-right: 0;
+}
+
+#usermenu li .align_right {
+    border-radius: 5px 0 5px 5px;
+}
+
+#usermenu li:hover .align_right {
+    left: auto;
+    right: -1px;
+    top: auto;
+}
+
+
+/* Drop Down Content Stylings */
+#usermenu li:hover div a {
+    font-size: 12px;
+    color: #015b86;
+}
+
+#usermenu li:hover div a:hover {
+    color: #029feb;
+}
+
+#usermenu li ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px 0;
+}
+
+#usermenu li ul li {
+    font-size: 12px;
+    line-height: 24px;
+    position: relative;
+    text-shadow: 1px 1px 1px white;
+    padding: 0;
+    margin: 0;
+    float: none;
+    text-align: left;
+    width: 130px;
+}
+
+#usermenu li ul li:hover {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}

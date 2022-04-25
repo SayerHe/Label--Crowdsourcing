@@ -30,17 +30,27 @@ body{
     margin: 0;
     transform: translateY(-50%);
     text-align: center;
+    user-select: none;
 }
-#User{
+#userdiv{
     position: absolute;
-    height: 100%;
     margin: 0;
     padding: 0 2em;
     right: 0;
+    top: 0;
+    z-index: 1000;
+}
+#User{
+    position: absolute;
+    height: var(--head-height);
+    margin: 0;
+    padding: 0 2em;
+    right: 0;
+    top: 0;
     /* border-left: solid #ff0000; */
 }
-#User:hover{
-    background-color: rgb(216, 241, 69);
+#userdiv:hover #User p#UserName{
+    color: blue;
 }
 #User p#UserName{
     position: relative;
@@ -48,6 +58,47 @@ body{
     margin: 0;
     transform: translateY(-50%);
     text-align: center;
+    user-select: none;
+}
+#usermenu{
+    position: absolute;
+    margin-top: -10px;
+    top: -1000em;
+    right: 20px;
+    width: 60px;
+    padding: 0 10px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 8px -3px gray;
+    background-color: white ;
+    /* border: 1px solid gray; */
+}
+#usermenu ul {
+    /* display: none; */
+    list-style: none;
+    padding: 0;
+    margin: 5px 0;
+    /* margin: 0 0 12px 0; */
+}
+#usermenu ul li{
+    font-size: 14px;
+    line-height: 30px;
+    position: relative;
+    /* text-shadow: 1px 1px 1px white; */
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    user-select: none;
+    /* width: 130px; */
+}
+#usermenu ul li a{
+    color: black;
+    text-decoration: none;
+}
+#usermenu ul li a:hover{
+    color: blue;
+}
+#userdiv:hover #usermenu{
+    top: var(--head-height);
 }
 
 #menu{
@@ -125,6 +176,7 @@ body{
 }
 #menu li a{
     text-decoration: none;
+    user-select: none;
 }
 
 #SUBHTML{

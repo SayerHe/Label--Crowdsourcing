@@ -9,9 +9,9 @@
                 DataList = {{ TaskContent|safe }};
         </script>
         {% load static %}
-        <link rel="stylesheet" href="{% static 'CSS/label.css' %}" type="text/css">
+        <link rel="stylesheet" href="{% static 'CSS/label_task.css' %}" type="text/css">
         <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
-        <script type="text/javascript" src="{% static 'JS/label.js' %}"></script>
+        <script type="text/javascript" src="{% static 'JS/label_task.js' %}"></script>
     </head>
 
     <body>
@@ -22,6 +22,7 @@
         <button id="foldbutton" onclick='foldbutton_onclick()' show='1'></button>
         <div id='taskdiv'>
             <div id='tasktablediv'></div>
+            {% comment %} <progress id='taskprogress' value='30' max='100'></progress> {% endcomment %}
         </div>
     </body>
 </html>
