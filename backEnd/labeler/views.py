@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from matplotlib.font_manager import json_dump
 from publisher.models import LabelTasksBaseInfo, LabelTaskFile
+from login.models import UserInfo
 from django.http import JsonResponse
 from io import StringIO
 import pandas as pd
@@ -91,6 +92,7 @@ def show_tasks(request):
         return JsonResponse(tasks_info)
 
 
+
 def label_task(request):
     if request.method == "GET":
         try:
@@ -100,17 +102,47 @@ def label_task(request):
         task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
         task_rule = task.rule_file
         task_content_all = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
-        task_content_all = pd.read_csv(StringIO(task_content_all), sep='\s+')
-        task_content_not_labeled = task_content_all[task_content_all["__Label__"]!=None][:3]
-        task_content = [
-            dict(task_content_not_labeled.iloc[i,:]) for i in range(3)
-        ]
-        Data = {
-            "RuleText":task_rule,
-            "TaskContent":json.dumps(task_content),
-        }
-        print(Data)
-        return render(request, "labeler/label.html", Data)
+        task_content_all = pd.read_csv(StringIO(task_content_all), sep='\s+', dtype="str")
+        if LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "sampling":
+            task_content_not_labeled = task_content_all[task_content_all["__Label__"] == "None"][:3]
+            print(task_content_not_labeled)
+            task_content_not_labeled = task_content_not_labeled.drop(columns=["__Labelers__", "__Times__"])
+            task_content = [
+                dict(task_content_not_labeled.iloc[i, :]) for i in range(3)
+            ]
+
+            Data = {
+                "RuleText": task_rule,
+                "TaskContent": json.dumps(task_content),
+            }
+            return render(request, "labeler/label.html", Data)
+
+        elif LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "cross":
+            task_content_all = task_content_all[task_content_all["__Times__"].astype(int)<10]
+            task_content_not_labeled = []
+            for i in range(task_content_all.shape[0]):
+                line = task_content_all.iloc[i, :]
+                labelers = task_content_all["__Labelers__"][i]
+                if labelers == "None":
+                    task_content_not_labeled.append(line)
+                else:
+                    labelers = eval(labelers)
+                    if str(request.user.id) not in labelers:
+                        task_content_not_labeled.append(line)
+                if len(task_content_not_labeled) == 3:
+                    break
+            task_content_not_labeled = pd.DataFrame(task_content_not_labeled).drop(columns=["__Labelers__", "__Times__"])
+            task_content = [
+                dict(task_content_not_labeled.iloc[i, :]) for i in range(3)
+            ]
+            Data = {
+                "RuleText": task_rule,
+                "TaskContent": json.dumps(task_content),
+            }
+            return render(request, "labeler/label.html", Data)
+
+
+
 
     elif request.method == "POST":
         try:
@@ -118,7 +150,13 @@ def label_task(request):
             labels = request.POST["Labels"]
         except KeyError:
             return JsonResponse({"err" : "err !"})
-
+        # 薪酬增加
+        payment = LabelTasksBaseInfo.objects.get(pk=int(task_id)).task_payment
+        user = request.user
+        old_salary = UserInfo.objects.get(user=user).salary
+        UserInfo.objects.get(user=user).update(salary=old_salary+payment)
+        # 标签更新
+        # 现在一个任务只有一个标签，后续如果需要交叉验证要改为多标签
         table = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
         table = pd.read_csv(StringIO(table), sep='\s+')
         for label in labels:

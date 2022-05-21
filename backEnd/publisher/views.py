@@ -15,7 +15,8 @@ import json
 def transform_text_file(task_file):
     # 将传入的excel文件转为pd.DataFrame
     table_data = task_file.read().decode("utf-8-sig").split("\n")
-    table_data = [i.strip().split(",") for i in table_data]
+    table_data = [i.strip().split(",") for i in table_data][:-1]
+    table_data = [[str(j) for j in i] for i in table_data]
     columns = table_data[0]
     table_data = table_data[1:]
     table_data = pd.DataFrame(table_data)
@@ -23,7 +24,9 @@ def transform_text_file(task_file):
     # print(columns)
     table_data["__Label__"] = [None for i in range(len(table_data))]
     table_data["__ID__"] = list(table_data.index)
-    # print(table_data.to_string())
+    table_data["__Labelers__"] = None
+    table_data["__Times__"] = 0
+    print(table_data.to_string())
     return table_data
 
 def estimate_text_difficulty(table_data):

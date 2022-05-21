@@ -3,6 +3,7 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.http import HttpResponse,JsonResponse
+from login.models import UserInfo
 
 def index(request):
     # 页面初次渲染
@@ -47,6 +48,8 @@ def register(request):
         Email = request.POST["email"]
         UserName = request.POST["username"]
         Password = request.POST["password"]
+        # Usertype = request.POST["usertype"]
+        Usertype = "labeler"
     except:
         return JsonResponse({'err':'DataLost'})
 
@@ -55,7 +58,11 @@ def register(request):
     elif User.objects.filter(username=UserName):
         return JsonResponse({'err':'Username_repeat'})
     else:
-        User.objects.create_user(username=UserName, email=Email, password=Password)
+        user = User.objects.create_user(username=UserName, email=Email, password=Password)
+        user_info = UserInfo(user=user, salary=0, ability=4, user_type=Usertype)
+        user.save()
+        user_info.save()
+        print(user_info.user)
         return JsonResponse({'err':'None'})
 
 
