@@ -1,6 +1,39 @@
 $(document).ready(function(){
-    document.getElementById('ruletext').innerHTML = RuleText;
+    document.getElementById('ruletext').innerHTML = '<p>'+RuleText+'</p>';
     taskList_init();
+    // $('#ruletext').mouseup(function(){
+    //     sel = window.getSelection();
+    //     // console.log(sel)
+    //     if (sel.anchorNode != sel.focusNode) return;
+    //     st = sel.anchorOffset;
+    //     ed = sel.focusOffset;
+    //     if (st == ed) return;
+    //     if (st > ed) {t = st; st = ed; ed = t;}
+    //     console.log(1)
+    //     var ele = sel.getRangeAt(0).commonAncestorContainer.parentElement,
+    //         ih = ele.outerHTML,
+    //         ihst = 0,
+    //         ihed = ih.length;
+
+    //     for(let t = 0; t < ih.length; t ++){
+    //         if(ih[t] == '<'){
+    //             while(ih[++t] != '>'){}
+    //         }
+    //         else{
+    //             if(st == 0){
+    //                 ihst = t;
+    //             }
+    //             if(ed == 0){
+    //                 ihed = t;
+    //             }
+    //             st --; ed --;
+    //         }
+    //     }
+    //     a = ih.substring(0, ihst)
+    //     b = ih.substring(ihst, ihed)
+    //     c = ih.substring(ihed)
+    //     ele.outerHTML = a+'</p> <p class="selected">'+b+'</p> <p>'+c
+    // });
 });
 
 window.onload=function(){
@@ -9,35 +42,29 @@ window.onload=function(){
 function taskList_init(){
     var ih = '', len, id = 0;
     for(var i in DataList){
-        ih += '<table class="datatable" border="2" cellpadding="8">\n'
-        ih += '<tr>\n';
+        ih += '<table class="datatable" cellpadding="8">\n'
+        
         len = 0;
         for(var j in DataList[i]){
-            if(j != '__Label__' && j != '__ID__'){
-                ih += '<th>'+j+'</th>\n';
-                len += 1;
-            }
-        }
-        ih += '</tr>\n';
-        ih += '<tr>\n';
-        for(var j in DataList[i]){
+            ih += '<tr>\n';
             if(j != '__Label__'){
                 if(j == '__ID__'){
                     id = DataList[i][j];
                 }
                 else{
+                    ih += '<th>'+j+'</th>\n';
                     ih += '<td>'+DataList[i][j]+'</td>\n';
+                    len += 1
                 }
             }
+            ih += '</tr>\n';
         }
-        ih += '</tr>\n';
         ih += '</table>\n';
         ih += '<input class="labelinput" id="label_'+id+'">\n';
     }
     ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提交</button>'
 
     document.getElementById('tasktablediv').innerHTML = ih;
-    $('.datatable').css('width', (14*len)+'em');
 }
 
 function SubmitLabelResult(){

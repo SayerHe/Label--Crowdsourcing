@@ -49,7 +49,7 @@ function menu_init(e){
 }
 
 function Logout(){
-    if(confirm('确认注销账户？')){
+    if(confirm('确认退出登录？')){
         console.log(1)
         $.ajax({
             url: main_menu_url,

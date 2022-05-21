@@ -15,6 +15,19 @@
     </head>
 
     <body>
+        <div id="head">
+            <a id="Title"><p><b>数据标注平台</b></p></a>
+            <div id="userdiv">
+                <a id="User"><p id="UserName">UserName</p></a>
+                {% comment %} <div id="usermenu">
+                    <ul>
+                        <li><a href="javascript:">个人中心</a></li>
+                        <li><a href="javascript:">账号管理</a></li>
+                        <li><a href="javascript:Logout()">退出登录</a></li>
+                    </ul>   
+                </div> {% endcomment %}
+            </div>
+        </div>
         <div id='ruletextdiv'>
             <h3 id='ruletext_h'>标注规则</h3>
             <p id='ruletext'></p>
@@ -22,8 +35,8 @@
         <button id="foldbutton" onclick='foldbutton_onclick()' show='1'></button>
         <div id='taskdiv'>
             <div id='tasktablediv'></div>
-            {% comment %} <progress id='taskprogress' value='30' max='100'></progress> {% endcomment %}
         </div>
+        {% comment %} <progress id='taskprogress' value='30' max='100'></progress> {% endcomment %}
     </body>
 </html>
 

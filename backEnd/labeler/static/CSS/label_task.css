@@ -1,13 +1,114 @@
+:root{
+    --head-height: 4em;
+    --menu-width: 12em;
+}
+
 body{
     margin: 0;
     padding: 0;
+}
+
+#head{
+    position: fixed;
+    background-color: white;
+    width: 100%;
+    height: var(--head-height);
+    margin: 0;
+    padding: 0;
+    box-shadow: 0.2em 1em 0.2em -1em #d6d1e0;
+    z-index: 1000;
+}
+#Title{
+    position: absolute;
+    height: 100%;
+    width: var(--menu-width);
+    margin: 0;
+    padding: 0;
+}
+#Title p{
+    position: relative;
+    font-size: large;
+    top: 50%;
+    margin: 0;
+    transform: translateY(-50%);
+    text-align: center;
+    user-select: none;
+}
+#userdiv{
+    position: absolute;
+    margin: 0;
+    padding: 0 2em;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+}
+#User{
+    position: absolute;
+    height: var(--head-height);
+    margin: 0;
+    padding: 0 2em;
+    right: 0;
+    top: 0;
+    /* border-left: solid #ff0000; */
+}
+#userdiv:hover #User p#UserName{
+    color: blue;
+}
+#User p#UserName{
+    position: relative;
+    top: 50%;
+    margin: 0;
+    transform: translateY(-50%);
+    text-align: center;
+    user-select: none;
+}
+#usermenu{
+    position: absolute;
+    margin-top: -10px;
+    top: -1000em;
+    right: 20px;
+    width: 60px;
+    padding: 0 10px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 8px -3px gray;
+    background-color: white ;
+    /* border: 1px solid gray; */
+}
+#usermenu ul {
+    /* display: none; */
+    list-style: none;
+    padding: 0;
+    margin: 5px 0;
+    /* margin: 0 0 12px 0; */
+}
+#usermenu ul li{
+    font-size: 14px;
+    line-height: 30px;
+    position: relative;
+    /* text-shadow: 1px 1px 1px white; */
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    user-select: none;
+    /* width: 130px; */
+}
+#usermenu ul li a{
+    color: black;
+    text-decoration: none;
+}
+#usermenu ul li a:hover{
+    color: blue;
+}
+#userdiv:hover #usermenu{
+    top: var(--head-height);
 }
 
 #ruletextdiv{
     position: absolute;
     margin: 0;
     padding: 0;
-    height: 100vh;
+    top: var(--head-height);
+    height: calc(100vh - var(--head-height));
     width: 38.2vw;
     /* overflow-x: visible; */
     /* background-color: aqua; */
@@ -24,16 +125,24 @@ body{
     width: calc(38.2vw - 120px);
     /* background-color: red; */
 }
+#ruletext p{
+    display: inline;
+}
+#ruletext p.selected{
+    background-color: yellow;
+    user-select: none;
+}
 
 #taskdiv{
     /* text-align: center; */
     position: absolute;
     margin: -2px;
-    height: 100vh;
+    height: calc(100vh - var(--head-height));
+    top: var(--head-height);
     left: 38.2vw;
     width: 61.8%;
     border-left: 2px solid gray;
-    overflow: scroll;
+    overflow: auto;
     /* background-color: grey; */
 }
 #tasktablediv{
@@ -43,19 +152,28 @@ body{
 .datatable{
     position: relative;
     text-align: left;
-    /* left: 50%; */
-    /* transform: translateX(-50%); */
+    left: 50%;
+    transform: translateX(-50%);
     margin: 1em 1em;
-    width: calc(100%);
+    width: 90%;
+    border-collapse:collapse;
+    border: 1px solid black;
 }
-.datatable th,.datatable td{
-    width: 14em;
+.datatable th{
+    width: 382em;
     word-break:break-all;
+    border-right: 1px solid black;
+}
+.datatable td{
+    width: 618em;
+}
+.datatable tr:nth-child(2n-1) th,.datatable tr:nth-child(2n-1) td{
+    background-color: rgb(234, 234, 234);
 }
 .labelinput{
     position: relative;
     display: block;
-    left: 1.3em;
+    left: calc(5% + 1.2em);
     width: 10em;
 }
 #submit{
@@ -89,10 +207,11 @@ body{
 #foldbutton.hide::before {
     content: url("../IMG/labeler/chevron-right.svg");
 }
-#foldbutton:hover {
+#ruletextdiv:hover+#foldbutton, #foldbutton:hover {
     transition: opacity 0.3s;
     opacity: 1;
 }
+
 
 #taskprogress{
     position: absolute;
