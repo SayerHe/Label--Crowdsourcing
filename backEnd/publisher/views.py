@@ -22,9 +22,9 @@ def transform_text_file(task_file):
     table_data = pd.DataFrame(table_data)
     table_data.columns = columns
     # print(columns)
-    table_data["__Label__"] = [None for i in range(len(table_data))]
+    table_data["__Label__"] = ["" for i in range(len(table_data))]
     table_data["__ID__"] = list(table_data.index)
-    table_data["__Labelers__"] = None
+    table_data["__Labelers__"] = ""
     table_data["__Times__"] = 0
     print(table_data.to_string())
     return table_data
@@ -84,7 +84,7 @@ def create_text_task(request, inspect_method, publisher, task_name, data_type, r
         task_file = request.FILES["DataFile"]
         task_file_table = transform_text_file(task_file)
         task_difficulty = estimate_text_difficulty(task_file_table)
-        task_file_string = task_file_table.to_string()
+        task_file_string = str(task_file_table.to_dict())
     except KeyError:
         return JsonResponse({'err': "Task File Missing"})
 
