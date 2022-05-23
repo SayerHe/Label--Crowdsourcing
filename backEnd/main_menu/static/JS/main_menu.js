@@ -16,9 +16,9 @@ $(document).ready(function(){
     $(".menubt").click(function(event){
         event.preventDefault();
         tmp = this.getBoundingClientRect();
-        mact = document.getElementById("menu_active").getBoundingClientRect();
-        matop = tmp.top-(mact.height-tmp.height)/2+"px";
-        $("#menu_active").animate({top:matop}, 300);
+        // mact = document.getElementById("menu_active").getBoundingClientRect();
+        // matop = tmp.top-(mact.height-tmp.height)/2+"px";
+        // $("#menu_active").animate({top:matop}, 300);
         $(_active).css("pointer-events", "auto");
         $(_active+' a').css("color", "#3a3a3a");
         _active = "#"+this.id;
@@ -40,8 +40,8 @@ function menu_init(e){
     if(!APPName) {APPName = 'Publish';}
     document.getElementById("UserName").innerHTML = UserName;
     tmp = document.getElementById(APPName).getBoundingClientRect();
-    mact = document.getElementById("menu_active");
-    mact.style.top = tmp.top-(mact.getBoundingClientRect().height-tmp.height)/2+"px";
+    // mact = document.getElementById("menu_active");
+    // mact.style.top = tmp.top-(mact.getBoundingClientRect().height-tmp.height)/2+"px";
     if(_active){
         $(_active).css("pointer-events", "auto")
     }
@@ -56,9 +56,9 @@ function Logout(){
         console.log(1)
         $.ajax({
             url: main_menu_url,
-            type: "POST",        //请求类型
+            type: "POST",
             data: {"instruction":"Logout"},
-            dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
+            dataType: "json",
             success: function (callback) {
                 if(callback['err'] == 'None'){
                     window.location.href = login_url;

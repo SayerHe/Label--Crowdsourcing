@@ -42,7 +42,7 @@ window.onload=function(){
 function taskList_init(){
     var ih = '', len, id = 0;
     for(var i in DataList){
-        ih += '<table class="datatable" cellpadding="8">\n'
+        ih += '<table class="datatable" cellpadding="8" cellspacing="0">\n'
         
         len = 0;
         for(var j in DataList[i]){
@@ -60,9 +60,9 @@ function taskList_init(){
             ih += '</tr>\n';
         }
         ih += '</table>\n';
-        ih += '<input class="labelinput" id="label_'+id+'">\n';
+        ih += '<input class="labelinput" id="label_'+id+'" placeholder="标签">\n';
     }
-    ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提交</button>'
+    ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
 
     document.getElementById('tasktablediv').innerHTML = ih;
 }

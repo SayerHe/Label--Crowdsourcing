@@ -24,6 +24,7 @@
   display: inline-block;
   /* float: left; */
   font-size: 18px;
+  color: #3a3a3a;
   margin: 0;
   padding: 3px 0 0;
 }
@@ -128,6 +129,7 @@ summary {
   display: block;
   transition: 0.2s;
   font-weight: 700;
+  color: #3a3a3a;
   padding: 1.5rem 2rem;
 }
 summary h3{

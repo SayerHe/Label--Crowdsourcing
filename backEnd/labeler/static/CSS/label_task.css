@@ -1,16 +1,17 @@
 :root{
-    --head-height: 4em;
-    --menu-width: 12em;
+    --head-height: 4.5em;
+    --menu-width: 15em;
 }
 
 body{
     margin: 0;
     padding: 0;
+    background-color: rgb(245,246,248);
 }
 
 #head{
     position: fixed;
-    background-color: white;
+    background-color: rgb(58,65,75);
     width: 100%;
     height: var(--head-height);
     margin: 0;
@@ -33,6 +34,7 @@ body{
     transform: translateY(-50%);
     text-align: center;
     user-select: none;
+    color: white;
 }
 #userdiv{
     position: absolute;
@@ -61,6 +63,7 @@ body{
     transform: translateY(-50%);
     text-align: center;
     user-select: none;
+    color: white;
 }
 #usermenu{
     position: absolute;
@@ -113,6 +116,17 @@ body{
     /* overflow-x: visible; */
     /* background-color: aqua; */
 }
+#ruletextbox{
+    position: absolute;
+    left: 30px;
+    top: 30px;
+    width: calc(100% - 60px);
+    height: calc(100% - 60px);
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0.2em 1em 1em 0.1em #d7d4df6b;
+    border: 1px solid rgba(128, 128, 128, 0.5);
+}
 #ruletext_h{
     position: relative;
     left: 40px;
@@ -136,7 +150,7 @@ body{
 #taskdiv{
     /* text-align: center; */
     position: absolute;
-    margin: -2px;
+    margin-left: -2px;
     height: calc(100vh - var(--head-height));
     top: var(--head-height);
     left: 38.2vw;
@@ -146,35 +160,49 @@ body{
     /* background-color: grey; */
 }
 #tasktablediv{
-    /* position: absolute; */
-    top: 2em;
+    position: absolute;
+    top: 20px;
+    left: 5%;
+    width: 90%;
+    margin: 0;
+    /* background-color: white;
+    border-radius: 6px;
+    box-shadow: 0.2em 1em 1em 0.1em #d7d4df6b;
+    border: 1px solid rgba(128, 128, 128, 0.5); */
 }
 .datatable{
     position: relative;
     text-align: left;
-    left: 50%;
+    left: calc(50% - 1em);
     transform: translateX(-50%);
     margin: 1em 1em;
     width: 90%;
-    border-collapse:collapse;
+    border-radius: 4px;
+    border-collapse:separate;
     border: 1px solid black;
 }
 .datatable th{
-    width: 382em;
+    width: 10em;
     word-break:break-all;
     border-right: 1px solid black;
+    color: #3a3a3a;
 }
 .datatable td{
-    width: 618em;
+    width: calc(100% - 10em);
+    color: #3a3a3a;
+}
+.datatable tr:nth-child(2n) th,.datatable tr:nth-child(2n) td{
+    background-color: white;
 }
 .datatable tr:nth-child(2n-1) th,.datatable tr:nth-child(2n-1) td{
-    background-color: rgb(234, 234, 234);
+    background-color: rgba(234, 234, 234, 0.671);
 }
 .labelinput{
     position: relative;
     display: block;
-    left: calc(5% + 1.2em);
-    width: 10em;
+    left: calc(5% + 0em);
+    width: 12em;
+    height: 24px;
 }
 #submit{
     position: relative;
@@ -231,4 +259,25 @@ body{
 
 #taskprogress::-webkit-progress-value{
     background:blue;
+}
+
+#submit{
+	position: absolute;
+	left: 5%;
+	color: darkcyan;
+	font-size: 16px;
+	font-family: Lucida Bright;
+	background-color: white;
+	border: 1px solid darkcyan;
+	border-radius: 2px;
+	padding: 5px 20px;
+    margin-left: 1em;
+    /* margin-bottom: 2em; */
+    width: 5em;
+	/* left: 50%;
+	transform: translateX(-50%); */
+}
+#submit:hover{
+	background-color: darkcyan;
+	color: white;
 }
