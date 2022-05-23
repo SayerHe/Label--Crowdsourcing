@@ -35,7 +35,7 @@ def transform_image_file(task_file, new_task, request):
     now_dir = Path.cwd()
     images_dir = now_dir.parent / "images_task"
     if not Path(images_dir / str(request.user.id)).exists():
-        Path(images_dir / str(request.user.id)).mkdir()
+        Path(images_dir / str(request.user.id)).mkdir(parents=True)
     new_task_dir = images_dir/ str(request.user.id) / str(new_task.pk)
     new_task_dir.mkdir()
     task_file.extractall(str(new_task_dir))
