@@ -4,23 +4,24 @@ from publisher.models import LabelTasksBaseInfo, LabelTaskFile
 from login.models import UserInfo
 from django.http import JsonResponse
 from io import StringIO
+import numpy as np
 import pandas as pd
+from pathlib import Path
 import json
 # from datetime
 # Create your views here.
 
 # def change_tz(ddl):
+IMAGE_FILES = "images_task"
 
 def show_tasks(request):
     DATA_ON_ONE_PAGE = 10
-    # print(request.GET)
     if request.method == 'GET':
         if 'RequestData' not in request.GET:
             return render(request, "labeler/index.html")
         try:
             select = request.GET['Select']
             t=int(select, base=16)
-            # print(select)
             datatype = t & ((1<<8) - 1)
             t >>= 8
             label_type = t & ((1<<8) - 1)
@@ -102,15 +103,21 @@ def label_task(request):
         task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
         task_rule = task.rule_file
         task_content_all = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
-        task_content_all = pd.read_csv(StringIO(task_content_all), sep='\s+', dtype="str")
+        task_content_all = pd.DataFrame(eval(str(task_content_all)), dtype="str")
+        task_data_type = str(task.data_type)
         if LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "sampling":
-            task_content_not_labeled = task_content_all[task_content_all["__Label__"] == "None"][:3]
-            print(task_content_not_labeled)
+            task_content_not_labeled = task_content_all[task_content_all["__Label__"] == ""][:3]
             task_content_not_labeled = task_content_not_labeled.drop(columns=["__Labelers__", "__Times__"])
             task_content = [
-                dict(task_content_not_labeled.iloc[i, :]) for i in range(3)
+                dict(task_content_not_labeled.iloc[i, :]) for i in range(task_content_not_labeled.shape[0])
             ]
-
+            if task_data_type == "text":
+                pass
+            elif task_data_type == "image":
+                for i in task_content:
+                    image_name = i["images"]
+                    image_path = Path.cwd().parent/ IMAGE_FILES / str(request.user.id)/ task_id / image_name
+                    i["images"] = str(image_path)
             Data = {
                 "RuleText": task_rule,
                 "TaskContent": json.dumps(task_content),
@@ -122,45 +129,80 @@ def label_task(request):
             task_content_not_labeled = []
             for i in range(task_content_all.shape[0]):
                 line = task_content_all.iloc[i, :]
-                labelers = task_content_all["__Labelers__"][i]
-                if labelers == "None":
+                labelers = task_content_all["__Labelers__"].tolist()[i]
+                if labelers == "":
                     task_content_not_labeled.append(line)
                 else:
                     labelers = eval(labelers)
-                    if str(request.user.id) not in labelers:
+                    if request.user.id not in labelers:
                         task_content_not_labeled.append(line)
                 if len(task_content_not_labeled) == 3:
                     break
-            task_content_not_labeled = pd.DataFrame(task_content_not_labeled).drop(columns=["__Labelers__", "__Times__"])
+            if task_content_not_labeled:
+                task_content_not_labeled = pd.DataFrame(task_content_not_labeled).drop(columns=["__Labelers__", "__Times__"])
+            else:
+                task_content_not_labeled = pd.DataFrame()
             task_content = [
-                dict(task_content_not_labeled.iloc[i, :]) for i in range(3)
+                dict(task_content_not_labeled.iloc[i, :]) for i in range(task_content_not_labeled.shape[0])
             ]
+            if task_data_type == "text":
+                pass
+            elif task_data_type == "image":
+                for i in task_content:
+                    image_name = i["images"]
+                    image_path = Path.cwd().parent/ IMAGE_FILES / str(request.user.id)/ task_id / image_name
+                    i["images"] = str(image_path)
+
             Data = {
                 "RuleText": task_rule,
                 "TaskContent": json.dumps(task_content),
             }
             return render(request, "labeler/label.html", Data)
 
-
-
-
     elif request.method == "POST":
         try:
             task_id = request.POST["TaskID"]
             labels = request.POST["Labels"]
+            labels = eval(labels)
         except KeyError:
             return JsonResponse({"err" : "err !"})
         # 薪酬增加
-        payment = LabelTasksBaseInfo.objects.get(pk=int(task_id)).task_payment
+        task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
+        payment = task.task_payment
+        inspect_method = task.inspect_method
         user = request.user
         old_salary = UserInfo.objects.get(user=user).salary
-        UserInfo.objects.get(user=user).update(salary=old_salary+payment)
+        UserInfo.objects.get(user=user).salary = old_salary + payment
         # 标签更新
-        # 现在一个任务只有一个标签，后续如果需要交叉验证要改为多标签
-        table = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
-        table = pd.read_csv(StringIO(table), sep='\s+')
-        for label in labels:
-            table[table["id"] == label["id"]].__Label__ = label["label"]
+        # 现在一个任务只有一个标签，后续如果需要交叉验证要改为多标签  -- 5.21 done
+        table_db = LabelTaskFile.objects.get(task_id__id=int(task_id))
+        table = table_db.data_file
+        table = pd.DataFrame(eval(table), dtype="str")
+        if inspect_method == "sampling":
+            for label in labels:
+                table.loc[table["__ID__"]==label["id"], ["__Label__"]] = label["label"]
+
+        elif inspect_method == "cross":
+            for label in labels:
+                if table.loc[table["__ID__"]==label["id"], "__Label__"].values[0] == "":
+                    table.loc[table["__ID__"]==label["id"], "__Label__"] = str([label["label"]])
+                    table.loc[table["__ID__"] == label["id"], "__Times__"] = str(1)
+                    table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str([request.user.id])
+
+                else:
+                    old_labels = eval(table.loc[table["__ID__"]==label["id"], "__Label__"].values[0])
+                    old_labels.append(label["label"])
+                    table.loc[table["__ID__"] == label["id"], "__Label__"] = str(old_labels)
+                    old_times = table.loc[table["__ID__"] == label["id"], "__Times__"]
+                    table.loc[table["__ID__"] == label["id"], "__Times__"] = str(int(old_times) + 1)
+                    old_labelers = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
+                    old_labelers.append(request.user.id)
+                    table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str(old_labelers)
+
+        table_db.data_file = str(table.to_dict())
+        print(table)
+        table_db.save()
+
 
         return JsonResponse({"err": "none"})
 
