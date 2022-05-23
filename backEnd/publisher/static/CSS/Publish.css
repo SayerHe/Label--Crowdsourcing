@@ -25,7 +25,9 @@ body{
 }
 
 #title{
+	font-size: 24px;
     text-align: center;
+	color: #3a3a3a;
 }
 .main_div{
 	/* display: block; */
@@ -48,6 +50,7 @@ p.subtitle{
 	font-size: 18px;
 	margin: 0;
 	padding: 0;
+	color: #3a3a3a;
 	/* top: 0; */
 	/* background-color: #3FB7EB; */
 }
@@ -125,15 +128,15 @@ p.subtitle{
 }
 
 #deadline{
-    /* width: 180px;
-    border: none;
+    /* border: none;
     border-bottom: 1px gray solid;
 	border-radius: 0;
     outline: none;
-    background: none;
-    height: 20px;
-    font-size: 14px; */
-	padding: 0;
+    background: none;*/
+	width: 180px;
+    height: 20px; 
+    font-size: 14px;
+	padding: 2px 5px;
 }
 
 #payment{

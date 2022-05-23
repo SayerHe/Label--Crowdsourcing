@@ -20,7 +20,7 @@ $(document).ready(function(){
         matop = tmp.top-(mact.height-tmp.height)/2+"px";
         $("#menu_active").animate({top:matop}, 300);
         $(_active).css("pointer-events", "auto");
-        $(_active+' a').css("color", "black");
+        $(_active+' a').css("color", "#3a3a3a");
         _active = "#"+this.id;
         $(_active).css("pointer-events", "none");
         $(_active+' a').css("color", "darkcyan");

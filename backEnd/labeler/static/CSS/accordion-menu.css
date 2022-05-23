@@ -1,12 +1,17 @@
 /*** 搜索筛选排序 ***/
+:root{
+  --box-border-radius: 6px;
+}
+
 .sss{
   position: relative;
   width: calc(80vw - 2px);
   padding: 0;
   margin: 0 auto 1em;
   border: 1px solid #d6d1e0;
-  border-radius: 3px;
+  border-radius: var(--box-border-radius);
   box-shadow: 0.2em 1em 0.2em -1em #d6d1e0;
+  background-color: white;
 }
 .sss .searchdiv{
   margin: 2em 2em;
@@ -42,7 +47,7 @@
   padding: 0;
   padding-left: 10px;
   margin: 0;
-  border: 2px solid #7BA7AB;
+  border: 2px solid darkcyan;
   border-radius: 3px;
   outline: none;
   /* background: #F9F0DA; */
@@ -56,7 +61,8 @@
   height: 31px;
   border: none;
   margin-right: -13px;
-  background: #7BA7AB;
+  color: white;
+  background: darkcyan;
   border-radius: 0 3px 3px 0;
   cursor: pointer;
 }
@@ -111,11 +117,11 @@ details {
   list-style: none;
 }
 details:first-child {
-  border-radius: 3px 3px 0 0;
+  border-radius: var(--box-border-radius) var(--box-border-radius) 0 0;
 }
 details:last-child {
   border-bottom: 1px solid #d6d1e0;
-  border-radius: 0 0 3px 3px;
+  border-radius: 0 0 var(--box-border-radius) var(--box-border-radius);
 }
 
 summary {

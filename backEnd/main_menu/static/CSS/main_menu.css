@@ -181,6 +181,7 @@ body{
 #menu li a{
     text-decoration: none;
     user-select: none;
+    color: #3a3a3a;
 }
 
 #SUBHTML{
