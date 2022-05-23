@@ -15,6 +15,7 @@ import json
 IMAGE_FILES = "images_task"
 
 def show_tasks(request):
+    # 筛选任务  eg：只选图片
     DATA_ON_ONE_PAGE = 10
     if request.method == 'GET':
         if 'RequestData' not in request.GET:
@@ -95,6 +96,8 @@ def show_tasks(request):
 
 
 def label_task(request):
+    PageSize = 3
+    CrossNum = 10
     if request.method == "GET":
         try:
             task_id = request.GET["TaskID"]
@@ -106,7 +109,7 @@ def label_task(request):
         task_content_all = pd.DataFrame(eval(str(task_content_all)), dtype="str")
         task_data_type = str(task.data_type)
         if LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "sampling":
-            task_content_not_labeled = task_content_all[task_content_all["__Label__"] == ""][:3]
+            task_content_not_labeled = task_content_all[task_content_all["__Label__"] == ""][:PageSize]
             task_content_not_labeled = task_content_not_labeled.drop(columns=["__Labelers__", "__Times__"])
             task_content = [
                 dict(task_content_not_labeled.iloc[i, :]) for i in range(task_content_not_labeled.shape[0])
@@ -125,7 +128,7 @@ def label_task(request):
             return render(request, "labeler/label.html", Data)
 
         elif LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "cross":
-            task_content_all = task_content_all[task_content_all["__Times__"].astype(int)<10]
+            task_content_all = task_content_all[task_content_all["__Times__"].astype(int)<CrossNum]
             task_content_not_labeled = []
             for i in range(task_content_all.shape[0]):
                 line = task_content_all.iloc[i, :]
@@ -136,7 +139,7 @@ def label_task(request):
                     labelers = eval(labelers)
                     if request.user.id not in labelers:
                         task_content_not_labeled.append(line)
-                if len(task_content_not_labeled) == 3:
+                if len(task_content_not_labeled) == PageSize:
                     break
             if task_content_not_labeled:
                 task_content_not_labeled = pd.DataFrame(task_content_not_labeled).drop(columns=["__Labelers__", "__Times__"])

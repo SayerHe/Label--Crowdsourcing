@@ -6,6 +6,7 @@ import pandas as pd
 from publisher.models import LabelTasksBaseInfo, LabelTaskFile
 import datetime
 import zipfile
+import rarfile
 from django.utils import datastructures
 from io import StringIO
 import json
@@ -50,8 +51,6 @@ def transform_image_file(task_file, new_task, request):
     return table_data
 
 
-
-
 def estimate_text_difficulty(table_data):
     # 估测文本类任务的困难度
     # 瞎写的，有时间再改
@@ -71,7 +70,7 @@ def create_task(request):
     if request.method == 'GET':
         return render(request, "Publisher/index.html")
     else:
-        print(request.POST)
+        # print(request.POST)
         newTask_param = dict()
         try:
             # print(json.loads(request.body))
@@ -113,7 +112,12 @@ def create_image_task(request, inspect_method, publisher, task_name, data_type, 
                                       task_difficulty=task_difficulty)
         new_task.save()
         task_file = request.FILES["DataFile"]
-        task_file = zipfile.ZipFile(task_file)
+        file_type = str(task_file).split(".")[-1]
+        if file_type == "zip":
+            task_file = zipfile.ZipFile(task_file)
+        elif file_type == "rar":
+            task_file = rarfile.RarFile(task_file)
+
         task_file_table = transform_image_file(task_file, new_task, request)
         task_file_string = str(task_file_table.to_dict())
         new_task_file = LabelTaskFile(task_id=new_task, data_file=task_file_string)
