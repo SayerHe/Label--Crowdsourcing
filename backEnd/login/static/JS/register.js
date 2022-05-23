@@ -67,7 +67,7 @@ function check_userform()
         $.ajax({
             url: userform_url,
             type: "POST",        //请求类型
-            data: {"username":$("#UserName").val(), "email":$("#Email").val(), "password":$("#Password").val(), "Publisher":$("input[name='UserType']:checked").val()},
+            data: {"username":$("#UserName").val(), "email":$("#Email").val(), "password":$("#Password").val(), "usertype":$("input[name='UserType']:checked").val()},
             dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
             success: function (callback) {
                 userform_callback(callback['err'])
