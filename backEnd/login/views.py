@@ -34,7 +34,16 @@ def index(request):
     if not user:
         return JsonResponse({'err':'Password_wrong'})
     else:
-        auth.login(request, user)
+        user_type=UserInfo.objects.get(user=user).user_type
+        if user_type=='publisher':
+            auth.login(request, user)
+            return redirect(reverse('main_menu:index'))
+        elif user_type=='labeler':
+            auth.login(request, user)
+            return redirect(reverse('main_menu:index'))
+            return redirect(reverse('labeler:show_tasks'))
+        else:
+            pass
         return JsonResponse({'err':'None'})
 
 def register(request):
@@ -48,8 +57,7 @@ def register(request):
         Email = request.POST["email"]
         UserName = request.POST["username"]
         Password = request.POST["password"]
-        # Usertype = request.POST["usertype"]
-        Usertype = "labeler"
+        Usertype = request.POST["usertype"]
     except:
         return JsonResponse({'err':'DataLost'})
 
