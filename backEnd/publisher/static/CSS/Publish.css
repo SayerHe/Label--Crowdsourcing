@@ -94,7 +94,7 @@ p.subtitle{
 	display: flex;
 	/* 让伪元素和文字水平排列 */
 	align-items: center;
-	padding: 5px 10px;
+	padding: 0px 10px;
 	/* margin-bottom: 10px; */
 	border-radius: 30px;
 	transition: all 0.3s;
