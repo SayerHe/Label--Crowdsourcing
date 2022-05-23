@@ -10,6 +10,8 @@ body{
 #head{
     position: fixed;
     background-color: white;
+    /* background: url('../IMG/main_menu/headbg.jpg');
+    background-size: cover; */
     width: 100%;
     height: var(--head-height);
     margin: 0;

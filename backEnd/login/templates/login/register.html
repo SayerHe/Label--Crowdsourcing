@@ -20,14 +20,24 @@
             <img src="{% static 'IMG/register/8.jpg' %}" alt="" id="head">
             <p class="title">SIGN UP</p>
             <form name="userdata" method="post">
-                <p class="stitle">Email<a class="prompt" id="usnpro">UserName cannot be empty and does not contain '@'</a></p>
+                <p class="stitle">Email</p>
                 <input type="text" name="" id="Email" placeholder="Email"/>
-                <p class="stitle">UserName<a class="prompt" id="emlpro">Email cannot be empty</a></p>
+                <p class="stitle">UserName</p>
                 <input type="text" name="" id="UserName" placeholder="UserName"/>
-                <p class="stitle">Password<a class="prompt" id="psdpro"></a></p>
+                <p class="stitle">Password</p>
                 <input type="password" name="" id="Password" placeholder="Password"/>
-                <p class="stitle">Confirm Password<a class="prompt" id="cpsdpro">Password and confirm password do not match</a></p>
+                <p class="stitle">Confirm Password</p>
                 <input type="password" name="" id="confirm_password" placeholder="Confirm Password"/>
+                <p class="stitle">身份</p>
+                <div class="container">
+                    <label><input type="radio" name="UserType" value="True" checked="checked"><span>发布者</span></label>
+                    <label><input type="radio" name="UserType" value="False"><span>标注者</span></label>
+                </div>
+                {% comment %} <div class="input_wrapper">
+                    <input type="checkbox" class="switch_4">
+                    <p class="is_checked">发布者</p>
+                    <p class="is_unchecked">标注者</p>
+                </div> {% endcomment %}
             </form>
             <button id="submit">Submit</button>
             <p class="signup">Already Have an Account? <a href="{% url 'login:index' %}"><b>Sign In</b></a></p>

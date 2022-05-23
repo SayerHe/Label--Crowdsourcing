@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'CSS/personal.css' %}" type="text/css">
+        <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
+        <script type="text/javascript" src="{% static 'JS/personal.js' %}"></script>
+    </head>
+
+    <body>
+        <div id="head">
+            <a id="Title"><p><b>数据标注平台</b></p></a>
+            <div id="userdiv">
+                <a id="User"><p id="UserName">UserName</p></a>
+                {% comment %} <div id="usermenu">
+                    <ul>
+                        <li><a href="javascript:">个人中心</a></li>
+                        <li><a href="javascript:">账号管理</a></li>
+                        <li><a href="javascript:Logout()">退出登录</a></li>
+                    </ul>   
+                </div> {% endcomment %}
+            </div>
+        </div>
+    </body>
+</html>
+
+ 

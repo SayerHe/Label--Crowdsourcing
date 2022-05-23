@@ -47,7 +47,8 @@ function btsubmit(){
             datatype: "json",
             contentType: false,
             success: function (data) {
-                console.log(data)
+                alert("提交成功");
+                console.log(data);
             },
             error: function () {
                 //当请求错误之后，自动调用
