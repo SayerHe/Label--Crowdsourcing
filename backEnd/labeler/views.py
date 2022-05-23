@@ -6,11 +6,13 @@ from django.http import JsonResponse
 from io import StringIO
 import numpy as np
 import pandas as pd
+from pathlib import Path
 import json
 # from datetime
 # Create your views here.
 
 # def change_tz(ddl):
+IMAGE_FILES = "images_task"
 
 def show_tasks(request):
     DATA_ON_ONE_PAGE = 10
@@ -102,13 +104,20 @@ def label_task(request):
         task_rule = task.rule_file
         task_content_all = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
         task_content_all = pd.DataFrame(eval(str(task_content_all)), dtype="str")
+        task_data_type = str(task.data_type)
         if LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "sampling":
             task_content_not_labeled = task_content_all[task_content_all["__Label__"] == ""][:3]
             task_content_not_labeled = task_content_not_labeled.drop(columns=["__Labelers__", "__Times__"])
             task_content = [
                 dict(task_content_not_labeled.iloc[i, :]) for i in range(task_content_not_labeled.shape[0])
             ]
-
+            if task_data_type == "text":
+                pass
+            elif task_data_type == "image":
+                for i in task_content:
+                    image_name = i["images"]
+                    image_path = Path.cwd().parent/ IMAGE_FILES / str(request.user.id)/ task_id / image_name
+                    i["images"] = str(image_path)
             Data = {
                 "RuleText": task_rule,
                 "TaskContent": json.dumps(task_content),
@@ -136,6 +145,14 @@ def label_task(request):
             task_content = [
                 dict(task_content_not_labeled.iloc[i, :]) for i in range(task_content_not_labeled.shape[0])
             ]
+            if task_data_type == "text":
+                pass
+            elif task_data_type == "image":
+                for i in task_content:
+                    image_name = i["images"]
+                    image_path = Path.cwd().parent/ IMAGE_FILES / str(request.user.id)/ task_id / image_name
+                    i["images"] = str(image_path)
+
             Data = {
                 "RuleText": task_rule,
                 "TaskContent": json.dumps(task_content),
