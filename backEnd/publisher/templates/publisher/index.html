@@ -15,10 +15,11 @@
 </head>
 
     <body>
+        <div id="mainbackground">
         <div id="main">
             <h1 id="title">发布数据</h1>
             <div class="main_div">
-                <p class="subtitle">任务名称</p>
+                <p class="subtitle">任务名称 ：</p>
                 <div class="submodels">
                     <input type="text" id="taskname" value="数据标注任务" onfocus="this.select()"/>
                 </div>
@@ -26,7 +27,7 @@
             
 
             <div class="main_div">
-                <p class="subtitle">数据类型</p>
+                <p class="subtitle">数据类型 ：</p>
                 <div class="submodels">
                     <div class="container">
                         <label><input type="radio" name="datatype" value="text" checked="checked"><span>文本</span></label>
@@ -38,7 +39,7 @@
             </div>
 
             <div class="main_div">
-                <p class="subtitle">标注类型</p>
+                <p class="subtitle">标注类型 ：</p>
                 <div class="submodels">
                     <div class="container">
                         <label><input type="radio" name="marktype" value="score" checked="checked"><span>打分</span></label>
@@ -49,7 +50,14 @@
             </div>
 
             <div class="main_div">
-                <p class="subtitle">检验方式</p>
+                <p class="subtitle">检验方式 ：</p>
+                <div class="submodels">
+                    <div class="container">
+                        <label><input type="radio" name="checktype" value="cross" checked="checked"><span>交叉检验</span></label>
+                        <label><input type="radio" name="checktype" value="multilevel"><span>多级检验</span></label>
+                        <label><input type="radio" name="checktype" value="sampling"><span>抽样检验</span></label>
+                    </div>
+                </div>
                 <div class="tiptool">
                     <embed src="{% static 'IMG/publisher/help-circle.svg' %}" type="image/svg+xml" class="help-circle"/>
                     <span class="tooltiptext">
@@ -58,17 +66,10 @@
                         抽样检验：<br/>
                     </span>
                 </div>
-                <div class="submodels">
-                    <div class="container">
-                        <label><input type="radio" name="checktype" value="cross" checked="checked"><span>交叉检验</span></label>
-                        <label><input type="radio" name="checktype" value="multilevel"><span>多级检验</span></label>
-                        <label><input type="radio" name="checktype" value="sampling"><span>抽样检验</span></label>
-                    </div>
-                </div>
             </div>
 
             <div class="main_div">
-                <p class="subtitle">截止日期</p>
+                <p class="subtitle">截止日期 ：</p>
                 <div class="submodels">
                     <input type="text" class="auto-kal" id="deadline" readonly="readonly" data-kal="
                         direction: 'future',
@@ -90,7 +91,7 @@
             </div> {% endcomment %}
 
             <div class="main_div">
-                <p class="subtitle">数据文件</p>
+                <p class="subtitle">数据文件 ：</p>
                 <div class="submodels">
                     <input type="text" class="filetext" id="datafiletext" placeholder="请选择文件···" readonly="readonly"/>
                     <input type="file" id="datafile">
@@ -98,7 +99,7 @@
             </div>
 
             <div class="main_div">
-                <p class="subtitle">标注规则</p>
+                <p class="subtitle">标注规则 ：</p>
                 <div class="submodels">
                     <textarea id="markrules" rows="10"></textarea><br/>
                     {% comment %} 添加附件：<input type="text" class="filetext" id="markfiletext" placeholder="请选择文件···" readonly="readonly"/>
@@ -107,7 +108,8 @@
             </div>
 
             <br/><br/><br/>
-            <button id="submit" onclick="btsubmit()">提交</button>
+            <button id="submit" onclick="btsubmit()">提&nbsp;交</button>
+        </div>
         </div>
     </body>
 </html>

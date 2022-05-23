@@ -20,8 +20,10 @@ $(document).ready(function(){
         matop = tmp.top-(mact.height-tmp.height)/2+"px";
         $("#menu_active").animate({top:matop}, 300);
         $(_active).css("pointer-events", "auto");
+        $(_active+' a').css("color", "black");
         _active = "#"+this.id;
         $(_active).css("pointer-events", "none");
+        $(_active+' a').css("color", "darkcyan");
         $("#SUBHTML").attr("src", urls[_active]);
         window.history.pushState(
             {'active':this.id},
@@ -45,6 +47,7 @@ function menu_init(e){
     }
     _active = "#"+APPName;
     $(_active).css("pointer-events", "none");
+    $(_active+' a').css("color", "darkcyan");
     $("#SUBHTML").attr("src", urls[_active]+Params);
 }
 

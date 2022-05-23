@@ -145,11 +145,11 @@ button[id='submit']:active{
 	border-radius: 50%;
 	margin-right: 15px;
 	background-color: #fff;
-	box-shadow: 0 0 0 2px #3FB7EB inset;
+	box-shadow: 0 0 0 2px black inset;
 	transition: all 0.3s;
 }
 .container label input:checked + span::before {
-	box-shadow: 0 0 0 4px #3FB7EB inset;
+	box-shadow: 0 0 0 4px black inset;
 }
 
 

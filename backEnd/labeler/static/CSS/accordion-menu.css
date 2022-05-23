@@ -230,7 +230,7 @@ summary h3{
 	box-shadow: 0 0 1px rgba(0, 0, 0, 0.6), inset 0 -18px 15px -10px rgba(0, 0, 0, 0.05); */
 	padding: 4px 0px;
 	text-align: center;
-	color: #496F7A;
+	color: rgb(255, 255, 255);
 }
 
 .checkboxclass:checked + label {
@@ -257,7 +257,7 @@ summary h3{
 .checkboxclass + label:before {
 	content: '';
 	position: absolute;
-	background: #6AC6DD;
+	background: darkcyan;
 	width: 0%;
 	height: 100%;
 	top: 0;

@@ -1,16 +1,27 @@
 body{
-	margin: 0;
+	margin: 30px 0;
+	background-color: rgb(245,246,248);
+}
+#mainbackground{
+	position: absolute;
+    background-color: white;
+	border-radius: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 960px;
+	height: 900px;
+	box-shadow: 0.2em 1em 1em 0.1em #d7d4df6b;
+	/* height: fit-content; */
 }
 #main{
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     /* padding: 0 100px; */
-    width: auto;
-	height: 100%;
+    width: 705px;
+	/* height: 100%; */
 	margin: 0;
 	/* max-width: 100vw; */
-    /* background-color: red; */
 }
 
 #title{
@@ -90,9 +101,9 @@ p.subtitle{
 	background-color: #412f5e15;
 }
 /* 选中单选按钮对应的span元素背景颜色改变 */
-.container label input:checked + span {
+/* .container label input:checked + span {
 	background-color: #412f5e15;
-}
+} */
 .container label input + span::before {
 	content: "";
 	/* 伪元素是行内元素 需要转为块级元素才能设置宽高 */
@@ -104,13 +115,13 @@ p.subtitle{
 	margin-right: 15px;
 	background-color: #fff;
 	/* 盒子阴影 inset是内部阴影 */
-	box-shadow: 0 0 0 2px #3FB7EB inset;
+	box-shadow: 0 0 0 2px gray inset;
 	/* 加个过渡时间 */
 	transition: all 0.3s;
 }
 .container label input:checked + span::before {
 	/* 选中的元素内部的阴影加深 */
-	box-shadow: 0 0 0 4px #3FB7EB inset;
+	box-shadow: 0 0 0 4px darkcyan inset;
 }
 
 #deadline{
@@ -137,7 +148,7 @@ input.filetext{
     height:25px;
     outline: none;
     line-height:25px;
-    border-left:4px solid #3FB7EB;
+    /* border-left:4px solid darkcyan; */
     background:#FAFAFB;
     border-radius:2px;
     vertical-align: middle;
@@ -163,15 +174,26 @@ input[type='file']{
 #submit{
 	position: absolute;
 	right: 0;
+	color: darkcyan;
+	font-size: 16px;
+	font-family: Lucida Bright;
+	background-color: white;
+	border: 1px solid darkcyan;
+	border-radius: 2px;
+	padding: 5px 20px;
 	/* left: 50%;
 	transform: translateX(-50%); */
+}
+#submit:hover{
+	background-color: darkcyan;
+	color: white;
 }
 
 .help-circle{
 	/* float: left; */
 	width: 1em;
 	margin-right: -1.25em;
-	transform: translate(-2em,-2px);
+	transform: translate(0,1px);
 }
 .tiptool{
 	position: relative;
@@ -180,7 +202,7 @@ input[type='file']{
 .tiptool .tooltiptext {
     visibility: hidden;
     width: 420px;
-    background-color: #f8f8cf;
+    background-color: rgb(245,246,248);
     color: black;
     /* text-align: center; */
     border-radius: 6px;
@@ -189,7 +211,7 @@ input[type='file']{
     z-index: 1000;
     top: 150%;
     left: 50%;
-    margin-left: calc(-60px + 30px - 1.5em);
+    margin-left: calc(-688px + 360px - 1.5em);
 	margin-top: -5px;
 }
 
@@ -198,10 +220,10 @@ input[type='file']{
     position: absolute;
     bottom: 100%;
     left: 50%;
-    margin-left: calc(-50% + 30px - 5px);
+    margin-left: calc(-50% + 360px - 5px);
     border-width: 5px;
     border-style: solid;
-    border-color: transparent transparent #f8f8cf transparent;
+    border-color: transparent transparent rgb(245,246,248) transparent;
 }
 
 .tiptool:hover .tooltiptext {
