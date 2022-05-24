@@ -139,10 +139,10 @@ body{
     width: calc(38.2vw - 120px);
     /* background-color: red; */
 }
-#ruletext p{
+#ruletext pre{
     display: inline;
 }
-#ruletext p.selected{
+#ruletext pre.selected{
     background-color: yellow;
     user-select: none;
 }

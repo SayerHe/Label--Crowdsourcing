@@ -16,7 +16,7 @@ $(document).ready(function(){
 
 window.onload=function(){
     askfordata(StringToData(document.location.search));
-    document.getElementById("UserName").innerHTML = UserName;
+    // document.getElementById("UserName").innerHTML = UserName;
 }
 
 function changepage(page){

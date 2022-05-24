@@ -1,5 +1,6 @@
 $(document).ready(function(){
-    document.getElementById('ruletext').innerHTML = '<p>'+RuleText+'</p>';
+    console.log(RuleText)
+    document.getElementById('ruletext').innerHTML = '<pre>'+RuleText+'</pre>';
     taskList_init();
     // $('#ruletext').mouseup(function(){
     //     sel = window.getSelection();

@@ -2,6 +2,7 @@ from telnetlib import LOGOUT
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import logout
+from login.models import UserInfo
 
 # Create your views here.
 
@@ -12,7 +13,8 @@ def index(request):
         if not user.is_authenticated:
             return HttpResponse("Log in please")
         else:
-            return render(request, 'main_menu/index.html', {"UserName":user.username})
+            user_type = UserInfo.objects.get(user=user).user_type
+            return render(request, 'main_menu/index.html', {"UserName":user.username, "UserType":user_type})
     try:
         ins = request.POST['instruction']
         print(ins)
@@ -28,7 +30,8 @@ def index_appactive(request, appname):
         if not user.is_authenticated:
             return HttpResponse("Log in please")
         else:
-            return render(request, 'main_menu/index.html', {"UserName":user.username, "APPName":appname, "Params":request.get_full_path()[len(request.path):]})
+            user_type = UserInfo.objects.get(user=user).user_type
+            return render(request, 'main_menu/index.html', {"UserName":user.username, "UserType":user_type, "APPName":appname, "Params":request.get_full_path()[len(request.path):]})
     try:
         ins = request.POST['instruction']
         print(ins)
