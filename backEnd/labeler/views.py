@@ -19,7 +19,7 @@ def show_tasks(request):
     DATA_ON_ONE_PAGE = 10
     if request.method == 'GET':
         if 'RequestData' not in request.GET:
-            return render(request, "labeler/index.html")
+            return render(request, "labeler/index.html", {'UserName':request.user.username})
         try:
             select = request.GET['Select']
             t=int(select, base=16)

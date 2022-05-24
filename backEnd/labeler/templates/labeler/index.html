@@ -4,10 +4,11 @@
         <meta charset="utf-8">
         <title></title>
         <script>
-            var labeler_url = "{% url 'labeler:show_tasks' %}";
-            var label_url = "{% url 'labeler:label_task' %}";
-            var main_menu_url = "{% url 'main_menu:index' %}";
-            var login_url = "{% url 'login:index' %}";
+            var labeler_url = "{% url 'labeler:show_tasks' %}",
+                label_url = "{% url 'labeler:label_task' %}",
+                main_menu_url = "{% url 'main_menu:index' %}",
+                login_url = "{% url 'login:index' %}",
+                UserName = '{{ UserName|safe }}';
         </script>
         {% load static %}
         <link rel="stylesheet" href="{% static 'CSS/labeler.css' %}" type="text/css">
