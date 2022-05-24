@@ -127,7 +127,12 @@ body{
     box-shadow: 0.2em 1em 1em 0.1em #d7d4df6b;
     border: 1px solid rgba(128, 128, 128, 0.5);
     overflow-y: auto;
+    scrollbar-width: none; /* firefox */
+    -ms-overflow-style: none; /* IE 10+ */
 }
+#ruletextbox::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+}  
 #ruletext_h{
     position: relative;
     left: 30px;
