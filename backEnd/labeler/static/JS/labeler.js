@@ -283,3 +283,23 @@ function DataToString(data){
     datastring += keys[len_1]+'='+data[keys[len_1]];
     return datastring;
 }
+
+function Logout(){
+    if(confirm('确认退出登录？')){
+        console.log(1)
+        $.ajax({
+            url: main_menu_url,
+            type: "POST",
+            data: {"instruction":"Logout"},
+            dataType: "json",
+            success: function (callback) {
+                if(callback['err'] == 'None'){
+                    window.location.href = login_url;
+                }
+            },
+            error: function () {
+                //当请求错误之后，自动调用
+            }
+        });
+    }
+}

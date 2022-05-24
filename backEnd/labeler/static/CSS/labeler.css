@@ -1,7 +1,14 @@
+:root{
+    --head-height: 4.5em;
+    --menu-width:15em;
+}
+
 #title{
+    position: relative;
     text-align: center;
     color: #3a3a3a;
     font-size: 24px;
+    margin-top: var(--head-height);
 }
 
 body{
@@ -18,4 +25,103 @@ body{
     text-align: center;
     /* margin-top: -60px; */
     margin: 2em 0;
+}
+#head{
+    position: fixed;
+    background-color: rgb(58,65,75);
+    /* background: url('../IMG/main_menu/headbg.jpg');
+    background-size: cover; */
+    top: 0;
+    width: 100%;
+    height: var(--head-height);
+    margin: 0;
+    padding: 0;
+    box-shadow: 0.2em 1em 0.2em -1em #d6d1e0;
+    z-index: 100;
+}
+#Title{
+    position: absolute;
+    height: 100%;
+    width: var(--menu-width);
+    margin: 0;
+    padding: 0;
+}
+#Title p{
+    position: relative;
+    font-size: large;
+    top: 50%;
+    margin: 0;
+    transform: translateY(-50%);
+    text-align: center;
+    user-select: none;
+    color: white;
+}
+#userdiv{
+    position: absolute;
+    margin: 0;
+    padding: 0 2em;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+}
+#User{
+    position: absolute;
+    height: var(--head-height);
+    margin: 0;
+    padding: 0 2em;
+    right: 0;
+    top: 0;
+    /* border-left: solid #ff0000; */
+}
+#userdiv:hover #User p#UserName{
+    color: rgb(104, 119, 107);
+}
+#User p#UserName{
+    position: relative;
+    top: 50%;
+    margin: 0;
+    transform: translateY(-50%);
+    text-align: center;
+    user-select: none;
+    color: white;
+}
+#usermenu{
+    position: absolute;
+    margin-top: -10px;
+    top: -1000em;
+    right: 20px;
+    width: 60px;
+    padding: 0 10px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 8px -3px gray;
+    background-color: white ;
+    /* border: 1px solid gray; */
+}
+#usermenu ul {
+    /* display: none; */
+    list-style: none;
+    padding: 0;
+    margin: 5px 0;
+    /* margin: 0 0 12px 0; */
+}
+#usermenu ul li{
+    font-size: 14px;
+    line-height: 30px;
+    position: relative;
+    /* text-shadow: 1px 1px 1px white; */
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    user-select: none;
+    /* width: 130px; */
+}
+#usermenu ul li a{
+    color: black;
+    text-decoration: none;
+}
+#usermenu ul li a:hover{
+    color: blue;
+}
+#userdiv:hover #usermenu{
+    top: var(--head-height);
 }

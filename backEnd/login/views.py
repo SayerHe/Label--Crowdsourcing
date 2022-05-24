@@ -17,34 +17,33 @@ def index(request):
         user_name = request.POST["username"]
         password = request.POST["password"]
     except:
-        return JsonResponse({'err':'DataLost'})
+        return JsonResponse({'res':'DataLost'})
     if '@' in user_name:
         try :
             user_name = User.objects.get(email=user_name).username
         except User.DoesNotExist:
-            return JsonResponse({'err':'UserDoesNotExist'})
+            return JsonResponse({'res':'UserDoesNotExist'})
     else:
         try :
             User.objects.get(username=user_name)
         except User.DoesNotExist:
-            return JsonResponse({'err':'UserDoesNotExist'})
+            return JsonResponse({'res':'UserDoesNotExist'})
     user = auth.authenticate(username=user_name, password=password)
     # 如果用户不存在，提示不存在用户，并返回登录界面
     # 如果用户存在，跳转到主界面，并附加session信息
     if not user:
-        return JsonResponse({'err':'Password_wrong'})
+        return JsonResponse({'res':'Password_wrong'})
     else:
         user_type=UserInfo.objects.get(user=user).user_type
         if user_type=='publisher':
             auth.login(request, user)
-            return redirect(reverse('main_menu:index'))
+            return JsonResponse({'res':'publisher'})
         elif user_type=='labeler':
             auth.login(request, user)
-            return redirect(reverse('main_menu:index'))
-            return redirect(reverse('labeler:show_tasks'))
+            return JsonResponse({'res':'labeler'})
         else:
             pass
-        return JsonResponse({'err':'None'})
+        return JsonResponse({'res':'None'})
 
 def register(request):
     if request.method == "GET":

@@ -4,8 +4,10 @@
         <meta charset="utf-8">
         <title></title>
         <script>
-            var labeler_url = "{% url 'labeler:show_tasks' %}"
-            var label_url = "{% url 'labeler:label_task' %}"
+            var labeler_url = "{% url 'labeler:show_tasks' %}";
+            var label_url = "{% url 'labeler:label_task' %}";
+            var main_menu_url = "{% url 'main_menu:index' %}";
+            var login_url = "{% url 'login:index' %}";
         </script>
         {% load static %}
         <link rel="stylesheet" href="{% static 'CSS/labeler.css' %}" type="text/css">
@@ -18,6 +20,19 @@
     </head>
 
     <body>
+        <div id="head">
+            <a id="Title"><p><b>数据标注平台</b></p></a>
+            <div id="userdiv">
+                <a id="User"><p id="UserName">UserName</p></a>
+                <div id="usermenu">
+                    <ul>
+                        <li><a href="javascript:">个人中心</a></li>
+                        <li><a href="javascript:">账号管理</a></li>
+                        <li><a href="javascript:Logout()">退出登录</a></li>
+                    </ul>   
+                </div>
+            </div>
+        </div>
         <h1 id="title">查看任务</h1>
         <div class="sss">
             <div class="searchdiv">
