@@ -10,7 +10,6 @@ from pathlib import Path
 import json
 # from datetime
 # Create your views here.
-
 # def change_tz(ddl):
 IMAGE_FILES = "images_task"
 
