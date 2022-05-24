@@ -23,4 +23,6 @@ urlpatterns = [
     path('login/', include('login.urls')),
     path('publisher/', include('publisher.urls')),
     path('labeler/', include('labeler.urls')),
+    path('show_info/', include('show_info.urls')),
+
 ]
