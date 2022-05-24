@@ -107,6 +107,7 @@ def label_task(request):
         task_rule = task.rule_file
         task_content_all = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
         task_content_all = pd.DataFrame(eval(str(task_content_all)), dtype="str")
+        print(task_content_all.iloc[:,0])
         task_data_type = str(task.data_type)
         if LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "sampling":
             task_content_not_labeled = task_content_all[task_content_all["__Label__"] == ""][:PageSize]
