@@ -95,14 +95,21 @@ def show_tasks(request):
 
 
 def label_task(request):
-    PageSize = 3
     CrossNum = 10
+    PageSize = 3
     if request.method == "GET":
         try:
             task_id = request.GET["TaskID"]
         except KeyError:
-            return JsonResponse({"err": "err !"})
-        task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
+            return JsonResponse({"err": "Task info missing !"})
+        try:
+            PageSize = int(request.GET["DataNum"])
+        except KeyError:
+            pass
+        try:
+            task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
+        except:
+            return JsonResponse({"err": "Task not exist !"})
         task_rule = task.rule_file
         task_content_all = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
         task_content_all = pd.DataFrame(eval(str(task_content_all)), dtype="str")
