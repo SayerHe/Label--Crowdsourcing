@@ -48,7 +48,7 @@ function btsubmit(){
             contentType: false,
             success: function (data) {
                 if(data['err'] == 'None'){
-                    alert('ok');
+                    alert('提交成功！');
                 }
                 else{
                     alert(data['err']);
