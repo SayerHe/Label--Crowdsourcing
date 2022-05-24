@@ -8,6 +8,9 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 import json
+import base64
+import cv2
+
 # from datetime
 # Create your views here.
 # def change_tz(ddl):
@@ -126,7 +129,11 @@ def label_task(request):
                 for i in task_content:
                     image_name = i["images"]
                     image_path = Path.cwd().parent/ IMAGE_FILES / str(request.user.id)/ task_id / image_name
-                    i["images"] = str(image_path)
+                    with open(image_path, 'rb') as image_file:
+                        image_data = image_file.read()
+                        image_base64 = base64.b64encode(image_data)
+                        image_base64 = str(image_base64, "utf-8")
+                    i["images"] = image_base64
             Data = {
                 "RuleText": task_rule,
                 "TaskContent": json.dumps(task_content),
@@ -161,7 +168,6 @@ def label_task(request):
                     image_name = i["images"]
                     image_path = Path.cwd().parent/ IMAGE_FILES / str(request.user.id)/ task_id / image_name
                     i["images"] = str(image_path)
-            print(json.dumps(task_rule))
             Data = {
                 "RuleText": json.dumps(task_rule),
                 "TaskContent": json.dumps(task_content),
