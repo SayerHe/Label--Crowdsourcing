@@ -25,7 +25,10 @@ $(document).ready(function(){
 function userform_callback(res)
 {
     console.log(res)
-    if(res == "publisher"){
+    if(res == "None"){
+        window.location.href = main_menu_url;
+    }
+    else if(res == "publisher"){
         //alert("Successfully Login");
         window.location.href = main_menu_url;
     }

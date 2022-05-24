@@ -129,18 +129,23 @@ body{
 }
 #ruletext_h{
     position: relative;
-    left: 40px;
-    top: 1em;
+    left: 30px;
+    top: 0.6em;
 }
 #ruletext{
     position: relative;
-    left: 40px;
+    left: 30px;
     top: 1em;
     width: calc(38.2vw - 120px);
     /* background-color: red; */
 }
 #ruletext pre{
     display: inline;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
 }
 #ruletext pre.selected{
     background-color: yellow;

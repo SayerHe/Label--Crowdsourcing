@@ -14,7 +14,10 @@ def index(request):
             return HttpResponse("Log in please")
         else:
             user_type = UserInfo.objects.get(user=user).user_type
-            return render(request, 'main_menu/index.html', {"UserName":user.username, "UserType":user_type})
+            if user_type == 'labeler':
+                return render(request, 'main_menu/index_labeler.html', {"UserName":user.username, "UserType":user_type})
+            elif user_type == 'publisher':
+                return render(request, 'main_menu/index.html', {"UserName":user.username, "UserType":user_type})
     try:
         ins = request.POST['instruction']
         print(ins)
@@ -31,7 +34,10 @@ def index_appactive(request, appname):
             return HttpResponse("Log in please")
         else:
             user_type = UserInfo.objects.get(user=user).user_type
-            return render(request, 'main_menu/index.html', {"UserName":user.username, "UserType":user_type, "APPName":appname, "Params":request.get_full_path()[len(request.path):]})
+            if user_type == 'labeler':
+                return render(request, 'main_menu/index_labeler.html', {"UserName":user.username, "UserType":user_type, "APPName":appname, "Params":request.get_full_path()[len(request.path):]})
+            elif user_type == 'publisher':
+                return render(request, 'main_menu/index.html', {"UserName":user.username, "UserType":user_type, "APPName":appname, "Params":request.get_full_path()[len(request.path):]})
     try:
         ins = request.POST['instruction']
         print(ins)

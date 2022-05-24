@@ -34,15 +34,14 @@ def index(request):
     if not user:
         return JsonResponse({'res':'Password_wrong'})
     else:
-        user_type=UserInfo.objects.get(user=user).user_type
-        if user_type=='publisher':
-            auth.login(request, user)
-            return JsonResponse({'res':'publisher'})
-        elif user_type=='labeler':
-            auth.login(request, user)
-            return JsonResponse({'res':'labeler'})
-        else:
-            pass
+        auth.login(request, user)
+        # user_type=UserInfo.objects.get(user=user).user_type
+        # if user_type=='publisher':
+        #     return JsonResponse({'res':'publisher'})
+        # elif user_type=='labeler':
+        #     return JsonResponse({'res':'labeler'})
+        # else:
+        #     pass
         return JsonResponse({'res':'None'})
 
 def register(request):

@@ -1,5 +1,4 @@
 $(document).ready(function(){
-    console.log(RuleText)
     document.getElementById('ruletext').innerHTML = '<pre>'+RuleText+'</pre>';
     taskList_init();
     // $('#ruletext').mouseup(function(){
