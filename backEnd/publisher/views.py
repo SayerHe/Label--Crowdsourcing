@@ -14,21 +14,15 @@ from pathlib import Path
 
 # Create your views here.
 
-def transform_text_file(task_file):
-    # 将传入的excel文件转为pd.DataFrame
-    table_data = task_file.read().decode("utf-8-sig").split("\n")
-    table_data = [i.strip().split(",") for i in table_data][:-1]
-    table_data = [[str(j) for j in i] for i in table_data]
-    columns = table_data[0]
-    table_data = table_data[1:]
-    table_data = pd.DataFrame(table_data)
-    table_data.columns = columns
-    # print(columns)
+def transform_text_file(table_data):
+
     table_data["__Label__"] = ["" for i in range(len(table_data))]
     table_data["__ID__"] = list(table_data.index)
     table_data["__Labelers__"] = ""
     table_data["__Times__"] = 0
-    print(table_data.to_string())
+    table_data = table_data.dropna(axis=0, how='any')
+    table_data = table_data.dropna(axis=1, how='any')
+    # print(table_data.to_string())
     return table_data
 
 def transform_image_file(task_file, new_task, request):
@@ -134,15 +128,23 @@ def create_text_task(request, inspect_method, publisher, task_name, data_type, r
 
     try:
         task_file = request.FILES["DataFile"]
-        task_file_table = transform_text_file(task_file)
-        task_difficulty = estimate_text_difficulty(task_file_table)
-        task_file_string = str(task_file_table.to_dict())
     except KeyError:
-        return JsonResponse({'err': "Task File Missing"})
+        return JsonResponse({'err': "Task File Missing! "})
 
-    table_format_permit = ["csv", "xls", "xlsx"]
-    if str(task_file).split(".")[1] not in table_format_permit:
-        return JsonResponse({'err': "FileType Error"})
+    table_format_permit = ["csv", "xls", "xlsx", "xlsm"]
+    file_type = str(task_file).split(".")[1]
+    if file_type not in table_format_permit:
+        return JsonResponse({'err': "FileType Wrong! (Support csv, xlsx, xls only)"})
+    if file_type == "csv":
+        task_file_table = pd.read_csv(task_file)
+    elif file_type in ["xls", "xlsx", "xlsm"]:
+        task_file_table = pd.read_excel(task_file)
+    task_file_table = transform_text_file(task_file_table)
+    task_difficulty = estimate_text_difficulty(task_file_table)
+    task_file_string = str(task_file_table.to_dict())
+
+
+
 
     new_task = LabelTasksBaseInfo(inspect_method=inspect_method, publisher=publisher, task_name=task_name, data_type=data_type,rule_file=rule_file,
                                   label_type=label_type, task_deadline=task_deadline, task_payment=task_payment,task_difficulty=task_difficulty)
