@@ -41,7 +41,6 @@ def transform_image_file(task_file, new_task, request):
     table_data["__ID__"] = list(table_data.index)
     table_data["__Labelers__"] = ""
     table_data["__Times__"] = 0
-    print(table_data.to_string())
     return table_data
 
 
@@ -83,6 +82,7 @@ def create_task(request):
             newTask_param["rule_file"] = request.FILES["RuleFile"].read().decode("utf8")
         except KeyError:
             rule_text = request.POST["RuleText"]
+            print(rule_text)
             if rule_text:
                 newTask_param["rule_file"] = rule_text
             else:
