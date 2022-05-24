@@ -89,6 +89,9 @@ function data_callback(data){
 function showhtml(tasks){
     tmphtml = '';
     for(var i = 0; i < tasks.length; i ++){
+        if(tasks[i].RuleText.length > 200){
+            tasks[i].RuleText = tasks[i].RuleText.substring(0, 200) + '...'
+        }
         tmphtml +=  '<details>'+
                         '<summary>'+
                             '<h3>'+tasks[i].TaskName+'</h3>'+
@@ -136,7 +139,7 @@ function showhtml(tasks){
 
 function dotaskbt(taskid){
     console.log(taskid);
-    window.open(label_url+'?TaskID='+taskid);
+    window.open(label_url+'?TaskID='+taskid+'&DataNum=3');
 }
 
 function getsss(page){

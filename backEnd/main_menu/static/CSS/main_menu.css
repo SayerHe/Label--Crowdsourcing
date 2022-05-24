@@ -27,7 +27,7 @@ body{
 }
 #Title p{
     position: relative;
-    font-size: large;
+    font-size: 24px;
     top: 50%;
     margin: 0;
     transform: translateY(-50%);

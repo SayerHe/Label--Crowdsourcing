@@ -195,6 +195,7 @@ summary h3{
   margin: 0;
   width: calc(100% - 7em);
   color: #3a3a3a;
+  white-space: pre-wrap;
   /* height: max-content; */
 }
 .details-styling .dotaskbutton{

@@ -1,6 +1,9 @@
 $(document).ready(function(){
     document.getElementById('ruletext').innerHTML = '<pre>'+RuleText+'</pre>';
     taskList_init();
+    $('.tasknumber').click(function() {
+        window.location.search = window.location.search.split('&')[0]+'&DataNum='+$("input[name='sc-0']:checked").val();
+    })
     // $('#ruletext').mouseup(function(){
     //     sel = window.getSelection();
     //     // console.log(sel)
@@ -37,6 +40,8 @@ $(document).ready(function(){
 });
 
 window.onload=function(){
+    datanum = window.location.search.split('&')[1].split('=')[1];
+    $('#sc-0-'+datanum).attr("checked", true);
 }
 
 function taskList_init(){

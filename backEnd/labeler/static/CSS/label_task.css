@@ -28,7 +28,7 @@ body{
 }
 #Title p{
     position: relative;
-    font-size: large;
+    font-size: 24px;
     top: 50%;
     margin: 0;
     transform: translateY(-50%);
@@ -168,15 +168,33 @@ body{
     top: var(--head-height);
     left: 38.2vw;
     width: 61.8%;
-    border-left: 2px solid gray;
+    border-left: 2px solid rgba(128, 128, 128, 0.5);
     overflow: auto;
     /* background-color: grey; */
 }
+#tasktitle{
+    position: absolute;
+    top: 10px;
+    left: 10%;
+    color: #3a3a3a;
+}
+#radiobox{
+    position: absolute;
+    top: 5px;
+    right: 10%;
+    margin: 0;
+}
+#radiobox a{
+    position: absolute;
+    right: 130px;
+    width: 7em;
+    top: 24px;
+}
 #tasktablediv{
     position: absolute;
-    top: 20px;
-    left: 5%;
-    width: 90%;
+    top: 50px;
+    left: 10%;
+    width: 80%;
     margin: 0;
     /* background-color: white;
     border-radius: 6px;
@@ -186,18 +204,18 @@ body{
 .datatable{
     position: relative;
     text-align: left;
-    left: calc(50% - 1em);
+    left: 50%;
     transform: translateX(-50%);
-    margin: 1em 1em;
-    width: 90%;
+    margin: 1em 0em;
+    width: 100%;
     border-radius: 4px;
     border-collapse:separate;
-    border: 1px solid black;
+    border: 1px solid gray;
 }
 .datatable th{
     width: 10em;
     word-break:break-all;
-    border-right: 1px solid black;
+    border-right: 1px solid gray;
     color: #3a3a3a;
 }
 .datatable td{
@@ -213,7 +231,7 @@ body{
 .labelinput{
     position: relative;
     display: block;
-    left: calc(5% + 0em);
+    left: 0;
     width: 12em;
     height: 24px;
 }
