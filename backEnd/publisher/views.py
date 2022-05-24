@@ -107,6 +107,8 @@ def create_image_task(request, inspect_method, publisher, task_name, data_type, 
         new_task.save()
         task_file = request.FILES["DataFile"]
         file_type = str(task_file).split(".")[-1]
+        if file_type not in ["zip", "rar"]:
+            return JsonResponse({'err': "Task File wrong! (Support zip only)"})
         if file_type == "zip":
             task_file = zipfile.ZipFile(task_file)
         elif file_type == "rar":
@@ -118,7 +120,7 @@ def create_image_task(request, inspect_method, publisher, task_name, data_type, 
         new_task_file.save()
 
     except:
-        return JsonResponse({'err': "Task File wrong! (Support zip only)"})
+        return JsonResponse({'err': "Task File missing! "})
 
     return JsonResponse({'err': 'None'})
 
