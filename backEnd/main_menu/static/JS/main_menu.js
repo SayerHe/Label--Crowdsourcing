@@ -4,11 +4,10 @@ window.onload=function(){
 }
 
 var urls = {
+    "#Homepage":user_url,
     "#Publish":publish_url,
     "#T_Doing":user_url,
     "#T_Finished":user_url,
-    "#Annotation":user_url,
-    "#Account":user_url,
 };
 
 $(document).ready(function(){
@@ -21,9 +20,11 @@ $(document).ready(function(){
         // $("#menu_active").animate({top:matop}, 300);
         $(_active).css("pointer-events", "auto");
         $(_active+' a').css("color", "#3a3a3a");
+        $(_active+' svg').css("stroke", "#3a3a3a");
         _active = "#"+this.id;
         $(_active).css("pointer-events", "none");
         $(_active+' a').css("color", "darkcyan");
+        $(_active+' svg').css("stroke", "darkcyan");
         $("#SUBHTML").attr("src", urls[_active]);
         window.history.pushState(
             {'active':this.id},
@@ -37,7 +38,7 @@ function menu_init(e){
     if(e && e.state && e.state.hasOwnProperty('active')){
         APPName = e.state.active;
     }
-    if(!APPName) {APPName = 'Publish';}
+    if(!APPName) {APPName = 'Homepage';}
     document.getElementById("UserName").innerHTML = UserName;
     tmp = document.getElementById(APPName).getBoundingClientRect();
     // mact = document.getElementById("menu_active");
@@ -48,6 +49,7 @@ function menu_init(e){
     _active = "#"+APPName;
     $(_active).css("pointer-events", "none");
     $(_active+' a').css("color", "darkcyan");
+    $(_active+' svg').css("stroke", "darkcyan");
     $("#SUBHTML").attr("src", urls[_active]+Params);
 }
 

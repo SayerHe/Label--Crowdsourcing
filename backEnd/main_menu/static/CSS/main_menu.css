@@ -178,6 +178,9 @@ body{
 #menu li:hover{
     background-color: #ffffff33;
 }
+#menu li svg{
+    transform: translateY(2px);
+}
 #menu li a{
     text-decoration: none;
     user-select: none;
