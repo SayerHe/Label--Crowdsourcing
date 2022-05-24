@@ -193,7 +193,7 @@ summary h3{
   top: 0;
   left: 1em;
   margin: 0;
-  width: 72em;
+  width: calc(100% - 7em);
   color: #3a3a3a;
   /* height: max-content; */
 }

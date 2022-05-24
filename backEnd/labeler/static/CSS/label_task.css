@@ -126,17 +126,20 @@ body{
     border-radius: 6px;
     box-shadow: 0.2em 1em 1em 0.1em #d7d4df6b;
     border: 1px solid rgba(128, 128, 128, 0.5);
+    overflow-y: auto;
 }
 #ruletext_h{
     position: relative;
     left: 30px;
     top: 0.6em;
+    float: left;
 }
 #ruletext{
     position: relative;
     left: 30px;
-    top: 1em;
+    top: 0.6em;
     width: calc(38.2vw - 120px);
+    float: left;
     /* background-color: red; */
 }
 #ruletext pre{
