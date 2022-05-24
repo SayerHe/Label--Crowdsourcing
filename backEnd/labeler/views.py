@@ -165,6 +165,7 @@ def label_task(request):
             Data = {
                 "RuleText": json.dumps(task_rule),
                 "TaskContent": json.dumps(task_content),
+                "DataType": task_data_type
             }
             return render(request, "labeler/label.html", Data)
 
