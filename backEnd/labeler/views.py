@@ -156,9 +156,9 @@ def label_task(request):
                     image_name = i["images"]
                     image_path = Path.cwd().parent/ IMAGE_FILES / str(request.user.id)/ task_id / image_name
                     i["images"] = str(image_path)
-
+            print(json.dumps(task_rule))
             Data = {
-                "RuleText": task_rule,
+                "RuleText": json.dumps(task_rule),
                 "TaskContent": json.dumps(task_content),
             }
             return render(request, "labeler/label.html", Data)

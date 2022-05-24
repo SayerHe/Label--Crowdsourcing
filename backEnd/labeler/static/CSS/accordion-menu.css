@@ -179,23 +179,29 @@ summary h3{
 .details-styling .detailtitle{
   position: relative;
   display: inline-block;
+  vertical-align: top;
   left: 0;
   font-weight: bold;
   width: 5em;
   text-align: left;
   margin: 0;
+  color: #3a3a3a;
 }
 .details-styling .detailcontent{
-  position: absolute;
+  position: relative;
   display: inline-block;
   top: 0;
-  left: 6em;
+  left: 1em;
   margin: 0;
+  width: 72em;
+  color: #3a3a3a;
+  /* height: max-content; */
 }
 .details-styling .dotaskbutton{
   padding: 1em 2em 0;
-  margin: 3em 0 0;
+  margin: 1em 0 0;
   float: right;
+  color: #3a3a3a;
 }
 .details-styling:first-child{
   margin-top: 0;
