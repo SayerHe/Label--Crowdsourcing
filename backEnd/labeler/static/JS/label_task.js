@@ -7,6 +7,9 @@ $(document).ready(function(){
     else if(DataType == 'image'){
         taskList_init_image();
     }
+    else if(DataType == 'audio'){
+        taskList_init_audio();
+    }
     $('.tasknumber').click(function() {
         window.location.search = window.location.search.split('&')[0]+'&DataNum='+$("input[name='sc-0']:checked").val();
     })
@@ -82,6 +85,19 @@ function taskList_init_image(){
     for(var i in DataList){
         ih += '<img src="data:image/'+DataList[i]['file_type']+';base64,'+DataList[i]['files']+'">';
         ih += '<input class="labelinput" id="label_'+id+'" placeholder="标签">\n';
+    }
+    ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
+
+    document.getElementById('tasktablediv').innerHTML = ih;
+}
+function taskList_init_audio(){
+    var ih = '', len, id = 0;
+    for(var i in DataList){
+        ih += '<div class="audiobox">';
+        ih += '<audio controls controlsList="nodownload"><source src="data:audio/'+DataList[i]['file_type']+';base64,'+DataList[i]['files']+'"></audio>';
+        console.log(DataList[i]['files']);
+        ih += '<input class="labelinput" id="label_'+id+'" placeholder="标签">\n';
+        ih += '</div>';
     }
     ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
 

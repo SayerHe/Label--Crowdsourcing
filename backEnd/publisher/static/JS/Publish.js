@@ -21,7 +21,14 @@ $(document).ready(function(){
     $("#markfile").change(function(){
         $("#markfiletext").val($(this).val());
     });
-
+    $("input[name='marktype']").change(function(){
+        if(this.value == 'choose'){
+            $("#choices_div").css('display', 'block');
+        }
+        else{
+            $("#choices_div").css('display', 'none');
+        }
+    })
 });
 
 function calc_recommended_payment(days){
@@ -31,13 +38,16 @@ function calc_recommended_payment(days){
 function btsubmit(){
     if(1/*check*/){
         var form_data = new FormData();
-        form_data.append('TaskName'     ,$("#taskname").val());
-        form_data.append('DataType'     ,$("input[name='datatype']:checked").val());
-        form_data.append('LabelType'    ,$("input[name='marktype']:checked").val());
-        form_data.append('TaskDeadline' ,$("#deadline")[0].value);
-        form_data.append('InspectionMethod'      ,$("input[name='checktype']:checked").val());
-        form_data.append('DataFile'     ,$('#datafile')[0].files[0]);
-        form_data.append('RuleText'     ,$('#markrules').val());
+        form_data.append('TaskName'         ,$("#taskname").val());
+        form_data.append('DataType'         ,$("input[name='datatype']:checked").val());
+        form_data.append('LabelType'        ,$("input[name='marktype']:checked").val());
+        form_data.append('TaskDeadline'     ,$("#deadline")[0].value);
+        form_data.append('InspectionMethod' ,$("input[name='checktype']:checked").val());
+        form_data.append('DataFile'         ,$('#datafile')[0].files[0]);
+        form_data.append('RuleText'         ,$('#markrules').val());
+        if($('#choicesfile')[0].files[0] == 'choose'){
+            form_data.append('ChoiceFile', $('#choicesfile')[0].files[0]);
+        }
         // form_data.append('RuleFile'     ,$('#markfile')[0].files[0]);
         $.ajax({
             url: publish_url,
