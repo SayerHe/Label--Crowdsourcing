@@ -43,7 +43,7 @@
                 <div class="submodels">
                     <div class="container">
                         <label><input type="radio" name="marktype" value="score" checked="checked"><span>打分</span></label>
-                        <label><input type="radio" name="marktype" value="classify"><span>选择</span></label>
+                        <label><input type="radio" name="marktype" value="choose"><span>选择</span></label>
                         <label><input type="radio" name="marktype" value="describe"><span>描述</span></label>
                     </div>
                 </div>
@@ -95,6 +95,14 @@
                 <div class="submodels">
                     <input type="text" class="filetext" id="datafiletext" placeholder="请选择文件···" readonly="readonly"/>
                     <input type="file" id="datafile">
+                </div>
+            </div>
+
+            <div class="main_div" id="choices_div">
+                <p class="subtitle">选项文件 ：</p>
+                <div class="submodels">
+                    <input type="text" class="filetext" id="choicesfiletext" placeholder="请选择文件···" readonly="readonly"/>
+                    <input type="file" id="choicesfile">
                 </div>
             </div>
 
