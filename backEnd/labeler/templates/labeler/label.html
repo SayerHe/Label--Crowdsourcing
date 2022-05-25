@@ -6,6 +6,7 @@
         <script>
             var label_url = "{% url 'labeler:label_task' %}";
             var RuleText = {{ RuleText|safe }},
+                DataType = '{{ DataType|safe }}',
                 DataList = {{ TaskContent|safe }};
         </script>
         {% load static %}

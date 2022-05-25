@@ -1,6 +1,11 @@
 $(document).ready(function(){
     document.getElementById('ruletext').innerHTML = '<pre>'+RuleText+'</pre>';
-    taskList_init();
+    if(DataType == 'text'){
+        taskList_init_text();
+    }
+    else if(DataType == 'image'){
+        taskList_init_image();
+    }
     $('.tasknumber').click(function() {
         window.location.search = window.location.search.split('&')[0]+'&DataNum='+$("input[name='sc-0']:checked").val();
     })
@@ -44,10 +49,10 @@ window.onload=function(){
     $('#sc-0-'+datanum).attr("checked", true);
 }
 
-function taskList_init(){
+function taskList_init_text(){
     var ih = '', len, id = 0;
     for(var i in DataList){
-        ih += '<table class="datatable" cellpadding="8" cellspacing="0">\n'
+        ih += '<table class="datatable" cellpadding="8" cellspacing="0">\n';
         
         len = 0;
         for(var j in DataList[i]){
@@ -59,7 +64,7 @@ function taskList_init(){
                 else{
                     ih += '<th>'+j+'</th>\n';
                     ih += '<td>'+DataList[i][j]+'</td>\n';
-                    len += 1
+                    len += 1;
                 }
             }
             ih += '</tr>\n';
@@ -67,10 +72,21 @@ function taskList_init(){
         ih += '</table>\n';
         ih += '<input class="labelinput" id="label_'+id+'" placeholder="标签">\n';
     }
+    ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
+
+    document.getElementById('tasktablediv').innerHTML = ih;
+}
+function taskList_init_image(){
+    var ih = '', len, id = 0;
+    for(var i in DataList){
+        ih += '<img src='+DataList[i]['images']+'>';
+        ih += '<input class="labelinput" id="label_'+id+'" placeholder="标签">\n';
+    }
     ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
 
     document.getElementById('tasktablediv').innerHTML = ih;
 }
+
 
 function SubmitLabelResult(){
     label_res = document.getElementsByClassName("labelinput");
