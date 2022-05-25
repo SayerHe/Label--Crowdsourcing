@@ -25,18 +25,18 @@ def transform_text_file(table_data):
     # print(table_data.to_string())
     return table_data
 
-def transform_image_file(task_file, new_task, request):
+def transform_zip_file(task_file, new_task, request):
     # 将传入的zip解压到服务器，并将相对路径存入数据库
     now_dir = Path.cwd()
-    images_dir = now_dir.parent / "images_task"
-    if not Path(images_dir / str(request.user.id)).exists():
-        Path(images_dir / str(request.user.id)).mkdir(parents=True)
-    new_task_dir = images_dir/ str(request.user.id) / str(new_task.pk)
+    file_dir = now_dir.parent / "zip_tasks"
+    if not Path(file_dir / str(request.user.id)).exists():
+        Path(file_dir / str(request.user.id)).mkdir(parents=True)
+    new_task_dir = file_dir/ str(request.user.id) / str(new_task.pk)
     new_task_dir.mkdir()
     task_file.extractall(str(new_task_dir))
     task_file.close()
-    images = [str(i.relative_to(new_task_dir)) for i in new_task_dir.iterdir()]
-    table_data = pd.DataFrame({"images": images})
+    files = [str(i.relative_to(new_task_dir)) for i in new_task_dir.iterdir()]
+    table_data = pd.DataFrame({"files": files})
     table_data["__Label__"] = ["" for i in range(len(table_data))]
     table_data["__ID__"] = list(table_data.index)
     table_data["__Labelers__"] = ""
@@ -90,39 +90,39 @@ def create_task(request):
         if newTask_param["data_type"] == "text":
             return create_text_task(request, **newTask_param)
         elif newTask_param["data_type"] == "image":
-            return create_image_task(request, **newTask_param)
+            return create_zip_task(request, **newTask_param)
+        elif newTask_param["data_type"] == "audio":
+            return create_zip_task(request, **newTask_param)
 
         return JsonResponse({'err': 'None'})
 
-def create_image_task(request, inspect_method, publisher, task_name, data_type, rule_file,
+def create_zip_task(request, inspect_method, publisher, task_name, data_type, rule_file,
                           label_type, task_deadline, task_payment):
-
     try:
-        task_difficulty = "Easy"
-        new_task = LabelTasksBaseInfo(inspect_method=inspect_method, publisher=publisher, task_name=task_name,
-                                      data_type=data_type, rule_file=rule_file,
-                                      label_type=label_type, task_deadline=task_deadline, task_payment=task_payment,
-                                      task_difficulty=task_difficulty)
-        new_task.save()
         task_file = request.FILES["DataFile"]
-        file_type = str(task_file).split(".")[-1]
-        if file_type not in ["zip", "rar"]:
-            return JsonResponse({'err': "Task File wrong! (Support zip only)"})
-        if file_type == "zip":
-            task_file = zipfile.ZipFile(task_file)
-        elif file_type == "rar":
-            task_file = rarfile.RarFile(task_file)
-
-        task_file_table = transform_image_file(task_file, new_task, request)
-        task_file_string = str(task_file_table.to_dict())
-        new_task_file = LabelTaskFile(task_id=new_task, data_file=task_file_string)
-        new_task_file.save()
-
     except:
         return JsonResponse({'err': "Task File missing! "})
 
-    return JsonResponse({'err': 'None'})
+    file_type = str(task_file).split(".")[-1]
+    if file_type not in ["zip", "rar"]:
+        return JsonResponse({'err': "Task File wrong! (Support zip, rar only)"})
 
+    task_difficulty = "Easy"
+    new_task = LabelTasksBaseInfo(inspect_method=inspect_method, publisher=publisher, task_name=task_name,
+                                  data_type=data_type, rule_file=rule_file,
+                                  label_type=label_type, task_deadline=task_deadline, task_payment=task_payment,
+                                  task_difficulty=task_difficulty)
+    new_task.save()
+    if file_type == "zip":
+        task_file = zipfile.ZipFile(task_file)
+    elif file_type == "rar":
+        task_file = rarfile.RarFile(task_file)
+
+    task_file_table = transform_zip_file(task_file, new_task, request)
+    task_file_string = str(task_file_table.to_dict())
+    new_task_file = LabelTaskFile(task_id=new_task, data_file=task_file_string)
+    new_task_file.save()
+    return JsonResponse({'err': 'None'})
 
 def create_text_task(request, inspect_method, publisher, task_name, data_type, rule_file,
                           label_type, task_deadline, task_payment):

@@ -14,7 +14,7 @@ import cv2
 # from datetime
 # Create your views here.
 # def change_tz(ddl):
-IMAGE_FILES = "images_task"
+ZIP_FILES = "zip_tasks"
 
 def show_tasks(request):
     # 筛选任务  eg：只选图片
@@ -95,7 +95,26 @@ def show_tasks(request):
         tasks_info = {"DataNumber": len(tasks), "DataList": dataList}
         return JsonResponse(tasks_info)
 
+def pack_data(request, task_content, task_data_type, task_id, task_rule):
+    if task_data_type == "text":
+        pass
+    elif task_data_type in ["image", "audio"]:
+        for i in task_content:
+            file_name = i["files"]
+            file_path = Path.cwd().parent / ZIP_FILES / str(request.user.id) / task_id / file_name
+            with open(file_path, 'rb') as file_file:
+                file_data = file_file.read()
+                file_base64 = base64.b64encode(file_data)
+                file_base64 = str(file_base64, "utf-8")
+            i["files"] = file_base64
+            i["file_type"] = file_name.split(".")[-1]
 
+    Data = {
+        "RuleText": json.dumps(task_rule),
+        "TaskContent": json.dumps(task_content),
+        "DataType": task_data_type
+    }
+    return Data
 
 def label_task(request):
     CrossNum = 10
@@ -123,21 +142,7 @@ def label_task(request):
             task_content = [
                 dict(task_content_not_labeled.iloc[i, :]) for i in range(task_content_not_labeled.shape[0])
             ]
-            if task_data_type == "text":
-                pass
-            elif task_data_type == "image":
-                for i in task_content:
-                    image_name = i["images"]
-                    image_path = Path.cwd().parent/ IMAGE_FILES / str(request.user.id)/ task_id / image_name
-                    with open(image_path, 'rb') as image_file:
-                        image_data = image_file.read()
-                        image_base64 = base64.b64encode(image_data)
-                        image_base64 = str(image_base64, "utf-8")
-                    i["images"] = image_base64
-            Data = {
-                "RuleText": task_rule,
-                "TaskContent": json.dumps(task_content),
-            }
+            Data = pack_data(request, task_content, task_data_type, task_id, task_rule)
             return render(request, "labeler/label.html", Data)
 
         elif LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "cross":
@@ -161,26 +166,8 @@ def label_task(request):
             task_content = [
                 dict(task_content_not_labeled.iloc[i, :]) for i in range(task_content_not_labeled.shape[0])
             ]
-            if task_data_type == "text":
-                pass
-            elif task_data_type == "image":
-                for i in task_content:
-                    image_name = i["images"]
-                    image_path = Path.cwd().parent/ IMAGE_FILES / str(request.user.id)/ task_id / image_name
-                    with open(image_path, 'rb') as image_file:
-                        image_data = image_file.read()
-                        image_base64 = base64.b64encode(image_data)
-                        image_base64 = str(image_base64, "utf-8")
-                        print(image_base64)
-                    i["images"] = image_base64
-                    i["image_type"] = image_name.split(".")[-1]
-                    print(i)
+            Data = pack_data(request, task_content, task_data_type, task_id, task_rule)
 
-            Data = {
-                "RuleText": json.dumps(task_rule),
-                "TaskContent": json.dumps(task_content),
-                "DataType": task_data_type
-            }
             return render(request, "labeler/label.html", Data)
 
     elif request.method == "POST":
