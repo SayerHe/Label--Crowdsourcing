@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta charset="utf-8">
+    <script>
+            var labeler_url = "{% url 'labeler:show_tasks' %}",
+                label_url = "{% url 'labeler:label_task' %}",
+                main_menu_url = "{% url 'main_menu:index' %}",
+                login_url = "{% url 'login:index' %}",
+                UserName = '{{ UserName|safe }}';
+    </script>
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'CSS/center/index.css' %}" type="text/css">
+    <title>个人中心</title>
+    <script type="text/javascript" src="{% static "JS/jquery-3.6.0.js" %}"></script>
+    <script type="text/javascript" src="{% static "JS/center/echarts.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "JS/center/index.js" %}"></script>
+
+</head>
+<body>
+  <div id="distribution" style="height: 375px"></div>
+  <script type="text/javascript">
+    var dom = document.getElementById('distribution');
+    var myChart = echarts.init(dom, null, {
+      renderer: 'canvas',
+      useDirtyRect: false
+    });
+    var app = {};
+
+    var option;
+
+    option = {
+  tooltip: {
+    trigger: 'item'
+  },
+  legend: {
+    top: '5%',
+    left: 'center'
+  },
+  series: [
+    {
+      name: 'Access From',
+      type: 'pie',
+      radius: ['40%', '70%'],
+      avoidLabelOverlap: false,
+      itemStyle: {
+        borderRadius: 10,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      label: {
+        show: false,
+        position: 'center'
+      },
+      emphasis: {
+        label: {
+          show: true,
+          fontSize: '40',
+          fontWeight: 'bold'
+        }
+      },
+      labelLine: {
+        show: false
+      },
+      data: [
+        { value: 1048, name: '文本' },
+        { value: 735, name: '图片' },
+        { value: 580, name: '音频' },
+        { value: 484, name: '视频' }
+      ]
+    }
+  ]
+};
+
+    if (option && typeof option === 'object') {
+      myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+
+    </script>
+
+
+    <div id="grade" style="height: 500px"></div>
+      <script type="text/javascript">
+        var dom = document.getElementById('grade');
+        var myChart = echarts.init(dom, null, {
+          renderer: 'canvas',
+          useDirtyRect: false
+        });
+        var app = {};
+
+        var option;
+
+        option = {
+      series: [
+        {
+          type: 'gauge',
+          startAngle: 180,
+          endAngle: 0,
+          min: 0,
+          max: 1,
+          splitNumber: 8,
+          axisLine: {
+            lineStyle: {
+              width: 6,
+              color: [
+                [0.25, '#FF6E76'],
+                [0.5, '#FDDD60'],
+                [0.75, '#58D9F9'],
+                [1, '#7CFFB2']
+              ]
+            }
+          },
+          pointer: {
+            icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
+            length: '12%',
+            width: 20,
+            offsetCenter: [0, '-60%'],
+            itemStyle: {
+              color: 'auto'
+            }
+          },
+          axisTick: {
+            length: 12,
+            lineStyle: {
+              color: 'auto',
+              width: 2
+            }
+          },
+          splitLine: {
+            length: 20,
+            lineStyle: {
+              color: 'auto',
+              width: 5
+            }
+          },
+          axisLabel: {
+            color: '#464646',
+            fontSize: 20,
+            distance: -60,
+            formatter: function (value) {
+              if (value === 0.875) {
+                return 'A';
+              } else if (value === 0.625) {
+                return 'B';
+              } else if (value === 0.375) {
+                return 'C';
+              } else if (value === 0.125) {
+                return 'D';
+              }
+              return '';
+            }
+          },
+          title: {
+            offsetCenter: [0, '-20%'],
+            fontSize: 30
+          },
+          detail: {
+            fontSize: 25,
+            offsetCenter: [0, '0%'],
+            valueAnimation: true,
+            formatter: function (value) {
+              return Math.round(value * 100) + '分';
+            },
+            color: 'auto'
+          },
+          data: [
+            {
+              value: 0.75,
+              name: '信用评分'
+            }
+          ]
+        }
+      ]
+    };
+
+        if (option && typeof option === 'object') {
+          myChart.setOption(option);
+        }
+
+        window.addEventListener('resize', myChart.resize);
+      </script>
+
+        <div id="salary" style="height: 350px"></div>
+      <script type="text/javascript">
+        var dom = document.getElementById('salary');
+        var myChart = echarts.init(dom, null, {
+          renderer: 'canvas',
+          useDirtyRect: false
+        });
+        var app = {};
+
+        var option;
+
+        option = {
+            title: {
+        text: '近一周薪酬'
+      },
+      xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          data: [120, 200, 150, 80, 70, 110, 130],
+          type: 'bar'
+        }
+      ]
+    };
+
+        if (option && typeof option === 'object') {
+          myChart.setOption(option);
+        }
+
+        window.addEventListener('resize', myChart.resize);
+      </script>
+
+
+
+    <div id="active" style="height: 350px"></div>
+      <script type="text/javascript">
+        var dom = document.getElementById('active');
+        var myChart = echarts.init(dom, null, {
+          renderer: 'canvas',
+          useDirtyRect: false
+        });
+        var app = {};
+
+        var option;
+
+        function randomData() {
+      now = new Date(+now + oneDay);
+      value = value + Math.random() * 21 - 10;
+      return {
+        name: now.toString(),
+        value: [
+          [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+          Math.round(value)
+        ]
+      };
+    }
+    let data = [];
+    let now = new Date(2010, 9, 3);
+    let oneDay = 24 * 3600 * 1000;
+    let value = Math.random() * 1000;
+    for (var i = 0; i < 1000; i++) {
+      data.push(randomData());
+    }
+    option = {
+      title: {
+        text: '历史活跃度'
+      },
+      tooltip: {
+        trigger: 'axis',
+        formatter: function (params) {
+          params = params[0];
+          var date = new Date(params.name);
+          return (
+            date.getDate() +
+            '/' +
+            (date.getMonth() + 1) +
+            '/' +
+            date.getFullYear() +
+            ' : ' +
+            params.value[1]
+          );
+        },
+        axisPointer: {
+          animation: false
+        }
+      },
+      xAxis: {
+        type: 'time',
+        splitLine: {
+          show: false
+        }
+      },
+      yAxis: {
+        type: 'value',
+        boundaryGap: [0, '100%'],
+        splitLine: {
+          show: false
+        }
+      },
+      series: [
+        {
+          name: 'Fake Data',
+          type: 'line',
+          showSymbol: false,
+          data: data
+        }
+      ]
+    };
+    setInterval(function () {
+      for (var i = 0; i < 5; i++) {
+        data.shift();
+        data.push(randomData());
+      }
+      myChart.setOption({
+        series: [
+          {
+            data: data
+          }
+        ]
+      });
+    }, 100);
+
+        if (option && typeof option === 'object') {
+          myChart.setOption(option);
+        }
+
+        window.addEventListener('resize', myChart.resize);
+      </script>
+
+
+
+
+
+
+
+
+</body>
+</html>

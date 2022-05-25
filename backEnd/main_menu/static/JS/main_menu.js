@@ -8,6 +8,8 @@ var urls = {
     "#Publish":publish_url,
     "#T_Doing":user_url,
     "#T_Finished":user_url,
+    "#Center":Center_url,
+
 };
 
 $(document).ready(function(){

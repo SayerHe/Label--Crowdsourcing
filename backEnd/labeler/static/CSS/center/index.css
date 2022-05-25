@@ -1,0 +1,35 @@
+
+
+
+body{
+    background-color: #F5F6F8;
+}
+#distribution{
+    width: 50%;
+    position:absolute;
+	left:0;
+	top:25px;
+}
+
+#active{
+    width: 50%;
+	position:absolute;
+	left:45%;
+	top:50px;
+
+}
+
+#grade{
+    width: 50%;
+	position:absolute;
+	left:0px;
+	top:48%;
+
+}
+#salary{
+    width: 50%;
+	position:absolute;
+	left:45%;
+	top: 50%;
+
+}

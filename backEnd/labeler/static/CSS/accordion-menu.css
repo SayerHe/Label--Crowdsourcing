@@ -68,7 +68,7 @@
   cursor: pointer;
 }
 #searchform button::before {
-  /* content: url("../IMG/labeler/search.svg"); */
+   /*content: url("../IMG/labeler/search.svg"); */
   content: "search";
   font-weight: bold;
   font-size: 14px;
