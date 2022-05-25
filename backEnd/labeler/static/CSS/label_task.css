@@ -246,7 +246,7 @@ body{
 #submit{
     position: relative;
     display: block;
-    left: 1.3em;
+    /* left: 1.3em; */
     margin-top: 3em;
 }
 

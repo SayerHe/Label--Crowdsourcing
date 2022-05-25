@@ -14,7 +14,7 @@ $(document).ready(function(){
     window.addEventListener("popstate", menu_init, false);
     $(".menubt").click(function(event){
         event.preventDefault();
-        tmp = this.getBoundingClientRect();
+        // tmp = this.getBoundingClientRect();
         // mact = document.getElementById("menu_active").getBoundingClientRect();
         // matop = tmp.top-(mact.height-tmp.height)/2+"px";
         // $("#menu_active").animate({top:matop}, 300);
