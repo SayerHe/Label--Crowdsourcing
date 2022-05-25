@@ -201,6 +201,14 @@ body{
     box-shadow: 0.2em 1em 1em 0.1em #d7d4df6b;
     border: 1px solid rgba(128, 128, 128, 0.5); */
 }
+#tasktablediv img{
+    max-width: calc(100% - 22px);
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid gray;
+    background-color: white;
+    margin: 1em 0 0em;
+}
 .datatable{
     position: relative;
     text-align: left;

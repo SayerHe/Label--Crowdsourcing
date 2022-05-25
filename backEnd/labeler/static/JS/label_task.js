@@ -79,7 +79,7 @@ function taskList_init_text(){
 function taskList_init_image(){
     var ih = '', len, id = 0;
     for(var i in DataList){
-        ih += '<img src='+DataList[i]['images']+'>';
+        ih += '<img src="data:image/'+DataList[i]['image_type']+';base64,'+DataList[i]['images']+'">';
         ih += '<input class="labelinput" id="label_'+id+'" placeholder="标签">\n';
     }
     ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
