@@ -144,9 +144,6 @@ def create_text_task(request, inspect_method, publisher, task_name, data_type, r
     task_difficulty = estimate_text_difficulty(task_file_table)
     task_file_string = str(task_file_table.to_dict())
 
-
-
-
     new_task = LabelTasksBaseInfo(inspect_method=inspect_method, publisher=publisher, task_name=task_name, data_type=data_type,rule_file=rule_file,
                                   label_type=label_type, task_deadline=task_deadline, task_payment=task_payment,task_difficulty=task_difficulty)
     new_task.save()

@@ -170,9 +170,11 @@ def label_task(request):
                     with open(image_path, 'rb') as image_file:
                         image_data = image_file.read()
                         image_base64 = base64.b64encode(image_data)
-                        print(type(image_base64))
                         image_base64 = str(image_base64, "utf-8")
+                        print(image_base64)
                     i["images"] = image_base64
+                    i["image_type"] = image_name.split(".")[-1]
+                    print(i)
 
             Data = {
                 "RuleText": json.dumps(task_rule),
@@ -224,7 +226,6 @@ def label_task(request):
         table_db.data_file = str(table.to_dict())
         print(table)
         table_db.save()
-
 
         return JsonResponse({"err": "none"})
 
