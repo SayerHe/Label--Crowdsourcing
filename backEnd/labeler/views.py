@@ -53,11 +53,11 @@ def show_tasks(request):
         labeltypelist = []
         if label_type:
             if label_type & (1 << 0):
-                labeltypelist.append('score')
-            if label_type & (1 << 1):
-                labeltypelist.append('classify')
-            if label_type & (1 << 2):
                 labeltypelist.append('describe')
+            if label_type & (1 << 1):
+                labeltypelist.append('choose')
+            if label_type & (1 << 2):
+                labeltypelist.append('frame')
 
         TaskDifficultyList = []
         if TaskDifficulty:
