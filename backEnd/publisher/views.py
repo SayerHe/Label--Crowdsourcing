@@ -1,3 +1,4 @@
+import numpy as np
 from django.shortcuts import render
 from django.http import JsonResponse,JsonResponse
 from django.shortcuts import render, redirect
@@ -20,8 +21,8 @@ def transform_text_file(table_data):
     table_data["__ID__"] = list(table_data.index)
     table_data["__Labelers__"] = ""
     table_data["__Times__"] = 0
-    table_data = table_data.dropna(axis=0, how='any')
-    table_data = table_data.dropna(axis=1, how='any')
+    table_data = table_data.dropna(axis=0, how='all')
+    table_data = table_data.dropna(axis=1, how='all')
     # print(table_data.to_string())
     return table_data
 
@@ -85,7 +86,25 @@ def create_task(request):
             if rule_text:
                 newTask_param["rule_file"] = rule_text
             else:
-                return JsonResponse({"err": "Rule File Missing"})
+                return JsonResponse({"err": "Rule File Missing !"})
+        if newTask_param["label_type"] == "choose":
+            try:
+                # choices = request.POST["ChoiceFile"]
+                choices = r"C:\Users\10526\PycharmProjects\Label--Crowdsourcing\dataTest\choices.xlsx"
+                choices = pd.read_excel(choices)
+                choices = choices.to_dict()
+                choices_drop_na = {}
+                for question in choices.items():
+                    choices_drop_na[question[0]] = []
+                    for choice in question[1].items():
+                        if choice[1] is not np.nan:
+                            choices_drop_na[question[0]].append(choice[1])
+                newTask_param["choices"] = str(choices_drop_na)
+
+            except KeyError:
+                return JsonResponse({"err": "Choices File Missing !"})
+        else:
+            newTask_param["choices"] = ""
 
         if newTask_param["data_type"] == "text":
             return create_text_task(request, **newTask_param)
@@ -97,7 +116,7 @@ def create_task(request):
         return JsonResponse({'err': 'None'})
 
 def create_zip_task(request, inspect_method, publisher, task_name, data_type, rule_file,
-                          label_type, task_deadline, task_payment):
+                          label_type, task_deadline, task_payment, choices):
     try:
         task_file = request.FILES["DataFile"]
     except:
@@ -111,7 +130,7 @@ def create_zip_task(request, inspect_method, publisher, task_name, data_type, ru
     new_task = LabelTasksBaseInfo(inspect_method=inspect_method, publisher=publisher, task_name=task_name,
                                   data_type=data_type, rule_file=rule_file,
                                   label_type=label_type, task_deadline=task_deadline, task_payment=task_payment,
-                                  task_difficulty=task_difficulty)
+                                  task_difficulty=task_difficulty, choices=choices)
     new_task.save()
     if file_type == "zip":
         task_file = zipfile.ZipFile(task_file)
@@ -119,13 +138,23 @@ def create_zip_task(request, inspect_method, publisher, task_name, data_type, ru
         task_file = rarfile.RarFile(task_file)
 
     task_file_table = transform_zip_file(task_file, new_task, request)
+    if data_type == "audio":
+        audio_type = task_file_table.apply(lambda x: x[0].split(".")[-1] in ["mp3", "mp4"], axis=1)
+        if not audio_type.all():
+            return JsonResponse({"err": "Support MP3, MP4 only! "})
+
+    if data_type == "image":
+        audio_type = task_file_table.apply(lambda x: x[0].split(".")[-1] in ["jpg", "png"], axis=1)
+        if not audio_type.all():
+            return JsonResponse({"err": "Support JPG, PNG only! "})
+
     task_file_string = str(task_file_table.to_dict())
     new_task_file = LabelTaskFile(task_id=new_task, data_file=task_file_string)
     new_task_file.save()
     return JsonResponse({'err': 'None'})
 
 def create_text_task(request, inspect_method, publisher, task_name, data_type, rule_file,
-                          label_type, task_deadline, task_payment):
+                          label_type, task_deadline, task_payment, choices):
 
     try:
         task_file = request.FILES["DataFile"]
@@ -135,7 +164,7 @@ def create_text_task(request, inspect_method, publisher, task_name, data_type, r
     table_format_permit = ["csv", "xls", "xlsx", "xlsm"]
     file_type = str(task_file).split(".")[1]
     if file_type not in table_format_permit:
-        return JsonResponse({'err': "FileType Wrong! (Support csv, xlsx, xls only)"})
+        return JsonResponse({'err': "FileType Wrong! (Support csv, xlsx, xls, xlsm only)"})
     if file_type == "csv":
         task_file_table = pd.read_csv(task_file)
     elif file_type in ["xls", "xlsx", "xlsm"]:
@@ -144,8 +173,10 @@ def create_text_task(request, inspect_method, publisher, task_name, data_type, r
     task_difficulty = estimate_text_difficulty(task_file_table)
     task_file_string = str(task_file_table.to_dict())
 
-    new_task = LabelTasksBaseInfo(inspect_method=inspect_method, publisher=publisher, task_name=task_name, data_type=data_type,rule_file=rule_file,
-                                  label_type=label_type, task_deadline=task_deadline, task_payment=task_payment,task_difficulty=task_difficulty)
+    new_task = LabelTasksBaseInfo(inspect_method=inspect_method, publisher=publisher, task_name=task_name,
+                                  data_type=data_type,rule_file=rule_file,
+                                  label_type=label_type, task_deadline=task_deadline,
+                                  task_payment=task_payment,task_difficulty=task_difficulty, choices=choices)
     new_task.save()
     new_task_file = LabelTaskFile(task_id = new_task, data_file=task_file_string)
     new_task_file.save()

@@ -11,9 +11,6 @@ import json
 import base64
 
 
-# from datetime
-# Create your views here.
-# def change_tz(ddl):
 ZIP_FILES = "zip_tasks"
 
 def show_tasks(request):
@@ -95,7 +92,12 @@ def show_tasks(request):
         tasks_info = {"DataNumber": len(tasks), "DataList": dataList}
         return JsonResponse(tasks_info)
 
-def pack_data(request, task_content, task_data_type, task_id, task_rule):
+def pack_data(request, task_content, task_data_type, task_id, task, label_type):
+    task_rule = task.rule_file
+    task_choices = ""
+    if label_type == "choose":
+        task_choices = task.choices
+        print(task_choices)
     if task_data_type == "text":
         pass
     elif task_data_type in ["image", "audio"]:
@@ -112,7 +114,9 @@ def pack_data(request, task_content, task_data_type, task_id, task_rule):
     Data = {
         "RuleText": json.dumps(task_rule),
         "TaskContent": json.dumps(task_content),
-        "DataType": task_data_type
+        "DataType": task_data_type,
+        "LabelType": label_type,
+        "ChoicesText": json.dumps(task_choices),
     }
     return Data
 
@@ -132,17 +136,17 @@ def label_task(request):
             task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
         except:
             return JsonResponse({"err": "Task not exist !"})
-        task_rule = task.rule_file
         task_content_all = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
         task_content_all = pd.DataFrame(eval(str(task_content_all)), dtype="str")
         task_data_type = str(task.data_type)
+        label_type = str(task.label_type)
         if LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "sampling":
             task_content_not_labeled = task_content_all[task_content_all["__Label__"] == ""][:PageSize]
             task_content_not_labeled = task_content_not_labeled.drop(columns=["__Labelers__", "__Times__"])
             task_content = [
                 dict(task_content_not_labeled.iloc[i, :]) for i in range(task_content_not_labeled.shape[0])
             ]
-            Data = pack_data(request, task_content, task_data_type, task_id, task_rule)
+            Data = pack_data(request, task_content, task_data_type, task_id, task, label_type)
             return render(request, "labeler/label.html", Data)
 
         elif LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "cross":
@@ -166,7 +170,7 @@ def label_task(request):
             task_content = [
                 dict(task_content_not_labeled.iloc[i, :]) for i in range(task_content_not_labeled.shape[0])
             ]
-            Data = pack_data(request, task_content, task_data_type, task_id, task_rule)
+            Data = pack_data(request, task_content, task_data_type, task_id, task, label_type)
 
             return render(request, "labeler/label.html", Data)
 
@@ -211,7 +215,6 @@ def label_task(request):
                     table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str(old_labelers)
 
         table_db.data_file = str(table.to_dict())
-        print(table)
         table_db.save()
 
         return JsonResponse({"err": "none"})
