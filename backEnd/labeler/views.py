@@ -2,14 +2,14 @@ from django.shortcuts import render
 from matplotlib.font_manager import json_dump
 from publisher.models import LabelTasksBaseInfo, LabelTaskFile
 from login.models import UserInfo
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from io import StringIO
 import numpy as np
 import pandas as pd
 from pathlib import Path
 import json
 import base64
-import cv2
+
 
 # from datetime
 # Create your views here.
@@ -216,4 +216,5 @@ def label_task(request):
 
         return JsonResponse({"err": "none"})
 
-
+def Center(request):
+    return render(request, "labeler/example.html", {'UserName':request.user.username})
