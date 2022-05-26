@@ -140,11 +140,13 @@ def create_zip_task(request, inspect_method, publisher, task_name, data_type, ru
     if data_type == "audio":
         audio_type = task_file_table.apply(lambda x: x[0].split(".")[-1] in ["mp3", "mp4"], axis=1)
         if not audio_type.all():
+            LabelTasksBaseInfo.objects.get(pk=new_task.pk).delete()
             return JsonResponse({"err": "Support MP3, MP4 only! "})
 
     if data_type == "image":
         image_type = task_file_table.apply(lambda x: x[0].split(".")[-1] in ["jpg", "png", "JPEG"], axis=1)
         if not image_type.all():
+            LabelTasksBaseInfo.objects.get(pk=new_task.pk).delete()
             return JsonResponse({"err": "Support JPG, PNG, JPEG only! "})
 
     task_file_string = str(task_file_table.to_dict())
