@@ -33,9 +33,9 @@ const DTC = {
     "video":"视频",
 },
 LTC = {
-    "score":"打分",
-    "choose":"选择",
     "describe":"描述",
+    "choose":"选择",
+    "frame":"框选",
 },
 TDC = {
     "easy":"简单",
