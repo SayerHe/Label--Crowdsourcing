@@ -76,8 +76,8 @@ function draw_question(id){
 function taskList_init_text(){
     var ih = '', len, id = 0;
     for(var i in DataList){
+        ih += '<div class="datadiv">';
         ih += '<table class="datatable" cellpadding="8" cellspacing="0">\n';
-        
         len = 0;
         for(var j in DataList[i]){
             ih += '<tr>\n';
@@ -94,7 +94,10 @@ function taskList_init_text(){
             ih += '</tr>\n';
         }
         ih += '</table>\n';
+        ih += '</div>';
+        ih += '<div class="questiondiv">';
         ih += draw_question(id);
+        ih += '</div>';
     }
     ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
 
@@ -103,9 +106,13 @@ function taskList_init_text(){
 function taskList_init_image(){
     var ih = '', len, id = 0;
     for(var i in DataList){
+        ih += '<div class="datadiv">';
         id = DataList[i]['__ID__'];
         ih += '<img src="data:image/'+DataList[i]['file_type']+';base64,'+DataList[i]['files']+'">';
+        ih += '</div>';
+        ih += '<div class="questiondiv">';
         ih += draw_question(id);
+        ih += '</div>';
     }
     ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
 
@@ -115,8 +122,10 @@ function taskList_init_audio(){
     var ih = '', len, id = 0;
     for(var i in DataList){
         id = DataList[i]['__ID__'];
-        ih += '<div class="audiobox">';
+        ih += '<div class="datadiv">';
         ih += '<audio controls controlsList="nodownload"><source src="data:audio/'+DataList[i]['file_type']+';base64,'+DataList[i]['files']+'"></audio>';
+        ih += '</div>';
+        ih += '<div class="questiondiv">';
         ih += draw_question(id);
         ih += '</div>';
     }
@@ -133,14 +142,13 @@ function SubmitLabelResult(){
         label_res = $('input[type="radio"]:checked')
         for(var i = 0; i < label_res.length; i ++){
             s = label_res[i].getAttribute('name').split('-');
-            if(s[0] == 'sc'){
-                continue;
+            if(s[0] == 'radio'){
+                labelData.push({
+                    'id':s[1],
+                    'question_id':s[2],
+                    'label':label_res[i].value
+                });
             }
-            labelData.push({
-                'id':s[1],
-                'question_id':s[2],
-                'label':label_res[i].value
-            })
         }
     }
     else{
@@ -150,7 +158,7 @@ function SubmitLabelResult(){
             labelData.push({
                 'id':id,
                 'label':label_res[i].value
-            })
+            });
         }
     }
     labelData = JSON.stringify(labelData)
@@ -192,6 +200,9 @@ function foldbutton_onclick(){
             {left:'0',width:'100%'},
             300
         );
+        $('.datadiv').css('width','calc(61.8% - 1em)');
+        $('.datadiv').css('margin-bottom','1.5em');
+        $('.questiondiv').css('width','38.2%');
     }
     else{
         bt[0].setAttribute('show', '1');
@@ -207,6 +218,14 @@ function foldbutton_onclick(){
         );
         $('#taskdiv').animate(
             {left:'38.2vw',width:'61.8%'},
+            300
+        );
+        $('.datadiv').animate(
+            {width:'100%', marginBottom:'0.5em'},
+            300
+        );
+        $('.questiondiv').animate(
+            {width:'100%'},
             300
         );
     }
