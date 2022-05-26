@@ -30,9 +30,9 @@ def transform_zip_file(task_file, new_task, request):
     # 将传入的zip解压到服务器，并将相对路径存入数据库
     now_dir = Path.cwd()
     file_dir = now_dir.parent / "zip_tasks"
-    if not Path(file_dir / str(request.user.id)).exists():
-        Path(file_dir / str(request.user.id)).mkdir(parents=True)
-    new_task_dir = file_dir/ str(request.user.id) / str(new_task.pk)
+    if not file_dir.exists():
+        Path(file_dir).mkdir(parents=True)
+    new_task_dir = file_dir / str(new_task.pk)
     new_task_dir.mkdir()
     task_file.extractall(str(new_task_dir))
     task_file.close()
@@ -90,7 +90,6 @@ def create_task(request):
         if newTask_param["label_type"] == "choose":
             try:
                 choices = request.FILES["ChoiceFile"]
-                # choices = r"C:\Users\10526\PycharmProjects\Label--Crowdsourcing\dataTest\choices.xlsx"
                 choices = pd.read_excel(choices)
                 choices = choices.to_dict()
                 choices_drop_na = {}
@@ -144,9 +143,9 @@ def create_zip_task(request, inspect_method, publisher, task_name, data_type, ru
             return JsonResponse({"err": "Support MP3, MP4 only! "})
 
     if data_type == "image":
-        audio_type = task_file_table.apply(lambda x: x[0].split(".")[-1] in ["jpg", "png"], axis=1)
-        if not audio_type.all():
-            return JsonResponse({"err": "Support JPG, PNG only! "})
+        image_type = task_file_table.apply(lambda x: x[0].split(".")[-1] in ["jpg", "png", "JPEG"], axis=1)
+        if not image_type.all():
+            return JsonResponse({"err": "Support JPG, PNG, JPEG only! "})
 
     task_file_string = str(task_file_table.to_dict())
     new_task_file = LabelTaskFile(task_id=new_task, data_file=task_file_string)
