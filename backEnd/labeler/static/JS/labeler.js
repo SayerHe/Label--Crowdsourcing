@@ -34,7 +34,7 @@ const DTC = {
 },
 LTC = {
     "score":"打分",
-    "classify":"分类",
+    "choose":"选择",
     "describe":"描述",
 },
 TDC = {

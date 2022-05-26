@@ -96,8 +96,8 @@ def pack_data(request, task_content, task_data_type, task_id, task, label_type):
     task_rule = task.rule_file
     task_choices = ""
     if label_type == "choose":
-        task_choices = task.choices
-        print(task_choices)
+        print(task.choices)
+        task_choices = json.loads(task.choices)
     if task_data_type == "text":
         pass
     elif task_data_type in ["image", "audio"]:

@@ -7,7 +7,9 @@
             var label_url = "{% url 'labeler:label_task' %}";
             var RuleText = {{ RuleText|safe }},
                 DataType = '{{ DataType|safe }}',
-                DataList = {{ TaskContent|safe }};
+                LabelType = '{{ LabelType|safe }}',
+                DataList = {{ TaskContent|safe }},
+                ChoicesList = {{ ChoicesText|safe }};
         </script>
         {% load static %}
         <link rel="stylesheet" href="{% static 'CSS/label_task.css' %}" type="text/css">

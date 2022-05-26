@@ -89,8 +89,8 @@ def create_task(request):
                 return JsonResponse({"err": "Rule File Missing !"})
         if newTask_param["label_type"] == "choose":
             try:
-                # choices = request.POST["ChoiceFile"]
-                choices = r"C:\Users\10526\PycharmProjects\Label--Crowdsourcing\dataTest\choices.xlsx"
+                choices = request.FILES["ChoiceFile"]
+                # choices = r"C:\Users\10526\PycharmProjects\Label--Crowdsourcing\dataTest\choices.xlsx"
                 choices = pd.read_excel(choices)
                 choices = choices.to_dict()
                 choices_drop_na = {}
@@ -99,7 +99,7 @@ def create_task(request):
                     for choice in question[1].items():
                         if choice[1] is not np.nan:
                             choices_drop_na[question[0]].append(choice[1])
-                newTask_param["choices"] = str(choices_drop_na)
+                newTask_param["choices"] = json.dumps(choices_drop_na)
 
             except KeyError:
                 return JsonResponse({"err": "Choices File Missing !"})

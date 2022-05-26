@@ -15,11 +15,11 @@ $(document).ready(function(){
     $("#datafile").change(function(){
         $("#datafiletext").val($(this).val());
     });
-    $("#markfiletext").click(function(){
-        $("#markfile").trigger('click');
+    $("#choicesfiletext").click(function(){
+        $("#choicesfile").trigger('click');
     });
-    $("#markfile").change(function(){
-        $("#markfiletext").val($(this).val());
+    $("#choicesfile").change(function(){
+        $("#choicesfiletext").val($(this).val());
     });
     $("input[name='marktype']").change(function(){
         if(this.value == 'choose'){
@@ -45,7 +45,8 @@ function btsubmit(){
         form_data.append('InspectionMethod' ,$("input[name='checktype']:checked").val());
         form_data.append('DataFile'         ,$('#datafile')[0].files[0]);
         form_data.append('RuleText'         ,$('#markrules').val());
-        if($('#choicesfile')[0].files[0] == 'choose'){
+        if($("input[name='marktype']:checked").val() == 'choose'){
+        console.log($('#choicesfile')[0].files[0])
             form_data.append('ChoiceFile', $('#choicesfile')[0].files[0]);
         }
         // form_data.append('RuleFile'     ,$('#markfile')[0].files[0]);

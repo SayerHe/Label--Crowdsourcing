@@ -1,5 +1,4 @@
 $(document).ready(function(){
-    // Listen_for_Mouse();
     document.getElementById('ruletext').innerHTML = '<pre>'+RuleText+'</pre>';
     if(DataType == 'text'){
         taskList_init_text();
@@ -15,13 +14,11 @@ $(document).ready(function(){
     })
     // $('#ruletext').mouseup(function(){
     //     sel = window.getSelection();
-    //     // console.log(sel)
     //     if (sel.anchorNode != sel.focusNode) return;
     //     st = sel.anchorOffset;
     //     ed = sel.focusOffset;
     //     if (st == ed) return;
     //     if (st > ed) {t = st; st = ed; ed = t;}
-    //     console.log(1)
     //     var ele = sel.getRangeAt(0).commonAncestorContainer.parentElement,
     //         ih = ele.outerHTML,
     //         ihst = 0,
@@ -53,6 +50,28 @@ window.onload=function(){
     $('#sc-0-'+datanum).attr("checked", true);
 }
 
+function draw_question(id){
+    if(LabelType == 'choose'){
+        var queid = 0, tmp = '';
+        tmp += '<div class="choose_div">';
+        for(que in ChoicesList){
+            tmp += '<div class="radio_div">';
+            tmp += '<p>&nbsp;'+que+'</p>';
+            tmp += '<div class="container">';
+            for(ans in ChoicesList[que]){
+                tmp += '<label><input type="radio" name="radio-'+id+'-'+queid+'" value="'+ChoicesList[que][ans]+'"><span>'+ChoicesList[que][ans]+'</span></label>';
+            }
+            tmp += '</div>';
+            tmp += '</div>';
+            queid += 1;
+        }
+        tmp += '</div>';
+    }
+    else{
+        tmp += '<input class="labelinput" id="label_'+id+'" placeholder="标签">\n';
+    }
+    return tmp;
+}
 function taskList_init_text(){
     var ih = '', len, id = 0;
     for(var i in DataList){
@@ -74,7 +93,7 @@ function taskList_init_text(){
             ih += '</tr>\n';
         }
         ih += '</table>\n';
-        ih += '<input class="labelinput" id="label_'+id+'" placeholder="标签">\n';
+        ih += draw_question(id);
     }
     ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
 
@@ -84,7 +103,7 @@ function taskList_init_image(){
     var ih = '', len, id = 0;
     for(var i in DataList){
         ih += '<img src="data:image/'+DataList[i]['file_type']+';base64,'+DataList[i]['files']+'">';
-        ih += '<input class="labelinput" id="label_'+id+'" placeholder="标签">\n';
+        ih += draw_question(id);
     }
     ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
 
@@ -95,8 +114,7 @@ function taskList_init_audio(){
     for(var i in DataList){
         ih += '<div class="audiobox">';
         ih += '<audio controls controlsList="nodownload"><source src="data:audio/'+DataList[i]['file_type']+';base64,'+DataList[i]['files']+'"></audio>';
-        console.log(DataList[i]['files']);
-        ih += '<input class="labelinput" id="label_'+id+'" placeholder="标签">\n';
+        ih += draw_question(id);
         ih += '</div>';
     }
     ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
@@ -106,18 +124,35 @@ function taskList_init_audio(){
 
 
 function SubmitLabelResult(){
-    label_res = document.getElementsByClassName("labelinput");
-    taskid = window.location.search.split('&')[0].split('=')[1];
     var labelData = [];
-    for(var i = 0; i < label_res.length; i ++){
-        id = label_res[i].getAttribute('id').slice(6);
-        labelData.push({
-            'id':id,
-            'label':label_res[i].value
-        })
+    if(LabelType == 'choose'){
+        // console.log($('input[type="radio"]:checked'))
+        label_res = $('input[type="radio"]:checked')
+        for(var i = 0; i < label_res.length; i ++){
+            // console.log(label_res[i]);
+            s = label_res[i].getAttribute('name').split('-');
+            if(s[0] == 'sc'){
+                continue;
+            }
+            labelData.push({
+                'id':s[1],
+                'question_id':s[2],
+                'label':label_res[i].value
+            })
+        }
+    }
+    else{
+        label_res = document.getElementsByClassName("labelinput");
+        taskid = window.location.search.split('&')[0].split('=')[1];
+        for(var i = 0; i < label_res.length; i ++){
+            id = label_res[i].getAttribute('id').slice(6);
+            labelData.push({
+                'id':id,
+                'label':label_res[i].value
+            })
+        }
     }
     labelData = JSON.stringify(labelData)
-    console.log(labelData);
     $.ajax({
         url: label_url,
         type: "POST",        //请求类型
@@ -174,5 +209,4 @@ function foldbutton_onclick(){
             300
         );
     }
-    console.log(bt[0].getAttribute('show'));
 }

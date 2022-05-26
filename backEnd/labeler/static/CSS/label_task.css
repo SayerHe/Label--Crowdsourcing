@@ -224,13 +224,15 @@ body{
     background-color: white; */
     margin: 1em 0 10px;
 }
-audio::-webkit-media-controls{
-    overflow: visible;
-}
 audio::-webkit-media-controls-enclosure{
     background-color: white;
-    /* box-shadow: 0em 0em 0.2em 0.2em #d6d1e0; */
 }
+/* audio::-webkit-media-controls-timeline{
+    background: darkcyan;
+} */
+/* audio::-webkit-media-controls-timeline::-internal-media-controls-segmented-track{
+    background: darkcyan;
+} */
 
 .datatable{
     position: relative;
@@ -246,7 +248,7 @@ audio::-webkit-media-controls-enclosure{
 .datatable th{
     width: 10em;
     word-break:break-all;
-    border-right: 1px solid gray;
+    border-right: 1px solid rgba(128, 128, 128, 0.8);
     color: #3a3a3a;
 }
 .datatable td{
@@ -265,8 +267,26 @@ audio::-webkit-media-controls-enclosure{
     left: 0;
     width: 12em;
     height: 24px;
-    border: 1px solid rgba(128, 128, 128, 0.308);
+    border: 1px solid rgba(128, 128, 128, 0.3);
 }
+
+.choose_div{
+    margin-bottom: 2em;
+}
+.radio_div{
+    padding: 10px;
+    background-color: white;
+    margin: -0.5em 0 1em;
+    border-radius: 5px;
+    /* border: 1px solid rgba(128, 128, 128, 0.8); */
+}
+.radio_div p{
+    margin: 0 0 10px;
+    padding-bottom: 5px;
+    width: 100%;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+}
+
 #submit{
     position: relative;
     display: block;
@@ -326,7 +346,7 @@ audio::-webkit-media-controls-enclosure{
 
 #submit{
 	position: absolute;
-	left: 5%;
+	right: 0;
 	color: darkcyan;
 	font-size: 16px;
 	font-family: Lucida Bright;
@@ -334,13 +354,56 @@ audio::-webkit-media-controls-enclosure{
 	border: 1px solid darkcyan;
 	border-radius: 2px;
 	padding: 5px 20px;
-    margin-left: 1em;
+    margin: 0;
     /* margin-bottom: 2em; */
     width: 5em;
-	/* left: 50%;
-	transform: translateX(-50%); */
 }
 #submit:hover{
 	background-color: darkcyan;
 	color: white;
+}
+
+
+.container {
+	display: flex;
+    flex-wrap: wrap;
+}
+.container label {
+	display: flex;
+	cursor: pointer;
+    margin-right: 20px;
+}
+.container label input {
+	display: none;
+}
+
+.container label input + span {
+	display: flex;
+	align-items: center;
+	padding: 5px 10px;
+	border-radius: 30px;
+	transition: all 0.3s;
+}
+
+.container label input + span:hover {
+	background-color: #412f5e15;
+}
+
+.container label input:checked + span {
+    color: darkcyan;
+	/* background-color: #412f5e15; */
+}
+.container label input + span::before {
+	content: "";
+	display: block;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	margin-right: 15px;
+	background-color: #fff;
+	box-shadow: 0 0 0 2px gray inset;
+	transition: all 0.3s;
+}
+.container label input:checked + span::before {
+	box-shadow: 0 0 0 4px rgba(0, 139, 139, 0.8) inset;
 }

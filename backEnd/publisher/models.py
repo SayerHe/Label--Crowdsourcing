@@ -14,7 +14,7 @@ class LabelTasksBaseInfo(models.Model):
     rule_file = models.TextField(max_length=500)
     task_difficulty = models.CharField(max_length=50)
     inspect_method = models.CharField(max_length=10, default="cross")
-    choices = models.CharField(max_length=200, default="")
+    choices = models.CharField(max_length=2000, default="")
 
     def __str__(self):
         return self.task_name
