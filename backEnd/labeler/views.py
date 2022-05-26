@@ -96,14 +96,13 @@ def pack_data(request, task_content, task_data_type, task_id, task, label_type):
     task_rule = task.rule_file
     task_choices = ""
     if label_type == "choose":
-        print(task.choices)
         task_choices = json.loads(task.choices)
     if task_data_type == "text":
         pass
     elif task_data_type in ["image", "audio"]:
         for i in task_content:
             file_name = i["files"]
-            file_path = Path.cwd().parent / ZIP_FILES / str(request.user.id) / task_id / file_name
+            file_path = Path.cwd().parent / ZIP_FILES / task_id / file_name
             with open(file_path, 'rb') as file_file:
                 file_data = file_file.read()
                 file_base64 = base64.b64encode(file_data)
@@ -181,11 +180,28 @@ def label_task(request):
             labels = eval(labels)
         except KeyError:
             return JsonResponse({"err" : "err !"})
-        # 薪酬增加
         task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
         payment = task.task_payment
         inspect_method = task.inspect_method
+        label_type = task.label_type
         user = request.user
+        if label_type == "choose":
+            choices = list(json.loads(task.choices).items())
+            labels_choose = []
+            counter = 0
+            item_choose = []
+            for label in labels:
+                question = choices[int(label["question_id"])][0]
+                user_choose = label["label"]
+                item_choose.append({question: user_choose})
+                counter += 1
+                if counter == len(choices):
+                    labels_choose.append({"id": label["id"], "label": item_choose})
+                    item_choose = []
+                    counter = 0
+            labels = labels_choose
+
+        # 薪酬增加
         old_salary = UserInfo.objects.get(user=user).salary
         UserInfo.objects.get(user=user).salary = old_salary + payment
         # 标签更新
@@ -195,7 +211,7 @@ def label_task(request):
         table = pd.DataFrame(eval(table), dtype="str")
         if inspect_method == "sampling":
             for label in labels:
-                table.loc[table["__ID__"]==label["id"], ["__Label__"]] = label["label"]
+                table.loc[table["__ID__"]==label["id"], ["__Label__"]] = str(label["label"])
 
         elif inspect_method == "cross":
             for label in labels:
@@ -213,7 +229,6 @@ def label_task(request):
                     old_labelers = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
                     old_labelers.append(request.user.id)
                     table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str(old_labelers)
-
         table_db.data_file = str(table.to_dict())
         table_db.save()
 
