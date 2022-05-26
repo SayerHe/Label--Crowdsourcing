@@ -207,7 +207,7 @@ body{
     border-radius: 3px;
     border: 1px solid gray;
     background-color: white;
-    margin: 1em 0 0em;
+    margin: 1em 0 1em;
 }
 #tasktablediv .audiobox{
     /* background-color: white; */

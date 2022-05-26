@@ -51,8 +51,9 @@ window.onload=function(){
 }
 
 function draw_question(id){
+    var tmp = '';
     if(LabelType == 'choose'){
-        var queid = 0, tmp = '';
+        var queid = 0;
         tmp += '<div class="choose_div">';
         for(que in ChoicesList){
             tmp += '<div class="radio_div">';
@@ -102,6 +103,7 @@ function taskList_init_text(){
 function taskList_init_image(){
     var ih = '', len, id = 0;
     for(var i in DataList){
+        id = DataList[i]['__ID__'];
         ih += '<img src="data:image/'+DataList[i]['file_type']+';base64,'+DataList[i]['files']+'">';
         ih += draw_question(id);
     }
@@ -112,6 +114,7 @@ function taskList_init_image(){
 function taskList_init_audio(){
     var ih = '', len, id = 0;
     for(var i in DataList){
+        id = DataList[i]['__ID__'];
         ih += '<div class="audiobox">';
         ih += '<audio controls controlsList="nodownload"><source src="data:audio/'+DataList[i]['file_type']+';base64,'+DataList[i]['files']+'"></audio>';
         ih += draw_question(id);
@@ -125,11 +128,10 @@ function taskList_init_audio(){
 
 function SubmitLabelResult(){
     var labelData = [];
+    var taskid = window.location.search.split('&')[0].split('=')[1];;
     if(LabelType == 'choose'){
-        // console.log($('input[type="radio"]:checked'))
         label_res = $('input[type="radio"]:checked')
         for(var i = 0; i < label_res.length; i ++){
-            // console.log(label_res[i]);
             s = label_res[i].getAttribute('name').split('-');
             if(s[0] == 'sc'){
                 continue;
@@ -143,7 +145,6 @@ function SubmitLabelResult(){
     }
     else{
         label_res = document.getElementsByClassName("labelinput");
-        taskid = window.location.search.split('&')[0].split('=')[1];
         for(var i = 0; i < label_res.length; i ++){
             id = label_res[i].getAttribute('id').slice(6);
             labelData.push({
