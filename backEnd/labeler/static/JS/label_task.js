@@ -1,17 +1,45 @@
 $(document).ready(function(){
     document.getElementById('ruletext').innerHTML = '<pre>'+RuleText+'</pre>';
-    if(DataType == 'text'){
-        taskList_init_text();
+    if(RuleText.length == 0){
+        $('#foldbutton').click();
     }
-    else if(DataType == 'image'){
-        taskList_init_image();
+    if(LabelType == 'frame'){
+        $('#radiobox').css('display', 'none');
+        taskList_init_image_frame();
+        var ctrl_down = false;
+        $(document).keydown(function(e){
+            // console.log(e.keyCode)
+            if(e.keyCode == 32){
+                e.preventDefault();
+                $('#frame_add').click();
+            }
+            else if(e.keyCode == 17){
+                ctrl_down = true;
+            }
+            else if(e.keyCode == 90 && ctrl_down){
+                $('#frame_cancel').click();
+            }
+        })
+        $(document).keyup(function(e){
+            if(e.keyCode == 17){
+                ctrl_down = false;
+            }
+        })
     }
-    else if(DataType == 'audio'){
-        taskList_init_audio();
+    else {
+        $('.tasknumber').click(function() {
+            window.location.search = window.location.search.split('&')[0]+'&DataNum='+$("input[name='sc-0']:checked").val();
+        })
+        if(DataType == 'text'){
+            taskList_init_text();
+        }
+        else if(DataType == 'image'){
+                taskList_init_image();
+        }
+        else if(DataType == 'audio'){
+            taskList_init_audio();
+        }
     }
-    $('.tasknumber').click(function() {
-        window.location.search = window.location.search.split('&')[0]+'&DataNum='+$("input[name='sc-0']:checked").val();
-    })
     // $('#ruletext').mouseup(function(){
     //     sel = window.getSelection();
     //     if (sel.anchorNode != sel.focusNode) return;
@@ -48,6 +76,30 @@ $(document).ready(function(){
 window.onload=function(){
     datanum = window.location.search.split('&')[1].split('=')[1];
     $('#sc-0-'+datanum).attr("checked", true);
+}
+
+var frame_pos = {}, tmpframe = {}, img_list = {};
+
+function offset(curEle){
+    var totalLeft = null,totalTop = null,par = curEle.offsetParent;
+    //首先加自己本身的左偏移和上偏移
+    totalLeft+=curEle.offsetLeft;
+    totalTop+=curEle.offsetTop
+    //只要没有找到body，我们就把父级参照物的边框和偏移也进行累加
+    while(par){
+        //累加父级参照物的边框
+        totalLeft+=par.clientLeft;
+        totalTop+=par.clientTop
+        //累加父级参照物本身的偏移
+        totalLeft+=par.offsetLeft;
+        totalTop+=par.offsetTop
+        par = par.offsetParent;
+    }
+
+    return{
+        left:totalLeft,
+        top:totalTop
+    }
 }
 
 function draw_question(id){
@@ -104,7 +156,7 @@ function taskList_init_text(){
     document.getElementById('tasktablediv').innerHTML = ih;
 }
 function taskList_init_image(){
-    var ih = '', len, id = 0;
+    var ih = '', id = 0;
     for(var i in DataList){
         ih += '<div class="datadiv">';
         id = DataList[i]['__ID__'];
@@ -118,8 +170,74 @@ function taskList_init_image(){
 
     document.getElementById('tasktablediv').innerHTML = ih;
 }
+function taskList_init_image_frame(){
+    var ih = '', id = 0;
+    for(var i in DataList){
+        id = DataList[i]['__ID__'];
+        img_list[id] = 'data:image/'+DataList[i]['file_type']+';base64,'+DataList[i]['files'];
+        ih += '<div class="datadiv">';
+        ih += '<div class="imagediv" id="imagediv_'+id+'"><img src="data:image/'+DataList[i]['file_type']+';base64,'+DataList[i]['files']+'"></div>';
+        ih += '<button type="button" class="framebutton" id="frame_add" onclick="addframe('+id+')">确定（Space）</button>';
+        ih += '<button type="button" class="framebutton" id="frame_cancel" onclick="cancelframe('+id+')">撤销（Ctrl+Z）</button>';
+        ih += '</div>';
+        ih += '<div id="que_'+id+'" class="questiondiv">';
+        // ih += draw_question(id);
+        ih += '</div>';
+    }
+    ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
+    document.getElementById('tasktablediv').innerHTML = ih;
+
+    for(var i in DataList){
+        add_frame_function(DataList[i]['__ID__']);
+        frame_pos[DataList[i]['__ID__']] = [];
+    }
+}
+function add_frame_function(id){
+    var imagearea = document.getElementById('imagediv_'+id);
+    console.log(imagearea)
+    imagearea.onmousedown = function(e){
+        var x1, x2, y1, y2, posx, posy, imageoffset, div;
+        if(document.getElementsByClassName("frameDiv").length != 0){
+            return
+        }
+        div = document.createElement("div");
+        // console.log(offset(imagearea))
+        imageoffset = offset(imagearea);
+        x1 = x2 = posx = e.clientX - imageoffset.left;
+        y1 = y2 = posy = e.clientY - imageoffset.top ;
+        div.className = "frameDiv";
+        div.style.left = posx+"px";
+        div.style.top = posy+"px";
+        imagearea.appendChild(div);
+        imagearea.onmousemove = function(ev){
+            x1 = Math.min(ev.clientX - imageoffset.left, posx);
+            y1 = Math.min(ev.clientY - imageoffset.top , posy);
+            x2 = Math.max(ev.clientX - imageoffset.left, posx);
+            y2 = Math.max(ev.clientY - imageoffset.top , posy);
+            div.style.left = x1 + "px";
+            div.style.top  = y1 + "px";
+            div.style.width  = x2-x1-3+"px";
+            div.style.height = y2-y1-3+"px";
+        }
+        imagearea.onmouseup = function(){
+            // div.parentNode.removeChild(div);
+            imagearea.onmousemove = null;
+            imagearea.onmouseup = null;
+            imagearea.onmousedown = null;
+            tmpframe[id] = {
+                x1:x1,
+                x2:x2,
+                y1:y1,
+                y2:y2,
+                div:div
+            }
+            // stateBar.innerHTML= "Mouse1X: " + x1 + "&nbsp;&nbsp;&nbsp;&nbsp;Mouse1Y: " + y1 +
+            //                     "<br/>Mouse2X: " + x2 + "&nbsp;&nbsp;&nbsp;&nbsp;Mouse2Y: " + y2;
+        }
+    }
+}
 function taskList_init_audio(){
-    var ih = '', len, id = 0;
+    var ih = '', id = 0;
     for(var i in DataList){
         id = DataList[i]['__ID__'];
         ih += '<div class="datadiv">';
@@ -134,6 +252,56 @@ function taskList_init_audio(){
     document.getElementById('tasktablediv').innerHTML = ih;
 }
 
+function addframe(id){
+    if(tmpframe[id]){
+        x1 = tmpframe[id].x1;
+        y1 = tmpframe[id].y1;
+        w  = tmpframe[id].x2 - tmpframe[id].x1;
+        h  = tmpframe[id].y2 - tmpframe[id].y1;
+        var img = new Image();
+        img.src = img_list[id];
+        var canvas = document.createElement('canvas');
+        canvas.className = 'framed_img';
+        var ctx = canvas.getContext('2d');
+        var createw = document.createAttribute('width');
+        var createh = document.createAttribute('height');
+        createw.nodeValue  = w;
+        createh.nodeValue = h;
+        canvas.setAttributeNode(createh);
+        canvas.setAttributeNode(createw);
+        document.getElementById('que_'+id).appendChild(canvas);
+        ctx.drawImage(img, x1, y1, w, h, 0, 0, w, h);
+
+        frame_pos[id].push({
+            x1:tmpframe[id].x1,
+            x2:tmpframe[id].x2,
+            y1:tmpframe[id].y1,
+            y2:tmpframe[id].y2,
+            img:canvas
+        });
+
+        div = tmpframe[id].div;
+        div.parentNode.removeChild(div);
+        tmpframe[id] = null;
+        add_frame_function(id);
+
+        ih = document.getElementById('que_'+id).innerHTML;
+    }
+}
+function cancelframe(id){
+    // console.log(id);
+    if(tmpframe[id]){
+        div = tmpframe[id].div;
+        div.parentNode.removeChild(div);
+        tmpframe[id] = null;
+        add_frame_function(id);
+    }
+    else if(frame_pos[id].length > 0){
+        img = frame_pos[id].pop().img;
+        document.getElementById('que_'+id).removeChild(img);
+        add_frame_function(id);
+    }
+}
 
 function SubmitLabelResult(){
     var labelData = [];
