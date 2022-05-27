@@ -33,7 +33,14 @@ $(document).ready(function(){
     }
     else {
         $('.tasknumber').click(function() {
-            window.location.search = window.location.search.split('&')[0]+'&DataNum='+$("input[name='sc-0']:checked").val();
+            var s = window.location.search.split('&');
+            if(s.length >= 2){
+                s[1] = 'DataNum='+$("input[name='sc-0']:checked").val();
+                window.location.search = s.join('&');
+            }
+            else{
+                window.location.search = window.location.search.split('&')[0]+'&DataNum='+$("input[name='sc-0']:checked").val();
+            }
         })
         if(DataType == 'text'){
             taskList_init_text();
@@ -386,10 +393,21 @@ function cancelframe(id){
     }
 }
 function pageup_callback(){
-    var taskid = window.location.search.split('&')[0].split('=')[1];
+    // var taskid = window.location.search.split('&')[0].split('=')[1];
+    var s = window.location.search.split('&');
+    var datanum = s[1].split('=')[1];
+    if(s.length >= 3){
+        s[2] = 'CurrentItem='+Math.max(0, DataList[0]['__ID__']-datanum);
+        window.location.search = s.join('&');
+    }
+    else{
+        window.location.search = window.location.search+'&CurrentItem='+DataList[0]['__ID__'];
+    }
+    
+    return
     $.ajax({
         url: label_url,
-        type: "POST",        //请求类型
+        type: "GET",        //请求类型
         data: {
             "TaskID":taskid,
             "CurrentItem":DataList[0]['__ID__'],
@@ -397,8 +415,9 @@ function pageup_callback(){
         },
         // dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
         success: function (callback) {
-            alert("提交成功！");
-            window.location.reload();
+            console.log(callback)
+            alert("上一页！");
+            // window.location.reload();
             // userform_callback(callback['err'])
         },
         error: function () {
@@ -481,7 +500,16 @@ function SubmitLabelResult(){
         // dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
         success: function (callback) {
             alert("提交成功！");
-            window.location.reload();
+
+            var s = window.location.search.split('&');
+            if(s.length >= 3){
+                s[2] = 'CurrentItem='+Math.max(0, DataList[0]['__ID__']+datanum);
+                window.location.search = s.join('&');
+            }
+            else{
+                window.location.reload();
+            }
+            
             // userform_callback(callback['err'])
         },
         error: function () {
