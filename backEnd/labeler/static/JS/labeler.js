@@ -28,6 +28,7 @@ function changepage(page){
 
 const DTC = {
     "text":"文本",
+    "table":"表格",
     "image":"图像",
     "audio":"音频",
     "video":"视频",

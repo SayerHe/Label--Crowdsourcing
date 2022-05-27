@@ -44,10 +44,12 @@ def show_tasks(request):
             if datatype & (1 << 0):
                 datatypelist.append('text')
             if datatype & (1 << 1):
-                datatypelist.append('image')
+                datatypelist.append('table')
             if datatype & (1 << 2):
-                datatypelist.append('audio')
+                datatypelist.append('image')
             if datatype & (1 << 3):
+                datatypelist.append('audio')
+            if datatype & (1 << 4):
                 datatypelist.append('video')
 
         labeltypelist = []

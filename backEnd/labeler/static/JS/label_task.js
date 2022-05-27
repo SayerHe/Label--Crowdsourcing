@@ -5,7 +5,6 @@ $(document).ready(function(){
     }
     if(LabelType == 'frame'){
         $('#radiobox').css('display', 'none');
-        taskList_init_image_frame();
         var ctrl_down = false;
         $(document).keydown(function(e){
             // console.log(e.keyCode)
@@ -25,6 +24,12 @@ $(document).ready(function(){
                 ctrl_down = false;
             }
         })
+        if(DataType == 'text'){
+            taskList_init_text_frame();
+        }
+        else if(DataType == 'image'){
+            taskList_init_image_frame();
+        }
     }
     else {
         $('.tasknumber').click(function() {
@@ -33,8 +38,11 @@ $(document).ready(function(){
         if(DataType == 'text'){
             taskList_init_text();
         }
+        else if(DataType == 'table'){
+            taskList_init_table();
+        }
         else if(DataType == 'image'){
-                taskList_init_image();
+            taskList_init_image();
         }
         else if(DataType == 'audio'){
             taskList_init_audio();
@@ -125,7 +133,7 @@ function draw_question(id){
     }
     return tmp;
 }
-function taskList_init_text(){
+function taskList_init_table(){
     var ih = '', len, id = 0;
     for(var i in DataList){
         ih += '<div class="datadiv">';
@@ -170,6 +178,22 @@ function taskList_init_image(){
 
     document.getElementById('tasktablediv').innerHTML = ih;
 }
+function taskList_init_audio(){
+    var ih = '', id = 0;
+    for(var i in DataList){
+        id = DataList[i]['__ID__'];
+        ih += '<div class="datadiv">';
+        ih += '<audio controls controlsList="nodownload"><source src="data:audio/'+DataList[i]['file_type']+';base64,'+DataList[i]['files']+'"></audio>';
+        ih += '</div>';
+        ih += '<div class="questiondiv">';
+        ih += draw_question(id);
+        ih += '</div>';
+    }
+    ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
+
+    document.getElementById('tasktablediv').innerHTML = ih;
+}
+
 function taskList_init_image_frame(){
     var ih = '', id = 0;
     for(var i in DataList){
@@ -188,11 +212,11 @@ function taskList_init_image_frame(){
     document.getElementById('tasktablediv').innerHTML = ih;
 
     for(var i in DataList){
-        add_frame_function(DataList[i]['__ID__']);
+        add_image_frame_function(DataList[i]['__ID__']);
         frame_pos[DataList[i]['__ID__']] = [];
     }
 }
-function add_frame_function(id){
+function add_image_frame_function(id){
     var imagearea = document.getElementById('imagediv_'+id);
     console.log(imagearea)
     imagearea.onmousedown = function(e){
@@ -225,10 +249,10 @@ function add_frame_function(id){
             imagearea.onmouseup = null;
             imagearea.onmousedown = null;
             tmpframe[id] = {
-                x1:x1,
-                x2:x2,
-                y1:y1,
-                y2:y2,
+                x1:Math.max(x1 - 10, 0),
+                x2:Math.max(x2 - 10, 0),
+                y1:Math.max(y1 - 10, 0),
+                y2:Math.max(y2 - 10, 0),
                 div:div
             }
             // stateBar.innerHTML= "Mouse1X: " + x1 + "&nbsp;&nbsp;&nbsp;&nbsp;Mouse1Y: " + y1 +
@@ -236,22 +260,6 @@ function add_frame_function(id){
         }
     }
 }
-function taskList_init_audio(){
-    var ih = '', id = 0;
-    for(var i in DataList){
-        id = DataList[i]['__ID__'];
-        ih += '<div class="datadiv">';
-        ih += '<audio controls controlsList="nodownload"><source src="data:audio/'+DataList[i]['file_type']+';base64,'+DataList[i]['files']+'"></audio>';
-        ih += '</div>';
-        ih += '<div class="questiondiv">';
-        ih += draw_question(id);
-        ih += '</div>';
-    }
-    ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
-
-    document.getElementById('tasktablediv').innerHTML = ih;
-}
-
 function addframe(id){
     if(tmpframe[id]){
         x1 = tmpframe[id].x1;
@@ -283,7 +291,7 @@ function addframe(id){
         div = tmpframe[id].div;
         div.parentNode.removeChild(div);
         tmpframe[id] = null;
-        add_frame_function(id);
+        add_image_frame_function(id);
 
         ih = document.getElementById('que_'+id).innerHTML;
     }
@@ -294,12 +302,12 @@ function cancelframe(id){
         div = tmpframe[id].div;
         div.parentNode.removeChild(div);
         tmpframe[id] = null;
-        add_frame_function(id);
+        add_image_frame_function(id);
     }
     else if(frame_pos[id].length > 0){
         img = frame_pos[id].pop().img;
         document.getElementById('que_'+id).removeChild(img);
-        add_frame_function(id);
+        add_image_frame_function(id);
     }
 }
 
@@ -319,13 +327,24 @@ function SubmitLabelResult(){
             }
         }
     }
-    else{
+    else if(LabelType == 'describe'){
         label_res = document.getElementsByClassName("labelinput");
         for(var i = 0; i < label_res.length; i ++){
             id = label_res[i].getAttribute('id').slice(6);
             labelData.push({
                 'id':id,
                 'label':label_res[i].value
+            });
+        }
+    }
+    else if(LabelType == 'frame'){
+        // console.log(JSON.stringify(frame_pos[3]));
+        // return;
+        for(var i in DataList){
+            id = DataList[i]['__ID__'];
+            labelData.push({
+                'id': id,
+                'label': JSON.stringify(frame_pos[id])
             });
         }
     }
