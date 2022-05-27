@@ -397,33 +397,12 @@ function pageup_callback(){
     var s = window.location.search.split('&');
     var datanum = s[1].split('=')[1];
     if(s.length >= 3){
-        s[2] = 'CurrentItem='+Math.max(0, DataList[0]['__ID__']-datanum);
+        s[2] = 'CurrentItem=-'+Math.max(0, DataList[0]['__ID__']-datanum);
         window.location.search = s.join('&');
     }
     else{
         window.location.search = window.location.search+'&CurrentItem='+DataList[0]['__ID__'];
     }
-    
-    return
-    $.ajax({
-        url: label_url,
-        type: "GET",        //请求类型
-        data: {
-            "TaskID":taskid,
-            "CurrentItem":DataList[0]['__ID__'],
-            "rollback":'True',
-        },
-        // dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
-        success: function (callback) {
-            console.log(callback)
-            alert("上一页！");
-            // window.location.reload();
-            // userform_callback(callback['err'])
-        },
-        error: function () {
-            //当请求错误之后，自动调用
-        }
-    });
 }
 
 function SubmitLabelResult(){
@@ -503,7 +482,7 @@ function SubmitLabelResult(){
 
             var s = window.location.search.split('&');
             if(s.length >= 3){
-                s[2] = 'CurrentItem='+Math.max(0, DataList[0]['__ID__']+datanum);
+                s[2] = 'CurrentItem='+Math.max(0, DataList[DataList.length-1]['__ID__']);
                 window.location.search = s.join('&');
             }
             else{
