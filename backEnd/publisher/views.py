@@ -15,7 +15,7 @@ from pathlib import Path
 
 # Create your views here.
 
-def transform_text_file(table_data):
+def transform_table_file(table_data):
 
     table_data["__Label__"] = ["" for i in range(len(table_data))]
     table_data["__ID__"] = list(table_data.index)
@@ -45,7 +45,7 @@ def transform_zip_file(task_file, new_task, request):
     return table_data
 
 
-def estimate_text_difficulty(table_data):
+def estimate_table_difficulty(table_data):
     # 估测文本类任务的困难度
     # 瞎写的，有时间再改
     length_col = len(table_data.columns)
@@ -105,14 +105,17 @@ def create_task(request):
         else:
             newTask_param["choices"] = ""
 
-        if newTask_param["data_type"] == "text":
-            return create_text_task(request, **newTask_param)
+        if newTask_param["data_type"] == "table":
+            return create_table_task(request, **newTask_param)
         elif newTask_param["data_type"] == "image":
             return create_zip_task(request, **newTask_param)
         elif newTask_param["data_type"] == "audio":
             return create_zip_task(request, **newTask_param)
+        elif newTask_param["data_type"] == "text":
+            return create_zip_task(request, **newTask_param)
 
         return JsonResponse({'err': 'None'})
+
 
 def create_zip_task(request, inspect_method, publisher, task_name, data_type, rule_file,
                           label_type, task_deadline, task_payment, choices):
@@ -149,12 +152,18 @@ def create_zip_task(request, inspect_method, publisher, task_name, data_type, ru
             LabelTasksBaseInfo.objects.get(pk=new_task.pk).delete()
             return JsonResponse({"err": "Support JPG, PNG, JPEG only! "})
 
+    if data_type == "text":
+        image_type = task_file_table.apply(lambda x: x[0].split(".")[-1] in ["txt"], axis=1)
+        if not image_type.all():
+            LabelTasksBaseInfo.objects.get(pk=new_task.pk).delete()
+            return JsonResponse({"err": "Support txt only! "})
+
     task_file_string = str(task_file_table.to_dict())
     new_task_file = LabelTaskFile(task_id=new_task, data_file=task_file_string)
     new_task_file.save()
     return JsonResponse({'err': 'None'})
 
-def create_text_task(request, inspect_method, publisher, task_name, data_type, rule_file,
+def create_table_task(request, inspect_method, publisher, task_name, data_type, rule_file,
                           label_type, task_deadline, task_payment, choices):
 
     try:
@@ -170,8 +179,8 @@ def create_text_task(request, inspect_method, publisher, task_name, data_type, r
         task_file_table = pd.read_csv(task_file)
     elif file_type in ["xls", "xlsx", "xlsm"]:
         task_file_table = pd.read_excel(task_file)
-    task_file_table = transform_text_file(task_file_table)
-    task_difficulty = estimate_text_difficulty(task_file_table)
+    task_file_table = transform_table_file(task_file_table)
+    task_difficulty = estimate_table_difficulty(task_file_table)
     task_file_string = str(task_file_table.to_dict())
 
     new_task = LabelTasksBaseInfo(inspect_method=inspect_method, publisher=publisher, task_name=task_name,

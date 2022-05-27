@@ -100,7 +100,15 @@ def pack_data(request, task_content, task_data_type, task_id, task, label_type):
     if label_type == "choose":
         task_choices = json.loads(task.choices)
     if task_data_type == "text":
-        pass
+        for i in task_content:
+            file_name = i["files"]
+            file_path = Path.cwd().parent / ZIP_FILES / task_id / file_name
+            with open(file_path, "r", encoding="utf8") as f:
+                text_content = f.read()
+
+            i["files"] = text_content
+            i["file_type"] = file_name.split(".")[-1]
+
     elif task_data_type in ["image", "audio"]:
         for i in task_content:
             file_name = i["files"]
@@ -141,6 +149,8 @@ def label_task(request):
         task_content_all = pd.DataFrame(eval(str(task_content_all)), dtype="str")
         task_data_type = str(task.data_type)
         label_type = str(task.label_type)
+        if label_type == "frame":
+            PageSize = 1
         if LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "sampling":
             task_content_not_labeled = task_content_all[task_content_all["__Label__"] == ""][:PageSize]
             task_content_not_labeled = task_content_not_labeled.drop(columns=["__Labelers__", "__Times__"])
@@ -201,7 +211,6 @@ def label_task(request):
                     labels_choose.append({"id": label["id"], "label": item_choose})
                     item_choose = []
                     counter = 0
-            labels = labels_choose
 
         # 薪酬增加
         old_salary = UserInfo.objects.get(user=user).salary
@@ -231,6 +240,7 @@ def label_task(request):
                     old_labelers = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
                     old_labelers.append(request.user.id)
                     table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str(old_labelers)
+
         table_db.data_file = str(table.to_dict())
         table_db.save()
 
