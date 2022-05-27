@@ -130,6 +130,7 @@ def pack_data(request, task_content, task_data_type, task_id, task, label_type):
     return Data
 
 def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
+    print(rollback)
     try:
         task_id = request.GET["TaskID"]
     except KeyError:
@@ -147,6 +148,7 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
     task_content_all = pd.DataFrame(eval(str(task_content_all)), dtype="str")
     task_data_type = str(task.data_type)
     label_type = str(task.label_type)
+    print(rollback)
     if label_type == "frame":
         PageSize = 1
     if LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "sampling":
@@ -278,18 +280,21 @@ def submit_label(request):
 def label_page(request):
     CrossNum = 10
     PageSize = 3
-    rollback = True
+    rollback = False
     current_item_id = None
     if request.method == "GET":
         return show_label_page(request, CrossNum, PageSize, rollback, current_item_id)
 
     elif request.method == "POST":
-        rollback = bool(request.POST["rollback"])
-        current_item_id = int(request.POST["CurrentItem"])
+        try:
+            rollback = bool(request.POST["rollback"])
+            current_item_id = int(request.POST["CurrentItem"])
+        except KeyError:
+            pass
         if rollback == False:
             return submit_label(request)
         else:
-
+            print(rollback)
             return show_label_page(request, CrossNum, PageSize, rollback, current_item_id)
 
 
