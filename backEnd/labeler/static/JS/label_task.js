@@ -397,7 +397,7 @@ function pageup_callback(){
     var s = window.location.search.split('&');
     var datanum = s[1].split('=')[1];
     if(s.length >= 3){
-        s[2] = 'CurrentItem=-'+Math.max(0, DataList[0]['__ID__']-datanum);
+        s[2] = 'CurrentItem=-'+DataList[0]['__ID__'];
         window.location.search = s.join('&');
     }
     else{
