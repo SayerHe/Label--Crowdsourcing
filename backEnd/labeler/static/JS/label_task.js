@@ -401,7 +401,7 @@ function pageup_callback(){
         window.location.search = s.join('&');
     }
     else{
-        window.location.search = window.location.search+'&CurrentItem='+DataList[0]['__ID__'];
+        window.location.search = window.location.search+'&CurrentItem=-'+DataList[0]['__ID__'];
     }
 }
 

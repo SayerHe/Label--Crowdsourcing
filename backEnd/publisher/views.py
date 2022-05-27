@@ -39,7 +39,7 @@ def transform_zip_file(task_file, new_task, request):
     files = [str(i.relative_to(new_task_dir)) for i in new_task_dir.iterdir()]
     table_data = pd.DataFrame({"files": files})
     table_data["__Label__"] = ["" for i in range(len(table_data))]
-    table_data["__ID__"] = list(table_data.index)
+    table_data["__ID__"] = [i+1 for i in list(table_data.index)]
     table_data["__Labelers__"] = ""
     table_data["__Times__"] = 0
     return table_data

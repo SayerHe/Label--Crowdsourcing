@@ -129,6 +129,59 @@ def pack_data(request, task_content, task_data_type, task_id, task, label_type):
     }
     return Data
 
+def filter_label_rollback(x, request):
+    if x["__Labelers__"] == "":
+        return False
+    else:
+        if request.user.id in eval(x["__Labelers__"]):
+            return True
+        else:
+            return False
+
+def filter_label_forward(x, request):
+    if x["__Labelers__"] == "":
+        return True
+    else:
+        if request.user.id in eval(x["__Labelers__"]):
+            return True
+        else:
+            return False
+
+def forward_index(x, request):
+    if x["__Labelers__"] == "":
+        return None
+    else:
+        return eval(x["__Labelers__"]).index(request.user.id)
+
+def find_rollback(request, task_content_all, current_item_id, PageSize):
+    if current_item_id < 0:
+        current_item_id = abs(current_item_id)
+        rollback_task = task_content_all[:current_item_id - 1]
+        rollback_bool = rollback_task.apply(filter_label_rollback, axis=1, request=request)
+        rollback_task = rollback_task[rollback_bool][-PageSize:]
+        user_index = rollback_task.apply(lambda x: eval(x["__Labelers__"]).index(request.user.id), axis=1)
+        for i in rollback_task.index:
+            rollback_task.loc[i, "__Label__"] = str(eval(rollback_task.loc[i, "__Label__"])[user_index[i]])
+        task_content = [
+            dict(rollback_task.iloc[i, :]) for i in range(rollback_task.shape[0])
+        ]
+
+    else:
+        forward_task = task_content_all[current_item_id: ]
+        forward_bool = forward_task.apply(filter_label_forward, axis=1, request=request)
+        forward_task = forward_task[forward_bool][:PageSize]
+        user_index = forward_task.apply(forward_index, axis=1, request=request)
+
+        for i in forward_task.index:
+            if user_index[i] is not None:
+                forward_task.loc[i, "__Label__"] = str(eval(forward_task.loc[i, "__Label__"])[user_index[i]])
+        task_content = [
+            dict(forward_task.iloc[i, :]) for i in range(forward_task.shape[0])
+        ]
+        print(task_content)
+
+    return task_content
+
 def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
     try:
         task_id = request.GET["TaskID"]
@@ -148,7 +201,6 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
     task_content_all = pd.DataFrame(eval(str(task_content_all)), dtype="str")
     task_data_type = str(task.data_type)
     label_type = str(task.label_type)
-    print(rollback)
     if label_type == "frame":
         PageSize = 1
     if LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "sampling":
@@ -159,18 +211,7 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
                 dict(task_content_not_labeled.iloc[i, :]) for i in range(task_content_not_labeled.shape[0])
             ]
         else:
-            task_content_all = task_content_all[:current_item_id-1]
-            task_labeled = task_content_all[task_content_all["__Labelers__"] != ""]
-            rollback_task = task_labeled.apply(lambda x: request.user.id in eval(x["__Labelers__"]), axis=1)
-            rollback_task = task_labeled[rollback_task][-PageSize:]
-            user_index = rollback_task.apply(lambda x: eval(x["__Labelers__"]).index(request.user.id), axis=1)
-
-            for i in rollback_task.index:
-                rollback_task.loc[i, "__Label__"] = str(eval(rollback_task.loc[i, "__Label__"])[user_index[i]])
-
-            task_content = [
-                dict(rollback_task.iloc[i, :]) for i in range(rollback_task.shape[0])
-            ]
+            task_content = find_rollback(request, task_content_all, current_item_id, PageSize)
 
         Data = pack_data(request, task_content, task_data_type, task_id, task, label_type)
         return render(request, "labeler/label.html", Data)
@@ -199,20 +240,10 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
                 dict(task_content_not_labeled.iloc[i, :]) for i in range(task_content_not_labeled.shape[0])
             ]
         else:
-            task_content_all = task_content_all[:current_item_id-1]
-            task_labeled = task_content_all[task_content_all["__Labelers__"] != ""]
-            rollback_task = task_labeled.apply(lambda x: request.user.id in eval(x["__Labelers__"]), axis=1)
-            rollback_task = task_labeled[rollback_task][-PageSize:]
-            user_index = rollback_task.apply(lambda x: eval(x["__Labelers__"]).index(request.user.id), axis=1)
+            task_content= find_rollback(request, task_content_all, current_item_id, PageSize)
 
-            for i in rollback_task.index:
-                rollback_task.loc[i, "__Label__"] = str(eval(rollback_task.loc[i, "__Label__"])[user_index[i]])
-
-            task_content = [
-                dict(rollback_task.iloc[i, :]) for i in range(rollback_task.shape[0])
-            ]
         Data = pack_data(request, task_content, task_data_type, task_id, task, label_type)
-        # print(Data)
+
         return render(request, "labeler/label.html", Data)
 
 def submit_label(request):
@@ -284,9 +315,8 @@ def label_page(request):
     current_item_id = None
     if request.method == "GET":
         try:
-            rollback = bool(request.GET["rollback"])
             current_item_id = int(request.GET["CurrentItem"])
-            print(current_item_id)
+            rollback = True
         except KeyError:
             pass
         return show_label_page(request, CrossNum, PageSize, rollback, current_item_id)
