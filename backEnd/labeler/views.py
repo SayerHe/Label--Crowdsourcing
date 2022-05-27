@@ -130,16 +130,16 @@ def pack_data(request, task_content, task_data_type, task_id, task, label_type):
     return Data
 
 def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
-    print(rollback)
     try:
         task_id = request.GET["TaskID"]
     except KeyError:
         return JsonResponse({"err": "Task info missing !"})
+
     try:
         PageSize = int(request.GET["DataNum"])
-
     except KeyError:
         pass
+
     try:
         task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
     except:
@@ -212,7 +212,7 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
                 dict(rollback_task.iloc[i, :]) for i in range(rollback_task.shape[0])
             ]
         Data = pack_data(request, task_content, task_data_type, task_id, task, label_type)
-
+        # print(Data)
         return render(request, "labeler/label.html", Data)
 
 def submit_label(request):
@@ -283,19 +283,16 @@ def label_page(request):
     rollback = False
     current_item_id = None
     if request.method == "GET":
+        try:
+            rollback = bool(request.GET["rollback"])
+            current_item_id = int(request.GET["CurrentItem"])
+            print(current_item_id)
+        except KeyError:
+            pass
         return show_label_page(request, CrossNum, PageSize, rollback, current_item_id)
 
     elif request.method == "POST":
-        try:
-            rollback = bool(request.POST["rollback"])
-            current_item_id = int(request.POST["CurrentItem"])
-        except KeyError:
-            pass
-        if rollback == False:
-            return submit_label(request)
-        else:
-            print(rollback)
-            return show_label_page(request, CrossNum, PageSize, rollback, current_item_id)
+        return submit_label(request)
 
 
 def Center(request):
