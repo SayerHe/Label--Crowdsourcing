@@ -86,7 +86,7 @@ window.onload=function(){
     $('#sc-0-'+datanum).attr("checked", true);
 }
 
-var frame_pos = {}, tmpframe = {}, img_list = {};
+var frame_pos = {}, tmpframe = {}, img_list = {}, text_his = {};
 
 function offset(curEle){
     var totalLeft = null,totalTop = null,par = curEle.offsetParent;
@@ -132,6 +132,21 @@ function draw_question(id){
         tmp += '<input class="labelinput" id="label_'+id+'" placeholder="标签">\n';
     }
     return tmp;
+}
+function taskList_init_text(){
+    var ih = '', id = 0;
+    for(var i in DataList){
+        ih += '<div class="datadiv">';
+        id = DataList[i]['__ID__'];
+        ih += '<div class="prediv"><pre class="textarea">'+DataList[i]['files']+'</pre></div>';
+        ih += '</div>';
+        ih += '<div class="questiondiv">';
+        ih += draw_question(id);
+        ih += '</div>';
+    }
+    ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
+
+    document.getElementById('tasktablediv').innerHTML = ih;
 }
 function taskList_init_table(){
     var ih = '', len, id = 0;
@@ -260,54 +275,114 @@ function add_image_frame_function(id){
         }
     }
 }
+function taskList_init_text_frame(){
+    var ih = '', id = 0;
+    for(var i in DataList){
+        ih += '<div class="datadiv">';
+        id = DataList[i]['__ID__'];
+        text_his[id] = [];
+        ih += '<div class="prediv" id="prediv_'+id+'"><pre class="textarea">'+DataList[i]['files']+'</pre></div>';
+        ih += '<button type="button" class="framebutton" id="frame_add" onclick="addframe('+id+')">确定（Space）</button>';
+        ih += '<button type="button" class="framebutton" id="frame_cancel" onclick="cancelframe('+id+')">撤销（Ctrl+Z）</button>';
+        ih += '</div>';
+        ih += '<div class="questiondiv">';
+        ih += '</div>';
+    }
+    ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
+
+    document.getElementById('tasktablediv').innerHTML = ih;
+}
+function add_image_frame_function(id){
+}
 function addframe(id){
-    if(tmpframe[id]){
-        x1 = tmpframe[id].x1;
-        y1 = tmpframe[id].y1;
-        w  = tmpframe[id].x2 - tmpframe[id].x1;
-        h  = tmpframe[id].y2 - tmpframe[id].y1;
-        var img = new Image();
-        img.src = img_list[id];
-        var canvas = document.createElement('canvas');
-        canvas.className = 'framed_img';
-        var ctx = canvas.getContext('2d');
-        var createw = document.createAttribute('width');
-        var createh = document.createAttribute('height');
-        createw.nodeValue  = w;
-        createh.nodeValue = h;
-        canvas.setAttributeNode(createh);
-        canvas.setAttributeNode(createw);
-        document.getElementById('que_'+id).appendChild(canvas);
-        ctx.drawImage(img, x1, y1, w, h, 0, 0, w, h);
+    if(DataType == 'image'){
+        if(tmpframe[id]){
+            x1 = tmpframe[id].x1;
+            y1 = tmpframe[id].y1;
+            w  = tmpframe[id].x2 - tmpframe[id].x1;
+            h  = tmpframe[id].y2 - tmpframe[id].y1;
+            var img = new Image();
+            img.src = img_list[id];
+            var canvas = document.createElement('canvas');
+            canvas.className = 'framed_img';
+            var ctx = canvas.getContext('2d');
+            var createw = document.createAttribute('width');
+            var createh = document.createAttribute('height');
+            createw.nodeValue  = w;
+            createh.nodeValue = h;
+            canvas.setAttributeNode(createh);
+            canvas.setAttributeNode(createw);
+            document.getElementById('que_'+id).appendChild(canvas);
+            ctx.drawImage(img, x1, y1, w, h, 0, 0, w, h);
 
-        frame_pos[id].push({
-            x1:tmpframe[id].x1,
-            x2:tmpframe[id].x2,
-            y1:tmpframe[id].y1,
-            y2:tmpframe[id].y2,
-            img:canvas
-        });
+            frame_pos[id].push({
+                x1:tmpframe[id].x1,
+                x2:tmpframe[id].x2,
+                y1:tmpframe[id].y1,
+                y2:tmpframe[id].y2,
+                img:canvas
+            });
 
-        div = tmpframe[id].div;
-        div.parentNode.removeChild(div);
-        tmpframe[id] = null;
-        add_image_frame_function(id);
+            div = tmpframe[id].div;
+            div.parentNode.removeChild(div);
+            tmpframe[id] = null;
+            add_image_frame_function(id);
 
-        ih = document.getElementById('que_'+id).innerHTML;
+            ih = document.getElementById('que_'+id).innerHTML;
+        }
+    }
+    else if(DataType == 'text'){
+        sel = window.getSelection();
+        if (sel.isCollapsed || sel.anchorNode != sel.focusNode) {return;}
+        if (sel.getRangeAt(0).commonAncestorContainer.parentElement.className != 'textarea') {return;}
+        st = sel.anchorOffset;
+        ed = sel.focusOffset;
+        if (st == ed) return;
+        if (st > ed) {t = st; st = ed; ed = t;}
+        var ele = sel.getRangeAt(0).commonAncestorContainer.parentElement,
+            ih = ele.outerHTML,
+            ihst = 0,
+            ihed = ih.length;
+
+        for(let t = 0; t < ih.length; t ++){
+            if(ih[t] == '<'){
+                while(ih[++t] != '>'){}
+            }
+            else{
+                if(st == 0){
+                    ihst = t;
+                }
+                if(ed == 0){
+                    ihed = t;
+                }
+                st --; ed --;
+            }
+        }
+        a = ih.substring(0, ihst);
+        b = ih.substring(ihst, ihed);
+        c = ih.substring(ihed);
+        text_his[id].push(document.getElementById('prediv_'+id).innerHTML);
+        ele.outerHTML = a+'</pre>'+'<a class="selected">'+b+'</a>'+'<pre class="textarea">'+c;
     }
 }
 function cancelframe(id){
-    // console.log(id);
-    if(tmpframe[id]){
-        div = tmpframe[id].div;
-        div.parentNode.removeChild(div);
-        tmpframe[id] = null;
-        add_image_frame_function(id);
+    if(DataType == 'image'){
+        if(tmpframe[id]){
+            div = tmpframe[id].div;
+            div.parentNode.removeChild(div);
+            tmpframe[id] = null;
+            add_image_frame_function(id);
+        }
+        else if(frame_pos[id].length > 0){
+            img = frame_pos[id].pop().img;
+            document.getElementById('que_'+id).removeChild(img);
+            add_image_frame_function(id);
+        }
     }
-    else if(frame_pos[id].length > 0){
-        img = frame_pos[id].pop().img;
-        document.getElementById('que_'+id).removeChild(img);
-        add_image_frame_function(id);
+    else if(DataType == 'text'){
+        if(text_his[id].length > 0){
+            document.getElementById('prediv_'+id).innerHTML = text_his[id].pop();
+        }
     }
 }
 
@@ -340,12 +415,38 @@ function SubmitLabelResult(){
     else if(LabelType == 'frame'){
         // console.log(JSON.stringify(frame_pos[3]));
         // return;
-        for(var i in DataList){
-            id = DataList[i]['__ID__'];
-            labelData.push({
-                'id': id,
-                'label': JSON.stringify(frame_pos[id])
-            });
+        if(DataType == 'image'){
+            for(var i in DataList){
+                id = DataList[i]['__ID__'];
+                var tmplist = [];
+                for(t in frame_pos[id]){
+                    tmplist.push({
+                        x1 : frame_pos[id][t].x1,
+                        x2 : frame_pos[id][t].x2,
+                        y1 : frame_pos[id][t].y1,
+                        y2 : frame_pos[id][t].y2,
+                    })
+                }
+                labelData.push({
+                    'id': id,
+                    'label': JSON.stringify(tmplist)
+                });
+            }
+        }
+        else{
+            for(var i in DataList){
+                id = DataList[i]['__ID__'];
+                var tmplist = [];
+                tmp = document.getElementsByClassName('selected');
+                for(var t = 0; t < tmp.length; t ++){
+                    tmplist.push(tmp[t].innerText)
+                }
+                labelData.push({
+                    'id': id,
+                    'label': JSON.stringify(tmplist)
+                });
+            }
+            // return;
         }
     }
     labelData = JSON.stringify(labelData)

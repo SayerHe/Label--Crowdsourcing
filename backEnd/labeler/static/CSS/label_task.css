@@ -202,6 +202,25 @@ body{
     box-shadow: 0.2em 1em 1em 0.1em #d7d4df6b;
     border: 1px solid rgba(128, 128, 128, 0.5); */
 }
+#tasktablediv .prediv{
+    position: relative;
+    max-width: 100%;
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid gray;
+    background-color: white;
+    box-sizing: border-box;
+    margin: 0;
+    /* margin: 1em 0 1em; */
+}
+#tasktablediv .prediv pre, #tasktablediv .prediv a{
+    display: inline;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}
 #tasktablediv img{
     position: relative;
     max-width: 100%;
@@ -447,4 +466,14 @@ audio::-webkit-media-controls-enclosure{
 }
 .framed_img{
     padding: 10px;
+}
+a.selected{
+    background-color: yellow;
+    border-bottom: 1px solid gray;
+    padding: 0 2px;
+    margin: 0 2px;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
