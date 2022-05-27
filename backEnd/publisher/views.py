@@ -183,3 +183,4 @@ def create_text_task(request, inspect_method, publisher, task_name, data_type, r
     new_task_file.save()
     return JsonResponse({'err': 'None'})
 
+

@@ -66,7 +66,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'main_menu/templates'),
             os.path.join(BASE_DIR, 'publisher/templates'),
             os.path.join(BASE_DIR, 'labeler/templates'),
-            os.path.join(BASE_DIR, 'show_info/templates'),
+
 
         ],
         'APP_DIRS': True,
@@ -140,7 +140,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'main_menu/static'),
     os.path.join(BASE_DIR, 'publisher/static'),
     os.path.join(BASE_DIR, 'labeler/static'),
-    os.path.join(BASE_DIR, 'show_info/static'),
 
 ]
 # Default primary key field type
