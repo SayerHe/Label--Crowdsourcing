@@ -83,10 +83,8 @@ def create_task(request):
             newTask_param["rule_file"] = request.FILES["RuleFile"].read().decode("utf8")
         except KeyError:
             rule_text = request.POST["RuleText"]
-            if rule_text:
-                newTask_param["rule_file"] = rule_text
-            else:
-                return JsonResponse({"err": "Rule File Missing !"})
+            newTask_param["rule_file"] = rule_text
+
         if newTask_param["label_type"] == "choose":
             try:
                 choices = request.FILES["ChoiceFile"]
