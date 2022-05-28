@@ -60,61 +60,6 @@ def determine_payment(*args):
     # 后面加
     return 1
 
-def create_task(request):
-    if request.method == 'GET':
-        return render(request, "Publisher/index.html")
-    else:
-        # print(request.POST)
-        newTask_param = dict()
-        try:
-            # print(json.loads(request.body))
-            newTask_param["publisher"] = request.user
-            newTask_param["task_name"] = request.POST["TaskName"]
-            newTask_param["data_type"] = request.POST["DataType"]
-            newTask_param["label_type"] = request.POST["LabelType"]
-            task_deadline = request.POST["TaskDeadline"]
-            task_deadline = [int(i) for i in task_deadline.split('/')]
-            newTask_param["task_deadline"] = datetime.date(*task_deadline)
-            newTask_param["inspect_method"] = request.POST["InspectionMethod"]
-            newTask_param["task_payment"] = determine_payment()
-        except KeyError:
-            return JsonResponse({'err': "Basic Info Missing"})
-        try:
-            newTask_param["rule_file"] = request.FILES["RuleFile"].read().decode("utf8")
-        except KeyError:
-            rule_text = request.POST["RuleText"]
-            newTask_param["rule_file"] = rule_text
-
-        if newTask_param["label_type"] == "choose":
-            try:
-                choices = request.FILES["ChoiceFile"]
-                choices = pd.read_excel(choices)
-                choices = choices.to_dict()
-                choices_drop_na = {}
-                for question in choices.items():
-                    choices_drop_na[question[0]] = []
-                    for choice in question[1].items():
-                        if choice[1] is not np.nan:
-                            choices_drop_na[question[0]].append(choice[1])
-                newTask_param["choices"] = json.dumps(choices_drop_na)
-
-            except KeyError:
-                return JsonResponse({"err": "Choices File Missing !"})
-        else:
-            newTask_param["choices"] = ""
-
-        if newTask_param["data_type"] == "table":
-            return create_table_task(request, **newTask_param)
-        elif newTask_param["data_type"] == "image":
-            return create_zip_task(request, **newTask_param)
-        elif newTask_param["data_type"] == "audio":
-            return create_zip_task(request, **newTask_param)
-        elif newTask_param["data_type"] == "text":
-            return create_zip_task(request, **newTask_param)
-
-        return JsonResponse({'err': 'None'})
-
-
 def create_zip_task(request, inspect_method, publisher, task_name, data_type, rule_file,
                           label_type, task_deadline, task_payment, choices):
     try:
@@ -190,4 +135,56 @@ def create_table_task(request, inspect_method, publisher, task_name, data_type, 
     new_task_file.save()
     return JsonResponse({'err': 'None'})
 
+def create_task(request):
+    if request.method == 'GET':
+        return render(request, "Publisher/index.html")
+    else:
+        # print(request.POST)
+        newTask_param = dict()
+        try:
+            # print(json.loads(request.body))
+            newTask_param["publisher"] = request.user
+            newTask_param["task_name"] = request.POST["TaskName"]
+            newTask_param["data_type"] = request.POST["DataType"]
+            newTask_param["label_type"] = request.POST["LabelType"]
+            task_deadline = request.POST["TaskDeadline"]
+            task_deadline = [int(i) for i in task_deadline.split('/')]
+            newTask_param["task_deadline"] = datetime.date(*task_deadline)
+            newTask_param["inspect_method"] = request.POST["InspectionMethod"]
+            newTask_param["task_payment"] = determine_payment()
+        except KeyError:
+            return JsonResponse({'err': "Basic Info Missing"})
+        try:
+            newTask_param["rule_file"] = request.FILES["RuleFile"].read().decode("utf8")
+        except KeyError:
+            rule_text = request.POST["RuleText"]
+            newTask_param["rule_file"] = rule_text
 
+        if newTask_param["label_type"] == "choose":
+            try:
+                choices = request.FILES["ChoiceFile"]
+                choices = pd.read_excel(choices)
+                choices = choices.to_dict()
+                choices_drop_na = {}
+                for question in choices.items():
+                    choices_drop_na[question[0]] = []
+                    for choice in question[1].items():
+                        if choice[1] is not np.nan:
+                            choices_drop_na[question[0]].append(choice[1])
+                newTask_param["choices"] = json.dumps(choices_drop_na)
+
+            except KeyError:
+                return JsonResponse({"err": "Choices File Missing !"})
+        else:
+            newTask_param["choices"] = ""
+
+        if newTask_param["data_type"] == "table":
+            return create_table_task(request, **newTask_param)
+        elif newTask_param["data_type"] == "image":
+            return create_zip_task(request, **newTask_param)
+        elif newTask_param["data_type"] == "audio":
+            return create_zip_task(request, **newTask_param)
+        elif newTask_param["data_type"] == "text":
+            return create_zip_task(request, **newTask_param)
+
+        return JsonResponse({'err': 'None'})

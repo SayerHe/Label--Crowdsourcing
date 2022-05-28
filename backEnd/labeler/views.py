@@ -156,12 +156,15 @@ def forward_index(x, request):
 def find_rollback(request, task_content_all, current_item_id, PageSize):
     if current_item_id < 0:
         current_item_id = abs(current_item_id)
+        if current_item_id <= PageSize:
+            current_item_id = PageSize + 1
         rollback_task = task_content_all[:current_item_id - 1]
         rollback_bool = rollback_task.apply(filter_label_rollback, axis=1, request=request)
         rollback_task = rollback_task[rollback_bool][-PageSize:]
         user_index = rollback_task.apply(lambda x: eval(x["__Labelers__"]).index(request.user.id), axis=1)
         for i in rollback_task.index:
-            rollback_task.loc[i, "__Label__"] = str(eval(rollback_task.loc[i, "__Label__"])[user_index[i]])
+            rollback_task.loc[i, "__Label__"] = eval(rollback_task.loc[i, "__Label__"])[user_index[i]]
+        rollback_task = rollback_task.drop(columns=["__Labelers__", "__Times__"])
         task_content = [
             dict(rollback_task.iloc[i, :]) for i in range(rollback_task.shape[0])
         ]
@@ -174,12 +177,12 @@ def find_rollback(request, task_content_all, current_item_id, PageSize):
 
         for i in forward_task.index:
             if not pd.isna(user_index[i]):
-                print(type(user_index[i]), user_index[i])
-                forward_task.loc[i, "__Label__"] = str(eval(forward_task.loc[i, "__Label__"])[int(user_index[i])])
+                forward_task.loc[i, "__Label__"] = eval(forward_task.loc[i, "__Label__"])[int(user_index[i])]
+        forward_task = forward_task.drop(columns=["__Labelers__", "__Times__"])
         task_content = [
             dict(forward_task.iloc[i, :]) for i in range(forward_task.shape[0])
         ]
-        # print(task_content)
+        print(task_content)
 
     return task_content
 
@@ -218,7 +221,7 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
         return render(request, "labeler/label.html", Data)
 
     elif LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "cross":
-        if rollback == False:
+        if rollback is False:
             task_content_all = task_content_all[task_content_all["__Times__"].astype(int) < CrossNum]
             task_content_not_labeled = []
             for i in range(task_content_all.shape[0]):
@@ -267,7 +270,7 @@ def submit_label(request):
         for label in labels:
             question = choices[int(label["question_id"])][0]
             user_choose = label["label"]
-            item_choose[question]= user_choose
+            item_choose[question] = user_choose
             counter += 1
             if counter == len(choices):
                 labels_choose.append({"id": label["id"], "label": item_choose})
@@ -284,8 +287,13 @@ def submit_label(request):
     table = pd.DataFrame(eval(table), dtype="str")
     if inspect_method == "sampling":
         for label in labels:
-            table.loc[table["__ID__"] == label["id"], ["__Label__"]] = str([label["label"]])
-            table.loc[table["__ID__"] == label["id"], ["__Labelers__"]] = str([int(request.user.id)])
+            if request.user.id not in eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0]):
+                table.loc[table["__ID__"] == label["id"], ["__Label__"]] = str([label["label"]])
+                table.loc[table["__ID__"] == label["id"], ["__Labelers__"]] = str([int(request.user.id)])
+            else:
+                old_label = eval(table.loc[table["__ID__"] == label["id"], ["__Label__"]].values[0])
+                old_label[0] = str(label["label"])
+                table.loc[table["__ID__"] == label["id"], ["__Label__"]] = str(old_label)
 
     elif inspect_method == "cross":
         for label in labels:
@@ -295,14 +303,22 @@ def submit_label(request):
                 table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str([int(request.user.id)])
 
             else:
-                old_labels = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])
-                old_labels.append(label["label"])
-                table.loc[table["__ID__"] == label["id"], "__Label__"] = str(old_labels)
-                old_times = table.loc[table["__ID__"] == label["id"], "__Times__"]
-                table.loc[table["__ID__"] == label["id"], "__Times__"] = str(int(old_times) + 1)
-                old_labelers = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
-                old_labelers.append(request.user.id)
-                table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str(old_labelers)
+                if request.user.id not in eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0]):
+                    old_labels = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])
+                    old_labels.append(label["label"])
+                    table.loc[table["__ID__"] == label["id"], "__Label__"] = str(old_labels)
+                    old_times = table.loc[table["__ID__"] == label["id"], "__Times__"]
+                    table.loc[table["__ID__"] == label["id"], "__Times__"] = str(int(old_times) + 1)
+                    old_labelers = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
+                    old_labelers.append(request.user.id)
+                    table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str(old_labelers)
+                else:
+                    old_labels = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])
+                    old_labelers = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
+                    user_index = old_labelers.index(request.user.id)
+                    old_labels[user_index] = label["label"]
+                    table.loc[table["__ID__"] == label["id"], "__Label__"] = str(old_labels)
+
     # print(table)
     table_db.data_file = str(table.to_dict())
     table_db.save()
