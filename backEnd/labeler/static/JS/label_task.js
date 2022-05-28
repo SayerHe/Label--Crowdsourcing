@@ -119,8 +119,8 @@ function offset(curEle){
 
 function draw_question(id, data){
     var tmp = '';
-    console.log(JSON.parse(data))
-    console.log(typeof data)
+    // console.log(JSON.parse(data))
+    console.log(data)
     if(LabelType == 'choose'){
         var queid = 0;
         tmp += '<div class="choose_div">';
@@ -130,7 +130,7 @@ function draw_question(id, data){
             tmp += '<div class="container">';
             if(data && data[que]){
                 for(ans in ChoicesList[que]){
-                    // console.log(data[que])
+                    console.log(data[que])
                     if(ans == data[que]){
                         tmp += '<label><input type="radio" name="radio-'+id+'-'+queid+'" value="'+ChoicesList[que][ans]+'" checked="checked"><span>'+ChoicesList[que][ans]+'</span></label>';
                     }
