@@ -173,12 +173,13 @@ def find_rollback(request, task_content_all, current_item_id, PageSize):
         user_index = forward_task.apply(forward_index, axis=1, request=request)
 
         for i in forward_task.index:
-            if user_index[i] is not None:
-                forward_task.loc[i, "__Label__"] = str(eval(forward_task.loc[i, "__Label__"])[user_index[i]])
+            if not pd.isna(user_index[i]):
+                print(type(user_index[i]), user_index[i])
+                forward_task.loc[i, "__Label__"] = str(eval(forward_task.loc[i, "__Label__"])[int(user_index[i])])
         task_content = [
             dict(forward_task.iloc[i, :]) for i in range(forward_task.shape[0])
         ]
-        print(task_content)
+        # print(task_content)
 
     return task_content
 
@@ -302,7 +303,7 @@ def submit_label(request):
                 old_labelers = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
                 old_labelers.append(request.user.id)
                 table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str(old_labelers)
-    print(table)
+    # print(table)
     table_db.data_file = str(table.to_dict())
     table_db.save()
 
