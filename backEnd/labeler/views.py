@@ -263,17 +263,17 @@ def submit_label(request):
         choices = list(json.loads(task.choices).items())
         labels_choose = []
         counter = 0
-        item_choose = []
+        item_choose = {}
         for label in labels:
             question = choices[int(label["question_id"])][0]
             user_choose = label["label"]
-            item_choose.append({question: user_choose})
+            item_choose[question]= user_choose
             counter += 1
             if counter == len(choices):
                 labels_choose.append({"id": label["id"], "label": item_choose})
-                item_choose = []
+                item_choose = {}
                 counter = 0
-            labels = labels_choose
+        labels = labels_choose
 
     # 薪酬增加
     old_salary = UserInfo.objects.get(user=user).salary

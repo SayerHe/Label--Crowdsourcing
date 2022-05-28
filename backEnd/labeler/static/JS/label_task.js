@@ -119,7 +119,8 @@ function offset(curEle){
 
 function draw_question(id, data){
     var tmp = '';
-    console.log(data)
+    console.log(JSON.parse(data))
+    console.log(typeof data)
     if(LabelType == 'choose'){
         var queid = 0;
         tmp += '<div class="choose_div">';
