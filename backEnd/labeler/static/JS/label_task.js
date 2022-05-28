@@ -117,8 +117,10 @@ function offset(curEle){
     }
 }
 
-function draw_question(id){
+function draw_question(id, data){
     var tmp = '';
+    console.log(JSON.parse(data))
+    console.log(typeof data)
     if(LabelType == 'choose'){
         var queid = 0;
         tmp += '<div class="choose_div">';
@@ -126,8 +128,21 @@ function draw_question(id){
             tmp += '<div class="radio_div">';
             tmp += '<p>&nbsp;'+que+'</p>';
             tmp += '<div class="container">';
-            for(ans in ChoicesList[que]){
-                tmp += '<label><input type="radio" name="radio-'+id+'-'+queid+'" value="'+ChoicesList[que][ans]+'"><span>'+ChoicesList[que][ans]+'</span></label>';
+            if(data && data[que]){
+                for(ans in ChoicesList[que]){
+                    // console.log(data[que])
+                    if(ans == data[que]){
+                        tmp += '<label><input type="radio" name="radio-'+id+'-'+queid+'" value="'+ChoicesList[que][ans]+'" checked="checked"><span>'+ChoicesList[que][ans]+'</span></label>';
+                    }
+                    else{
+                        tmp += '<label><input type="radio" name="radio-'+id+'-'+queid+'" value="'+ChoicesList[que][ans]+'"><span>'+ChoicesList[que][ans]+'</span></label>';
+                    }
+                }
+            }
+            else{
+                for(ans in ChoicesList[que]){
+                    tmp += '<label><input type="radio" name="radio-'+id+'-'+queid+'" value="'+ChoicesList[que][ans]+'"><span>'+ChoicesList[que][ans]+'</span></label>';
+                }
             }
             tmp += '</div>';
             tmp += '</div>';
@@ -136,7 +151,7 @@ function draw_question(id){
         tmp += '</div>';
     }
     else{
-        tmp += '<input class="labelinput" id="label_'+id+'" placeholder="标签">\n';
+        tmp += '<input class="labelinput" id="label_'+id+'" placeholder="标签" value="'+data+'">\n';
     }
     return tmp;
 }
@@ -148,7 +163,7 @@ function taskList_init_text(){
         ih += '<div class="prediv"><pre class="textarea">'+DataList[i]['files']+'</pre></div>';
         ih += '</div>';
         ih += '<div class="questiondiv">';
-        ih += draw_question(id);
+        ih += draw_question(id, DataList[i]['__Label__']);
         ih += '</div>';
     }
     ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
@@ -178,7 +193,7 @@ function taskList_init_table(){
         ih += '</table>\n';
         ih += '</div>';
         ih += '<div class="questiondiv">';
-        ih += draw_question(id);
+        ih += draw_question(id, DataList[i]['__Label__']);
         ih += '</div>';
     }
     ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
@@ -193,7 +208,7 @@ function taskList_init_image(){
         ih += '<img src="data:image/'+DataList[i]['file_type']+';base64,'+DataList[i]['files']+'">';
         ih += '</div>';
         ih += '<div class="questiondiv">';
-        ih += draw_question(id);
+        ih += draw_question(id, DataList[i]['__Label__']);
         ih += '</div>';
     }
     ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
@@ -208,7 +223,7 @@ function taskList_init_audio(){
         ih += '<audio controls controlsList="nodownload"><source src="data:audio/'+DataList[i]['file_type']+';base64,'+DataList[i]['files']+'"></audio>';
         ih += '</div>';
         ih += '<div class="questiondiv">';
-        ih += draw_question(id);
+        ih += draw_question(id, DataList[i]['__Label__']);
         ih += '</div>';
     }
     ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
@@ -299,7 +314,7 @@ function taskList_init_text_frame(){
 
     document.getElementById('tasktablediv').innerHTML = ih;
 }
-function add_image_frame_function(id){
+function add_text_frame_function(id){
 }
 function addframe(id){
     if(DataType == 'image'){
