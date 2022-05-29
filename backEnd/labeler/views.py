@@ -156,14 +156,19 @@ def forward_index(x, request):
 def find_rollback(request, task_content_all, current_item_id, PageSize):
     if current_item_id < 0:
         current_item_id = abs(current_item_id)
-        if current_item_id <= PageSize:
-            current_item_id = PageSize + 1
-        rollback_task = task_content_all[:current_item_id - 1]
-        rollback_bool = rollback_task.apply(filter_label_rollback, axis=1, request=request)
-        rollback_task = rollback_task[rollback_bool][-PageSize:]
+        if current_item_id > PageSize:
+            rollback_task = task_content_all[:current_item_id - 1]
+            rollback_bool = rollback_task.apply(filter_label_rollback, axis=1, request=request)
+            rollback_task = rollback_task[rollback_bool][-PageSize:]
+        else:
+            # 当回退到头、且最前页不够PageSize条数据时
+            rollback_task = task_content_all
+            rollback_bool = rollback_task.apply(filter_label_rollback, axis=1, request=request)
+            rollback_task = rollback_task[rollback_bool][:PageSize]
+
         user_index = rollback_task.apply(lambda x: eval(x["__Labelers__"]).index(request.user.id), axis=1)
         for i in rollback_task.index:
-            rollback_task.loc[i, "__Label__"] = eval(rollback_task.loc[i, "__Label__"])[user_index[i]]
+            rollback_task.loc[i, "__Label__"] = str(eval(rollback_task.loc[i, "__Label__"])[user_index[i]])
         rollback_task = rollback_task.drop(columns=["__Labelers__", "__Times__"])
         task_content = [
             dict(rollback_task.iloc[i, :]) for i in range(rollback_task.shape[0])
@@ -177,12 +182,15 @@ def find_rollback(request, task_content_all, current_item_id, PageSize):
 
         for i in forward_task.index:
             if not pd.isna(user_index[i]):
-                forward_task.loc[i, "__Label__"] = eval(forward_task.loc[i, "__Label__"])[int(user_index[i])]
+                forward_task.loc[i, "__Label__"] = str(eval(forward_task.loc[i, "__Label__"])[int(user_index[i])])
         forward_task = forward_task.drop(columns=["__Labelers__", "__Times__"])
         task_content = [
             dict(forward_task.iloc[i, :]) for i in range(forward_task.shape[0])
         ]
-        print(task_content)
+
+    for i in task_content:
+        if i["__Label__"]:
+            i["__Label__"] = eval(i["__Label__"])
 
     return task_content
 
@@ -278,14 +286,14 @@ def submit_label(request):
                 counter = 0
         labels = labels_choose
 
-    # 薪酬增加
-    old_salary = UserInfo.objects.get(user=user).salary
-    UserInfo.objects.get(user=user).salary = old_salary + payment
     # 标签更新
     table_db = LabelTaskFile.objects.get(task_id__id=int(task_id))
     table = table_db.data_file
     table = pd.DataFrame(eval(table), dtype="str")
     if inspect_method == "sampling":
+        # 薪酬增加
+        old_salary = UserInfo.objects.get(user=user).salary
+        UserInfo.objects.get(user=user).salary = old_salary + payment
         for label in labels:
             if request.user.id not in eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0]):
                 table.loc[table["__ID__"] == label["id"], ["__Label__"]] = str([label["label"]])

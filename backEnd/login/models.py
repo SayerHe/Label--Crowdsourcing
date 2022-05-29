@@ -9,6 +9,7 @@ class UserInfo(models.Model):
         ("Publisher", "publisher"),("Labeler", "labeler"),("Manager", "manager")
     )
     user_type = models.CharField(max_length=50, choices=user_type_choice)
+    salary_log = models.TextField(default="")
 
 
 
