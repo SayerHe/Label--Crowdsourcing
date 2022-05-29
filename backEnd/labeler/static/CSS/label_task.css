@@ -388,10 +388,10 @@ audio::-webkit-media-controls-enclosure{
     background:blue;
 }
 
-#pageup{
+#pageup, #nowpage{
     position: absolute;
     top: 30px;
-    left: calc(10% + 7em);
+    left: calc(10% + 6.5em);
 	color: darkcyan;
 	font-size: 16px;
 	font-family: Lucida Bright;
@@ -402,6 +402,10 @@ audio::-webkit-media-controls-enclosure{
     margin: 0;
     /* margin-bottom: 2em; */
     width: 4em;
+}
+#nowpage{
+    left: calc(10% + 12em);
+    width: 6em;
 }
 #submit{
 	position: relative;

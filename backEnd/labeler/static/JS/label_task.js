@@ -374,9 +374,7 @@ function cancelframe(id){
     }
 }
 function pageup_callback(){
-    // var taskid = window.location.search.split('&')[0].split('=')[1];
     var s = window.location.search.split('&');
-    var datanum = s[1].split('=')[1];
     if(s.length >= 3){
         s[2] = 'CurrentItem=-'+DataList[0]['__ID__'];
         window.location.search = s.join('&');
@@ -384,6 +382,10 @@ function pageup_callback(){
     else{
         window.location.search = window.location.search+'&CurrentItem=-'+DataList[0]['__ID__'];
     }
+}
+function nowpage_callback(){
+    var s = window.location.search.split('&');
+    window.location.search = s[0]+'&'+s[1];
 }
 
 function SubmitLabelResult(){
