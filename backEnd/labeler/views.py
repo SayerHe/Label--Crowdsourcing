@@ -174,7 +174,7 @@ def find_rollback(request, task_content_all, current_item_id, PageSize):
         ]
 
     else:
-        forward_task = task_content_all[current_item_id: ]
+        forward_task = task_content_all[current_item_id+1: ]
         forward_bool = forward_task.apply(filter_label_forward, axis=1, request=request)
         forward_task = forward_task[forward_bool][:PageSize]
         user_index = forward_task.apply(forward_index, axis=1, request=request)
@@ -299,7 +299,10 @@ def submit_label(request, CrossNum):
         labels_choose = []
         counter = 0
         item_choose = {}
+        print(labels)
         for label in labels:
+            print(choices)
+            print(label["question_id"])
             question = choices[int(label["question_id"])][0]
             user_choose = label["label"]
             item_choose[question] = user_choose
