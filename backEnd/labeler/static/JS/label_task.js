@@ -1,8 +1,5 @@
 $(document).ready(function(){
     document.getElementById('ruletext').innerHTML = '<pre>'+RuleText+'</pre>';
-    if(RuleText.length == 0){
-        $('#foldbutton').click();
-    }
     if(LabelType == 'frame'){
         $('#radiobox').css('display', 'none');
         var ctrl_down = false;
@@ -55,37 +52,9 @@ $(document).ready(function(){
             taskList_init_audio();
         }
     }
-    // $('#ruletext').mouseup(function(){
-    //     sel = window.getSelection();
-    //     if (sel.anchorNode != sel.focusNode) return;
-    //     st = sel.anchorOffset;
-    //     ed = sel.focusOffset;
-    //     if (st == ed) return;
-    //     if (st > ed) {t = st; st = ed; ed = t;}
-    //     var ele = sel.getRangeAt(0).commonAncestorContainer.parentElement,
-    //         ih = ele.outerHTML,
-    //         ihst = 0,
-    //         ihed = ih.length;
-
-    //     for(let t = 0; t < ih.length; t ++){
-    //         if(ih[t] == '<'){
-    //             while(ih[++t] != '>'){}
-    //         }
-    //         else{
-    //             if(st == 0){
-    //                 ihst = t;
-    //             }
-    //             if(ed == 0){
-    //                 ihed = t;
-    //             }
-    //             st --; ed --;
-    //         }
-    //     }
-    //     a = ih.substring(0, ihst)
-    //     b = ih.substring(ihst, ihed)
-    //     c = ih.substring(ihed)
-    //     ele.outerHTML = a+'</p> <p class="selected">'+b+'</p> <p>'+c
-    // });
+    if(RuleText.length == 0){
+        $('#foldbutton').click();
+    }
 });
 
 window.onload=function(){
@@ -119,8 +88,6 @@ function offset(curEle){
 
 function draw_question(id, data){
     var tmp = '';
-    // console.log(JSON.parse(data))
-    console.log(data)
     if(LabelType == 'choose'){
         var queid = 0;
         tmp += '<div class="choose_div">';
@@ -130,8 +97,7 @@ function draw_question(id, data){
             tmp += '<div class="container">';
             if(data && data[que]){
                 for(ans in ChoicesList[que]){
-                    console.log(data[que])
-                    if(ans == data[que]){
+                    if(ChoicesList[que][ans] == data[que]){
                         tmp += '<label><input type="radio" name="radio-'+id+'-'+queid+'" value="'+ChoicesList[que][ans]+'" checked="checked"><span>'+ChoicesList[que][ans]+'</span></label>';
                     }
                     else{
@@ -151,7 +117,7 @@ function draw_question(id, data){
         tmp += '</div>';
     }
     else{
-        tmp += '<input class="labelinput" id="label_'+id+'" placeholder="标签" value="'+data+'">\n';
+        tmp += '<input class="labelinput" id="label_'+id+'" placeholder="描述" value="'+data+'">\n';
     }
     return tmp;
 }
@@ -421,29 +387,56 @@ function pageup_callback(){
 }
 
 function SubmitLabelResult(){
-    var labelData = [];
+    var labelData = [], finished = true;
     var taskid = window.location.search.split('&')[0].split('=')[1];
     if(LabelType == 'choose'){
-        label_res = $('input[type="radio"]:checked')
-        for(var i = 0; i < label_res.length; i ++){
-            s = label_res[i].getAttribute('name').split('-');
-            if(s[0] == 'radio'){
-                labelData.push({
-                    'id':s[1],
-                    'question_id':s[2],
-                    'label':label_res[i].value
-                });
+        for(i in DataList){
+            id = DataList[i]['__ID__'];
+            var j = 0;
+            for(que in ChoicesList){
+                label_res = $('input[name="radio-'+id+'-'+j+'"]:checked');
+                j ++;
+                if(label_res.length > 0){
+                    labelData.push({
+                        'id':id,
+                        'question_id':j,
+                        'label':label_res[0].value
+                    });
+                }
+                else{
+                    finished = false;
+                }
             }
         }
+        // return;
+        // label_res = $('input[type="radio"]:checked')
+        // for(var i = 0; i < label_res.length; i ++){
+        //     s = label_res[i].getAttribute('name').split('-');
+        //     if(s[0] == 'radio'){
+        //         labelData.push({
+        //             'id':s[1],
+        //             'question_id':s[2],
+        //             'label':label_res[i].value
+        //         });
+        //     }
+        // }
     }
     else if(LabelType == 'describe'){
         label_res = document.getElementsByClassName("labelinput");
         for(var i = 0; i < label_res.length; i ++){
-            id = label_res[i].getAttribute('id').slice(6);
-            labelData.push({
-                'id':id,
-                'label':label_res[i].value
-            });
+            if(label_res[i].value){
+                id = label_res[i].getAttribute('id').slice(6);
+                labelData.push({
+                    'id':id,
+                    'label':label_res[i].value
+                });
+            }
+            else{
+                console.log(offset(label_res[i]).top - 85 + "px");
+                $("html,body").animate({scrollTop:offset(label_res[i]).top - 85 + "px"}, 500);
+                finished = false;
+                return
+            }
         }
     }
     else if(LabelType == 'frame'){
@@ -483,33 +476,35 @@ function SubmitLabelResult(){
             // return;
         }
     }
-    labelData = JSON.stringify(labelData)
-    $.ajax({
-        url: label_url,
-        type: "POST",        //请求类型
-        data: {
-            "TaskID":taskid,
-            "Labels":labelData,
-        },
-        // dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
-        success: function (callback) {
-            alert("提交成功！");
+    if(finished){
+        labelData = JSON.stringify(labelData)
+        $.ajax({
+            url: label_url,
+            type: "POST",        //请求类型
+            data: {
+                "TaskID":taskid,
+                "Labels":labelData,
+            },
+            // dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
+            success: function (callback) {
+                alert("提交成功！");
 
-            var s = window.location.search.split('&');
-            if(s.length >= 3){
-                s[2] = 'CurrentItem='+Math.max(0, DataList[DataList.length-1]['__ID__']);
-                window.location.search = s.join('&');
+                var s = window.location.search.split('&');
+                if(s.length >= 3){
+                    s[2] = 'CurrentItem='+Math.max(0, DataList[DataList.length-1]['__ID__']);
+                    window.location.search = s.join('&');
+                }
+                else{
+                    window.location.reload();
+                }
+                
+                // userform_callback(callback['err'])
+            },
+            error: function () {
+                //当请求错误之后，自动调用
             }
-            else{
-                window.location.reload();
-            }
-            
-            // userform_callback(callback['err'])
-        },
-        error: function () {
-            //当请求错误之后，自动调用
-        }
-    });
+        });
+    }
 }
 
 function foldbutton_onclick(){
