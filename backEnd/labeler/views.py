@@ -1,13 +1,12 @@
 from django.shortcuts import render
-from matplotlib.font_manager import json_dump
 from publisher.models import LabelTasksBaseInfo, LabelTaskFile
 from login.models import UserInfo
 from django.http import HttpResponse, JsonResponse
-from io import StringIO
 import numpy as np
 import pandas as pd
 from pathlib import Path
 import json
+import time
 import base64
 
 
@@ -258,7 +257,28 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
 
         return render(request, "labeler/label.html", Data)
 
-def submit_label(request):
+def salary_log(user_info, task, label, payment, state, method="new"):
+    if method == "new":
+        if state == "Success":
+            user_info.salary = user_info.salary + payment
+        salary_log = pd.DataFrame(eval(user_info.salary_log))
+        salary_log.loc[salary_log.shape[0]] = [task.task_name, label["id"], time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                                               payment, state]
+    else:
+        salary_log = pd.DataFrame(eval(user_info.salary_log))
+        old_state = salary_log.loc[(salary_log["TaskName"] == task.task_name) & (salary_log["ItemID"]==label["id"]), "State"].values[0]
+        if old_state == "Fail" and state == "Success":
+            user_info.salary = user_info.salary + payment
+        elif old_state == "Success" and state == "Fail":
+            user_info.salary = user_info.salary - payment
+
+        salary_log.loc[(salary_log["TaskName"] == task.task_name) & (salary_log["ItemID"]==label["id"])] = pd.Series([task.task_name, label["id"], time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                                               payment, state])
+    user_info.salary_log = str(salary_log.to_dict())
+    user_info.save()
+
+
+def submit_label(request, CrossNum):
     try:
         task_id = request.POST["TaskID"]
         labels = request.POST["Labels"]
@@ -269,7 +289,7 @@ def submit_label(request):
     payment = task.task_payment
     inspect_method = task.inspect_method
     label_type = task.label_type
-    user = request.user
+
     if label_type == "choose":
         choices = list(json.loads(task.choices).items())
         labels_choose = []
@@ -291,24 +311,29 @@ def submit_label(request):
     table = table_db.data_file
     table = pd.DataFrame(eval(table), dtype="str")
     if inspect_method == "sampling":
-        # 薪酬增加
-        old_salary = UserInfo.objects.get(user=user).salary
-        UserInfo.objects.get(user=user).salary = old_salary + payment
+        user_info = UserInfo.objects.get(user=request.user)
         for label in labels:
-            if request.user.id not in eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0]):
+            if table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0] == "":
                 table.loc[table["__ID__"] == label["id"], ["__Label__"]] = str([label["label"]])
-                table.loc[table["__ID__"] == label["id"], ["__Labelers__"]] = str([int(request.user.id)])
+                table.loc[table["__ID__"] == label["id"], ["__Labelers__"]] = str([request.user.id])
+                salary_log(user_info, task, label, payment, "Success", method="new")
             else:
-                old_label = eval(table.loc[table["__ID__"] == label["id"], ["__Label__"]].values[0])
-                old_label[0] = str(label["label"])
-                table.loc[table["__ID__"] == label["id"], ["__Label__"]] = str(old_label)
+                if  request.user.id not in eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0]):
+                    table.loc[table["__ID__"] == label["id"], ["__Label__"]] = str([label["label"]])
+                    table.loc[table["__ID__"] == label["id"], ["__Labelers__"]] = str([request.user.id])
+                    salary_log(user_info, task, label, payment, "Success", method="new")
+                else:
+                    old_label = eval(table.loc[table["__ID__"] == label["id"], ["__Label__"]].values[0])
+                    old_label[0] = str(label["label"])
+                    table.loc[table["__ID__"] == label["id"], ["__Label__"]] = str(old_label)
+                    salary_log(user_info, task, label, payment, "Success", method="update")
 
     elif inspect_method == "cross":
         for label in labels:
             if table.loc[table["__ID__"] == label["id"], "__Label__"].values[0] == "":
                 table.loc[table["__ID__"] == label["id"], "__Label__"] = str([label["label"]])
                 table.loc[table["__ID__"] == label["id"], "__Times__"] = str(1)
-                table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str([int(request.user.id)])
+                table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str([request.user.id])
 
             else:
                 if request.user.id not in eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0]):
@@ -320,12 +345,32 @@ def submit_label(request):
                     old_labelers = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
                     old_labelers.append(request.user.id)
                     table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str(old_labelers)
+
+                    if table.loc[table["__ID__"] == label["id"], "__Times__"].values[0] == CrossNum:
+                        labelers_log = table.loc[table["__ID__"] == label["id"], "__Labelers__"].tolist()
+                        right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
+                        for i in range(len(labelers_log)):
+                            user_info = UserInfo.objects.get(user_id=labelers_log[i])
+                            user_label = table.loc[table["__ID__"] == label["id"], "__Label__"][i]
+                            # 用户是否成功的的判断   --好nmd复杂
+                            state = "Success"
+                            salary_log(user_info, task, label, payment, state, method="new")
+
                 else:
                     old_labels = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])
                     old_labelers = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
                     user_index = old_labelers.index(request.user.id)
                     old_labels[user_index] = label["label"]
                     table.loc[table["__ID__"] == label["id"], "__Label__"] = str(old_labels)
+                    if table.loc[table["__ID__"] == label["id"], "__Times__"].values[0] == CrossNum:
+                        labelers_log = table.loc[table["__ID__"] == label["id"], "__Labelers__"].tolist()
+                        right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
+                        for i in range(len(labelers_log)):
+                            user_info = UserInfo.objects.get(user_id=labelers_log[i])
+                            user_label = table.loc[table["__ID__"] == label["id"], "__Label__"][i]
+                            # 用户是否成功的的判断   --好nmd复杂
+                            state = "Success"
+                            salary_log(user_info, task, label, payment, state, method="update")
 
     # print(table)
     table_db.data_file = str(table.to_dict())
@@ -347,7 +392,7 @@ def label_page(request):
         return show_label_page(request, CrossNum, PageSize, rollback, current_item_id)
 
     elif request.method == "POST":
-        return submit_label(request)
+        return submit_label(request, CrossNum)
 
 
 def Center(request):
