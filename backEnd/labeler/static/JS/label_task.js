@@ -395,7 +395,6 @@ function SubmitLabelResult(){
             var j = 0;
             for(que in ChoicesList){
                 label_res = $('input[name="radio-'+id+'-'+j+'"]:checked');
-                j ++;
                 if(label_res.length > 0){
                     labelData.push({
                         'id':id,
@@ -406,20 +405,9 @@ function SubmitLabelResult(){
                 else{
                     finished = false;
                 }
+                j ++;
             }
         }
-        // return;
-        // label_res = $('input[type="radio"]:checked')
-        // for(var i = 0; i < label_res.length; i ++){
-        //     s = label_res[i].getAttribute('name').split('-');
-        //     if(s[0] == 'radio'){
-        //         labelData.push({
-        //             'id':s[1],
-        //             'question_id':s[2],
-        //             'label':label_res[i].value
-        //         });
-        //     }
-        // }
     }
     else if(LabelType == 'describe'){
         label_res = document.getElementsByClassName("labelinput");
@@ -432,16 +420,16 @@ function SubmitLabelResult(){
                 });
             }
             else{
-                console.log(offset(label_res[i]).top - 85 + "px");
-                $("html,body").animate({scrollTop:offset(label_res[i]).top - 85 + "px"}, 500);
+                $("#taskdiv").animate({scrollTop:offset(label_res[i]).top - 132 + "px"}, 100);
+                $(label_res[i].getAttribute('id')).animate({
+                    borderColor:'red'
+                }, 500)
                 finished = false;
                 return
             }
         }
     }
     else if(LabelType == 'frame'){
-        // console.log(JSON.stringify(frame_pos[3]));
-        // return;
         if(DataType == 'image'){
             for(var i in DataList){
                 id = DataList[i]['__ID__'];
@@ -473,7 +461,6 @@ function SubmitLabelResult(){
                     'label': JSON.stringify(tmplist)
                 });
             }
-            // return;
         }
     }
     if(finished){
