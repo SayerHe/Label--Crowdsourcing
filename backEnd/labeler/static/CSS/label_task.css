@@ -309,6 +309,7 @@ audio::-webkit-media-controls-enclosure{
     width: 80%;
     height: 24px;
     border: 1px solid rgba(128, 128, 128, 0.3);
+    border-radius: 2px;
     padding: 3px;
     margin-bottom: 0.5em;
 }
@@ -321,7 +322,7 @@ audio::-webkit-media-controls-enclosure{
     background-color: white;
     margin-bottom: 0.5em;
     border-radius: 5px;
-    /* border: 1px solid rgba(128, 128, 128, 0.8); */
+    border: 1px solid rgba(0, 0, 0, 0);
 }
 .radio_div p{
     margin: 0 0 10px;

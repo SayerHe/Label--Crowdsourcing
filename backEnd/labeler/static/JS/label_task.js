@@ -403,7 +403,11 @@ function SubmitLabelResult(){
                     });
                 }
                 else{
+                    node = $('input[name="radio-'+id+'-'+j+'"]')[0].parentNode.parentNode.parentNode
+                    $("#taskdiv").animate({scrollTop:offset(node).top - 132 + "px"}, 100);
+                    node.style.borderColor = 'red';
                     finished = false;
+                    return;
                 }
                 j ++;
             }
@@ -421,11 +425,9 @@ function SubmitLabelResult(){
             }
             else{
                 $("#taskdiv").animate({scrollTop:offset(label_res[i]).top - 132 + "px"}, 100);
-                $(label_res[i].getAttribute('id')).animate({
-                    borderColor:'red'
-                }, 500)
+                label_res[i].style.borderColor = 'red';
                 finished = false;
-                return
+                return ;
             }
         }
     }
