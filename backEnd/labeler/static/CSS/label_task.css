@@ -308,7 +308,7 @@ audio::-webkit-media-controls-enclosure{
     left: 0;
     width: 80%;
     height: 24px;
-    border: 1px solid rgba(128, 128, 128, 0.3);
+    border: 1px solid #8080804D;
     border-radius: 2px;
     padding: 3px;
     margin-bottom: 0.5em;
@@ -404,6 +404,7 @@ audio::-webkit-media-controls-enclosure{
     width: 4em;
 }
 #nowpage{
+    display: none;
     left: calc(10% + 12em);
     width: 6em;
 }

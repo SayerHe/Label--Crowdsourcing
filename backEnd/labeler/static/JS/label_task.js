@@ -29,16 +29,8 @@ $(document).ready(function(){
         }
     }
     else {
-        $('.tasknumber').click(function() {
-            var s = window.location.search.split('&');
-            if(s.length >= 2){
-                s[1] = 'DataNum='+$("input[name='sc-0']:checked").val();
-                window.location.search = s.join('&');
-            }
-            else{
-                window.location.search = window.location.search.split('&')[0]+'&DataNum='+$("input[name='sc-0']:checked").val();
-            }
-        })
+        // $('.tasknumber').click(function() {
+        // })
         if(DataType == 'text'){
             taskList_init_text();
         }
@@ -55,6 +47,29 @@ $(document).ready(function(){
     if(RuleText.length == 0){
         $('#foldbutton').click();
     }
+    if(window.location.search.split('&').length > 2){
+        $("#nowpage").css('display', 'inline');
+    }
+    $('input').change(function(){
+        if(this.className == 'tasknumber'){
+            var s = window.location.search.split('&');
+            if(s.length >= 2){
+                s[1] = 'DataNum='+$("input[name='sc-0']:checked").val();
+                window.location.search = s.join('&');
+            }
+            else{
+                window.location.search = window.location.search.split('&')[0]+'&DataNum='+$("input[name='sc-0']:checked").val();
+            }
+        }
+        else{
+            if(LabelType == 'describe'){
+                this.style.borderColor = '#8080804D';
+            }
+            else{
+                this.parentNode.parentNode.parentNode.style.borderColor = '#00000000';
+            }
+        }
+    })
 });
 
 window.onload=function(){
@@ -389,7 +404,7 @@ function nowpage_callback(){
 }
 
 function SubmitLabelResult(){
-    var labelData = [], finished = true;
+    var labelData = [], finished = true, scr = 0;
     var taskid = window.location.search.split('&')[0].split('=')[1];
     if(LabelType == 'choose'){
         for(i in DataList){
@@ -405,11 +420,12 @@ function SubmitLabelResult(){
                     });
                 }
                 else{
-                    node = $('input[name="radio-'+id+'-'+j+'"]')[0].parentNode.parentNode.parentNode
-                    $("#taskdiv").animate({scrollTop:offset(node).top - 132 + "px"}, 100);
+                    node = $('input[name="radio-'+id+'-'+j+'"]')[0].parentNode.parentNode.parentNode;
+                    if(finished){
+                        scr = offset(node).top - 132 + "px";
+                    }
                     node.style.borderColor = 'red';
                     finished = false;
-                    return;
                 }
                 j ++;
             }
@@ -426,10 +442,11 @@ function SubmitLabelResult(){
                 });
             }
             else{
-                $("#taskdiv").animate({scrollTop:offset(label_res[i]).top - 132 + "px"}, 100);
+                if(finished){
+                    scr = offset(label_res[i]).top - 132 + "px";
+                }
                 label_res[i].style.borderColor = 'red';
                 finished = false;
-                return ;
             }
         }
     }
@@ -495,6 +512,9 @@ function SubmitLabelResult(){
                 //当请求错误之后，自动调用
             }
         });
+    }
+    else{
+        $("#taskdiv").animate({scrollTop:scr}, 100);
     }
 }
 
