@@ -2,14 +2,11 @@ import numpy as np
 from django.shortcuts import render
 from django.http import JsonResponse,JsonResponse
 from django.shortcuts import render, redirect
-from django.urls import reverse
 import pandas as pd
 from publisher.models import LabelTasksBaseInfo, LabelTaskFile
 import datetime
 import zipfile
 import rarfile
-from django.utils import datastructures
-from io import StringIO
 import json
 from pathlib import Path
 
@@ -163,7 +160,14 @@ def create_task(request):
         if newTask_param["label_type"] == "choose":
             try:
                 choices = request.FILES["ChoiceFile"]
-                choices = pd.read_excel(choices)
+                table_format_permit = ["csv", "xls", "xlsx", "xlsm"]
+                choices_file_type = str(choices).split(".")[1]
+                if choices_file_type not in table_format_permit:
+                    return JsonResponse({'err': "Choices File Wrong! (Support csv, xlsx, xls, xlsm only)"})
+                if choices_file_type in ["xls", "xlsx", "xlsm"]:
+                    choices = pd.read_excel(choices)
+                elif choices_file_type == "csv":
+                    choices = pd.read_excel(choices)
                 choices = choices.to_dict()
                 choices_drop_na = {}
                 for question in choices.items():

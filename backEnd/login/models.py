@@ -10,7 +10,7 @@ class UserInfo(models.Model):
         ("Publisher", "publisher"),("Labeler", "labeler"),("Manager", "manager")
     )
     user_type = models.CharField(max_length=50, choices=user_type_choice)
-    salary_log = models.TextField(default=str(pd.DataFrame(columns=["TaskName", "ItemID", "Time", "Payment", "State"]).to_dict()))
+    salary_log = models.TextField(default=str(pd.DataFrame(columns=["TaskID", "TaskName", "ItemID", "Time", "Payment", "State"]).to_dict()))
 
 
 

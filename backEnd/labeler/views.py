@@ -189,7 +189,10 @@ def find_rollback(request, task_content_all, current_item_id, PageSize):
 
     for i in task_content:
         if i["__Label__"]:
-            i["__Label__"] = eval(i["__Label__"])
+            try:
+                i["__Label__"] = eval(i["__Label__"])
+            except:
+                pass
 
     return task_content
 
@@ -209,7 +212,7 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
     except:
         return JsonResponse({"err": "Task not exist !"})
     task_content_all = LabelTaskFile.objects.get(task_id__id=int(task_id)).data_file
-    task_content_all = pd.DataFrame(eval(str(task_content_all)), dtype="str")
+    task_content_all = pd.DataFrame(eval(task_content_all), dtype="str")
     task_data_type = str(task.data_type)
     label_type = str(task.label_type)
     if label_type == "frame":
@@ -262,18 +265,19 @@ def salary_log(user_info, task, label, payment, state, method="new"):
         if state == "Success":
             user_info.salary = user_info.salary + payment
         salary_log = pd.DataFrame(eval(user_info.salary_log))
-        salary_log.loc[salary_log.shape[0]] = [task.task_name, label["id"], time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+        salary_log.loc[salary_log.shape[0]] = [task.id, task.task_name, label["id"], time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
                                                payment, state]
     else:
         salary_log = pd.DataFrame(eval(user_info.salary_log))
-        old_state = salary_log.loc[(salary_log["TaskName"] == task.task_name) & (salary_log["ItemID"]==label["id"]), "State"].values[0]
+        old_state = salary_log.loc[(salary_log["TaskID"] == task.id) & (salary_log["ItemID"]==label["id"]), "State"].values[0]
         if old_state == "Fail" and state == "Success":
             user_info.salary = user_info.salary + payment
         elif old_state == "Success" and state == "Fail":
             user_info.salary = user_info.salary - payment
 
-        salary_log.loc[(salary_log["TaskName"] == task.task_name) & (salary_log["ItemID"]==label["id"])] = pd.Series([task.task_name, label["id"], time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-                                               payment, state])
+        salary_log.loc[(salary_log["TaskID"] == task.id) & (salary_log["ItemID"]==label["id"])] = [task.id, task.task_name, label["id"], time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                                               payment, state]
+
     user_info.salary_log = str(salary_log.to_dict())
     user_info.save()
 
@@ -314,18 +318,18 @@ def submit_label(request, CrossNum):
         user_info = UserInfo.objects.get(user=request.user)
         for label in labels:
             if table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0] == "":
-                table.loc[table["__ID__"] == label["id"], ["__Label__"]] = str([label["label"]])
-                table.loc[table["__ID__"] == label["id"], ["__Labelers__"]] = str([request.user.id])
+                table.loc[table["__ID__"] == label["id"], "__Label__"] = str([label["label"]])
+                table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str([request.user.id])
                 salary_log(user_info, task, label, payment, "Success", method="new")
             else:
-                if  request.user.id not in eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0]):
-                    table.loc[table["__ID__"] == label["id"], ["__Label__"]] = str([label["label"]])
-                    table.loc[table["__ID__"] == label["id"], ["__Labelers__"]] = str([request.user.id])
+                if request.user.id not in eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0]):
+                    table.loc[table["__ID__"] == label["id"], "__Label__"] = str([label["label"]])
+                    table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str([request.user.id])
                     salary_log(user_info, task, label, payment, "Success", method="new")
                 else:
-                    old_label = eval(table.loc[table["__ID__"] == label["id"], ["__Label__"]].values[0])
+                    old_label = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])
                     old_label[0] = str(label["label"])
-                    table.loc[table["__ID__"] == label["id"], ["__Label__"]] = str(old_label)
+                    table.loc[table["__ID__"] == label["id"], "__Label__"] = str(old_label)
                     salary_log(user_info, task, label, payment, "Success", method="update")
 
     elif inspect_method == "cross":
