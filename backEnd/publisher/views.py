@@ -15,7 +15,7 @@ from pathlib import Path
 def transform_table_file(table_data):
 
     table_data["__Label__"] = ["" for i in range(len(table_data))]
-    table_data["__ID__"] = list(table_data.index)
+    table_data["__ID__"] = [i+1 for i in list(table_data.index)]
     table_data["__Labelers__"] = ""
     table_data["__Times__"] = 0
     table_data = table_data.dropna(axis=0, how='all')
