@@ -11,11 +11,11 @@
                 UserName = '{{ UserName|safe }}';
         </script>
         {% load static %}
-        <link rel="stylesheet" href="{% static 'CSS/label.css' %}" type="text/css">
+        <link rel="stylesheet" href="{% static 'CSS/check.css' %}" type="text/css">
         <link rel="stylesheet" href="{% static 'CSS/accordion-menu.css' %}" type="text/css">
         <link rel="stylesheet" href="{% static 'CSS/pagination.css' %}" type="text/css">
         <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
-        <script type="text/javascript" src="{% static 'JS/labeler.js' %}"></script>
+        <script type="text/javascript" src="{% static 'JS/check.js' %}"></script>
         <script type="text/javascript" src="{% static 'JS/pagination.js' %}"></script>
         <script type="text/javascript" src="{% static 'JS/accordion-menu.js' %}"></script>
     </head>
@@ -30,7 +30,7 @@
                         <li><a href="javascript:">个人中心</a></li>
                         <li><a href="javascript:">账号管理</a></li>
                         <li><a href="javascript:Logout()">退出登录</a></li>
-                    </ul>   
+                    </ul>
                 </div>
             </div>
         </div> {% endcomment %}
@@ -75,4 +75,3 @@
     </body>
 </html>
 
- 
