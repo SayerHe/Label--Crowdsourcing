@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'main_menu.apps.MainMenuConfig',
     'publisher.apps.PublisherConfig',
     'labeler.apps.LabelerConfig',
+    'show_info.apps.ShowInfoConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -66,6 +67,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'main_menu/templates'),
             os.path.join(BASE_DIR, 'publisher/templates'),
             os.path.join(BASE_DIR, 'labeler/templates'),
+            os.path.join(BASE_DIR, 'show_info/templates'),
 
 
         ],
@@ -140,7 +142,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'main_menu/static'),
     os.path.join(BASE_DIR, 'publisher/static'),
     os.path.join(BASE_DIR, 'labeler/static'),
-
+    os.path.join(BASE_DIR, 'show_info/static'),
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
