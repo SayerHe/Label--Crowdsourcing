@@ -1,0 +1,49 @@
+/*
+    * Plugin :  an-skill-bar
+    * Version: 1.0.1
+    * Description: A plugin that fills bars with a percentage you set.
+    * Author: Hasan Misbah
+    * Copyright 2018, Hasan Misbah
+    * Free to use and abuse under the MIT license.
+    * http://www.opensource.org/licenses/mit-license.php
+    */
+.skillbar{
+    width: 8em;
+    position:relative;
+    display: inline-block;
+    overflow:hidden;
+    height:10px;
+    background-color:rgb(240, 240, 240);
+    border-radius:5px;
+}
+.skillbar.html .filled{
+    background-color:#c0e5fa
+}
+
+.skillbar .percent{
+    position:absolute;
+    top:0;
+    z-index:9;
+    right:5px;
+    color:#000;
+    font-weight:700;
+    font-size: 10px;
+}
+.skillbar .filled{
+    z-index:8;
+    position:absolute;
+    top:0;
+    left:0;
+    background-color:rgba(0,80,80,.3);
+    height:100%;
+    width:20px;
+    border-radius:5px 0 0 5px;
+}
+.percent{
+    position: relative;
+    display: inline;
+    left: 0.5em;
+}
+
+  
+/*# sourceMappingURL=an-skill-bar.css.map */

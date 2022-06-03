@@ -4,10 +4,10 @@ window.onload=function(){
 }
 
 var urls = {
-    "#Homepage":user_url,
-    "#Publish":publish_url,
+    "#Homepage":labeler_url,
+    "#Publish":publisher_url,
     "#T_Doing":check_url,
-    "#T_Finished":user_url,
+    "#T_Finished":history_url,
     "#Center":Center_url,
 };
 
