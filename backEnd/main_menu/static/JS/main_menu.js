@@ -7,7 +7,7 @@ var urls = {
     "#Homepage":user_url,
     "#Publish":publish_url,
     "#T_Doing":check_url,
-    "#T_Finished":user_url,
+    "#T_Finished":finished_url,
     "#Center":Center_url,
 };
 

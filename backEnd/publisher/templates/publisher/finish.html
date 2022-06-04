@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script>
+            var labeler_url = "{% url 'labeler:show_tasks' %}",
+                label_url = "{% url 'labeler:label_task' %}",
+                main_menu_url = "{% url 'main_menu:index' %}",
+                login_url = "{% url 'login:index' %}",
+                UserName = '{{ UserName|safe }}';
+        </script>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'CSS/finish.css' %}" type="text/css">
+        <link rel="stylesheet" href="{% static 'CSS/accordion-menu.css' %}" type="text/css">
+        <link rel="stylesheet" href="{% static 'CSS/pagination.css' %}" type="text/css">
+        <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
+        <script type="text/javascript" src="{% static 'JS/finish.js' %}"></script>
+        <script type="text/javascript" src="{% static 'JS/pagination.js' %}"></script>
+        <script type="text/javascript" src="{% static 'JS/accordion-menu.js' %}"></script>
+    </head>
+
+    <body>
+        {% comment %} <div id="head">
+            <a id="Title"><p><b>数据标注平台</b></p></a>
+            <div id="userdiv">
+                <a id="User"><p id="UserName">UserName</p></a>
+                <div id="usermenu">
+                    <ul>
+                        <li><a href="javascript:">个人中心</a></li>
+                        <li><a href="javascript:">账号管理</a></li>
+                        <li><a href="javascript:Logout()">退出登录</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div> {% endcomment %}
+        <h1 id="title">查看任务</h1>
+        <div class="sss">
+            <div class="searchdiv">
+                <h3 class="ssstitle">查找任务</h3>
+                <div id="searchform">
+                    <input type="text" placeholder="输入任务标题包含的关键词" id="searchinput"/>
+                    <button id="searchsubmit"></button>
+                </div>
+            </div>
+            <div class="selectdiv">
+                <h3 class="ssstitle">数据类型</h3>
+                <div id="selectcheckbox">
+                    <input type="checkbox" class="checkboxclass" name="datatype" id="datatype-text"  value="text"><label for="datatype-text" ><span>文本</span></label>
+                    <input type="checkbox" class="checkboxclass" name="datatype" id="datatype-table"  value="table"><label for="datatype-table" ><span>表格</span></label>
+                    <input type="checkbox" class="checkboxclass" name="datatype" id="datatype-image" value="image"><label for="datatype-image"><span>图片</span></label>
+                    <input type="checkbox" class="checkboxclass" name="datatype" id="datatype-audio" value="audio"><label for="datatype-audio"><span>音频</span></label>
+                    <input type="checkbox" class="checkboxclass" name="datatype" id="datatype-video" value="video"><label for="datatype-video"><span>视频</span></label>
+                </div>
+            </div>
+            <div class="selectdiv">
+                <h3 class="ssstitle">标注类型</h3>
+                <div id="selectcheckbox">
+                    <input type="checkbox" class="checkboxclass" name="marktype" id="marktype-describe" value="describe"><label for="marktype-describe"><span>描述</span></label>
+                    <input type="checkbox" class="checkboxclass" name="marktype" id="marktype-choose" value="choose"><label for="marktype-choose"><span>选择</span></label>
+                    <input type="checkbox" class="checkboxclass" name="marktype" id="marktype-frame"    value="frame"><label for="marktype-frame" ><span>框选</span></label>
+                </div>
+            </div>
+            <div class="selectdiv">
+                <h3 class="ssstitle">任务难度</h3>
+                <div id="selectcheckbox">
+                    <input type="checkbox" class="checkboxclass" name="taskdifficulty" id="taskdifficulty-easy"      value="easy"><label for="taskdifficulty-easy" ><span>简单</span></label>
+                    <input type="checkbox" class="checkboxclass" name="taskdifficulty" id="taskdifficulty-medium"    value="medium"><label for="taskdifficulty-medium"><span>中等</span></label>
+                    <input type="checkbox" class="checkboxclass" name="taskdifficulty" id="taskdifficulty-difficult" value="difficult"><label for="taskdifficulty-difficult"><span>复杂</span></label>
+                </div>
+            </div>
+        </div>
+        <div id="taskdiv"><div class="container collapse" id="tasks"></div></div>
+        <div id="pagediv"><div id="pagination" size="0" on-change="changepage"></div></div>
+    </body>
+</html>
+

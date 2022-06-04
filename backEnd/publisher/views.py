@@ -194,3 +194,5 @@ def create_task(request):
         return JsonResponse({'err': 'None'})
 def check(request):
     return render(request, "publisher/check.html", {'UserName': request.user.username})
+def finish(request):
+    return render(request, "publisher/finish.html", {'UserName': request.user.username})
