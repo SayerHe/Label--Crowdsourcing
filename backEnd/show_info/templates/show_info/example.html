@@ -20,212 +20,72 @@
     <script type="text/javascript" src="{% static "JS/jquery-3.6.0.js" %}"></script>
     <script type="text/javascript" src="{% static "JS/center/echarts.min.js" %}"></script>
     <script type="text/javascript" src="{% static "JS/center/index.js" %}"></script>
+    <script src="{%  static "JS/center/circleChart.min.js" %}"></script>
 
 </head>
 <body>
-  <div id="distribution" style="height: 375px"></div>
-  <script type="text/javascript">
-    var dom = document.getElementById('distribution');
-    var myChart = echarts.init(dom, null, {
-      renderer: 'canvas',
-      useDirtyRect: false
-    });
-    var app = {};
-
-    var option;
-
-    option = {
-  tooltip: {
-    trigger: 'item'
-  },
-  legend: {
-    top: '5%',
-    left: 'center'
-  },
-  series: [
-    {
-      name: 'Access From',
-      type: 'pie',
-      radius: ['40%', '70%'],
-      avoidLabelOverlap: false,
-      itemStyle: {
-        borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2
-      },
-      label: {
-        show: false,
-        position: 'center'
-      },
-      emphasis: {
-        label: {
-          show: true,
-          fontSize: '40',
-          fontWeight: 'bold'
-        }
-      },
-      labelLine: {
-        show: false
-      },
-      data: [
-        { value: 1048, name: '文本' },
-        { value: 735, name: '图片' },
-        { value: 580, name: '音频' },
-        { value: 484, name: '视频' }
-      ]
-    }
-  ]
-};
-
-    if (option && typeof option === 'object') {
-      myChart.setOption(option);
-    }
-
-    window.addEventListener('resize', myChart.resize);
-
+<h4>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp标注者个人中心</h4>
+<div id="con2">
+    <div class="A">
+        <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 24 24" fill="none" stroke="#4a90e2" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8"/></svg>
+        <p>已完成任务量</p>
+        <h5>125</h5>
+    </div>
+    <div class="B">
+        <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 24 24" fill="none" stroke="#df7373" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+        <p>平均准确率</p>
+        <h5>93 %</h5>
+    </div>
+    <div class="C">
+        <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 24 24" fill="none" stroke="#f5a623" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        <p>钱包余额</p>
+        <h5>666 元</h5>
+    </div>
+    <div class="D">
+        <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 24 24" fill="none" stroke="#7ed321" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        <p>待审收入</p>
+        <h5>321 元</h5>
+    </div>
+</div>
+<div id="con1">
+    <h4> &nbsp&nbsp&nbsp&nbsp信用评级情况 </h4>
+    <div class="circleChart"></div>
+        <script>
+            $(".circleChart").circleChart({
+            color: "darkcyan",
+            startAngle: 25,
+            text: true,
+            animation: "easeInOutCubic",
+            backgroundColor: "#F5F6F8", // 进度条之外颜色
+            background: true, // 是否显示进度条之外颜色
+            speed: 1000, // 出现的时间
+            widthRatio: 0.1, // 进度条宽度
+            value: 85,  // 进度条占比
+            unit: "percent",
+            counterclockwise: false, // 进度条反方向
+            size: 175, // 圆形大小
+            animate: true, // 进度条动画
+            backgroundFix: true,
+            lineCap: "round",
+            redraw: false,
+            cAngle: 0,
+            textCenter: true,
+            textSize: false,
+            textWeight: "normal",
+            textFamily: "sans-serif",
+            relativeTextSize: 1 / 7, // 进度条中字体占比
+            autoCss: true,
+            onDraw: function(el, circle) {
+                circle.text(Math.round(circle.value) + "分"); // 根据value修改text
+            }
+        });
     </script>
+    <p class="font" id="mid">信用等级</p>
+    <p class="big"> B </p>
+</div>
 
-
-    <div id="grade" style="height: 500px"></div>
-      <script type="text/javascript">
-        var dom = document.getElementById('grade');
-        var myChart = echarts.init(dom, null, {
-          renderer: 'canvas',
-          useDirtyRect: false
-        });
-        var app = {};
-
-        var option;
-
-        option = {
-      series: [
-        {
-          type: 'gauge',
-          startAngle: 180,
-          endAngle: 0,
-          min: 0,
-          max: 1,
-          splitNumber: 8,
-          axisLine: {
-            lineStyle: {
-              width: 6,
-              color: [
-                [0.25, '#FF6E76'],
-                [0.5, '#FDDD60'],
-                [0.75, '#58D9F9'],
-                [1, '#7CFFB2']
-              ]
-            }
-          },
-          pointer: {
-            icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
-            length: '12%',
-            width: 20,
-            offsetCenter: [0, '-60%'],
-            itemStyle: {
-              color: 'auto'
-            }
-          },
-          axisTick: {
-            length: 12,
-            lineStyle: {
-              color: 'auto',
-              width: 2
-            }
-          },
-          splitLine: {
-            length: 20,
-            lineStyle: {
-              color: 'auto',
-              width: 5
-            }
-          },
-          axisLabel: {
-            color: '#464646',
-            fontSize: 20,
-            distance: -60,
-            formatter: function (value) {
-              if (value === 0.875) {
-                return 'A';
-              } else if (value === 0.625) {
-                return 'B';
-              } else if (value === 0.375) {
-                return 'C';
-              } else if (value === 0.125) {
-                return 'D';
-              }
-              return '';
-            }
-          },
-          title: {
-            offsetCenter: [0, '-20%'],
-            fontSize: 30
-          },
-          detail: {
-            fontSize: 25,
-            offsetCenter: [0, '0%'],
-            valueAnimation: true,
-            formatter: function (value) {
-              return Math.round(value * 100) + '分';
-            },
-            color: 'auto'
-          },
-          data: [
-            {
-              value: 0.75,
-              name: '信用评分'
-            }
-          ]
-        }
-      ]
-    };
-
-        if (option && typeof option === 'object') {
-          myChart.setOption(option);
-        }
-
-        window.addEventListener('resize', myChart.resize);
-      </script>
-
-        <div id="salary" style="height: 350px"></div>
-      <script type="text/javascript">
-        var dom = document.getElementById('salary');
-        var myChart = echarts.init(dom, null, {
-          renderer: 'canvas',
-          useDirtyRect: false
-        });
-        var app = {};
-
-        var option;
-
-        option = {
-            title: {
-        text: '近一周薪酬'
-      },
-      xAxis: {
-        type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: [
-        {
-          data: [120, 200, 150, 80, 70, 110, 130],
-          type: 'bar'
-        }
-      ]
-    };
-
-        if (option && typeof option === 'object') {
-          myChart.setOption(option);
-        }
-
-        window.addEventListener('resize', myChart.resize);
-      </script>
-
-
-
+<div id="con3">
+    <h4> 历史活跃度 </h4>
     <div id="active" style="height: 350px"></div>
       <script type="text/javascript">
         var dom = document.getElementById('active');
@@ -256,9 +116,6 @@
       data.push(randomData());
     }
     option = {
-      title: {
-        text: '历史活跃度'
-      },
       tooltip: {
         trigger: 'axis',
         formatter: function (params) {
@@ -320,5 +177,7 @@
 
         window.addEventListener('resize', myChart.resize);
       </script>
+</div>
+
 </body>
 </html>

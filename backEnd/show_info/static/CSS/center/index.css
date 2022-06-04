@@ -5,31 +5,113 @@ body{
     background-color: #F5F6F8;
 }
 #distribution{
-    width: 50%;
+	background-color: #FFFFFF;
+	width:400px;
+	height: 400px;
     position:absolute;
-	left:0;
-	top:25px;
+	left:150PX;
+	top:50px;
 }
 
 #active{
-    width: 50%;
+    width: 100%;
 	position:absolute;
-	left:45%;
-	top:50px;
+	left:0%;
+	top:15px;
 
 }
 
-#grade{
-    width: 50%;
-	position:absolute;
-	left:0px;
-	top:48%;
-
+#con1 {
+	background-color: #FFFFFF;
+	width: 33%;
+	height: 50%;
+	position: absolute;
+	left: 40px;
+	bottom: 20%;
 }
-#salary{
-    width: 50%;
-	position:absolute;
-	left:45%;
-	top: 50%;
 
+#con1 .circleChart{
+	color:darkcyan;
+}
+#con1 #mid{
+	color: #98a6ad!important;
+	position: absolute;
+	bottom:40px;
+	transform: translateX(-50%);
+	left: 50%;
+}
+#con1 .big{
+	position: absolute;
+	bottom:60px;
+
+	transform: translateX(-50%);
+	font-size: 26px;
+	font-weight: bold;
+	left: 50%;
+}
+
+#con2 {
+	display: flex;
+	width: 97.5%;
+
+	height: 15%;
+	position: absolute;
+	left: 40px;
+	top: 9%;
+}
+#con2 .A,#con2 .B, #con2 .C, #con2 .D{
+	background-color: #FFFFFF;
+	display: flex;
+	width: 22.5%;
+	height: 100%;
+	position: absolute;
+}
+#con2 .A{
+	left:0%;
+}
+#con2 .B{
+	left:25%;
+}
+#con2 .C{
+	left:50%;
+}
+#con2 .D{
+	left:75%;
+}
+#con2 .A svg, #con2 .B svg, #con2 .C svg, #con2 .D svg{
+	padding: 20px;
+}
+#con2 .A p,#con2 .B p,#con2 .C p,#con2 .D p{
+	font-family: Nunito,PingFang SC,Microsoft Yahei,Hiragino Sans GB,Microsoft Sans Serif,WenQuanYi Micro Hei,sans-serif;
+	color: #98a6ad!important;
+	font-size: 13px;
+	position: absolute;
+	right:30px;
+	bottom: 17.5px;
+	text-align: right;
+}
+
+#con2 .A h5,#con2 .B h5,#con2 .C h5,#con2 .D h5{
+	font-family: Nunito,PingFang SC,Microsoft Yahei,Hiragino Sans GB,Microsoft Sans Serif,WenQuanYi Micro Hei,sans-serif;
+	color: black!important;
+	font-size: 20px;
+	position: absolute;
+	right:30px;
+	top: -6px;
+	text-align: right;
+}
+
+#con3{
+	background-color: #FFFFFF;
+	width: 61%;
+	height: 50%;
+	position: absolute;
+	right: 22px;
+	bottom: 20%;
+}
+
+#con3 h4{
+	position: absolute;
+	left:30px;
+	top:5px;
 }
