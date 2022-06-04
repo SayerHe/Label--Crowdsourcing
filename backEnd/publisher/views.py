@@ -192,5 +192,6 @@ def create_task(request):
             return create_zip_task(request, **newTask_param)
 
         return JsonResponse({'err': 'None'})
+
 def check(request):
     return render(request, "publisher/check.html", {'UserName': request.user.username})
