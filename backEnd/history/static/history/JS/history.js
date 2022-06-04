@@ -1,15 +1,15 @@
 var tempdata=[
-    {'TaskID':'1', 'TaskName':'task-1', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'100%', 'Accuracy':'98%'},
-    {'TaskID':'2', 'TaskName':'task-2', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'28%' , 'Accuracy':'28%'},
-    {'TaskID':'3', 'TaskName':'task-3', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'38%' , 'Accuracy':'38%'},
-    {'TaskID':'4', 'TaskName':'task-4', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'48%' , 'Accuracy':'48%'},
-    {'TaskID':'5', 'TaskName':'task-5', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'58%' , 'Accuracy':'58%'},
-    {'TaskID':'6', 'TaskName':'task-6', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'68%' , 'Accuracy':'68%'},
-    {'TaskID':'7', 'TaskName':'task-7', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'78%' , 'Accuracy':'78%'},
-    {'TaskID':'8', 'TaskName':'task-8', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'88%' , 'Accuracy':'88%'},
+    {'TaskID':'1', 'TaskName':'task-1', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'100'},
+    {'TaskID':'2', 'TaskName':'task-2', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'28' },
+    {'TaskID':'3', 'TaskName':'task-3', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'38' },
+    {'TaskID':'4', 'TaskName':'task-4', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'48' },
+    {'TaskID':'5', 'TaskName':'task-5', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'58' },
+    {'TaskID':'6', 'TaskName':'task-6', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'68' },
+    {'TaskID':'7', 'TaskName':'task-7', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'78' },
+    {'TaskID':'8', 'TaskName':'task-8', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'88' },
 ];
 $(document).ready(function(){
-    data_callback(tempdata);
+    showhtml(TaskList);
     $('.skillbar').skillbar({
         speed: 1000,
     });
@@ -52,34 +52,27 @@ function askfordata(data){
 }
 
 function data_callback(data){
-    const TaskNumOnOnePage = 10;
-    // 将data分页
-    pagedata = Math.max(1, Math.ceil(data["DataNumber"]/TaskNumOnOnePage));
-    taskdata = data['DataList'];
-    // var tasks = [];
-    // for(var i = 0; i < taskdata.length; i ++){
-    //     tasks.push(totaskclass(taskdata[i]));
-    // }
-    var tasks = data;
     //更新页码
+    const TaskNumOnOnePage = 10;
+    pagedata = Math.max(1, Math.ceil(data.length/TaskNumOnOnePage));
     if(pagedata != document.getElementById("pagination").getAttribute("size")){
         pagination = document.getElementById("pagination");
         pagination.setAttribute("size", pagedata);
         pagination.setAttribute("page", Page);
         Pagination_init();
     }
-    showhtml(tasks);
+    showhtml(data);
 }
 
 function showhtml(tasks){
     var tmphtml = '';
-    tmphtml += '<thead><tr><th>任务ID</th><th>任务名称</th><th>发布日期</th><th>截止日期</th><th>完成度</th><th>准确度</th><th>操作</th></tr></thead>';
+    tmphtml += '<thead><tr><th>任务ID</th><th>任务名称</th><th>发布日期</th><th>截止日期</th><th>完成度</th><th>操作</th></tr></thead>';
     tmphtml += '<tbody>';
     for(var i in tasks){
         tmphtml += '<tr>';
         for(var t in tasks[i]){
             if(t == 'Progress'){
-                tmphtml += '<td><div class="skillbar html"><div class="filled" data-width="'+tasks[i][t]+'"></div></div><span class="percent">'+tasks[i][t]+'</span></td>'
+                tmphtml += '<td><div class="skillbar html"><div class="filled" data-width="'+tasks[i][t]+'%"></div></div><span class="percent">'+tasks[i][t]+'%</span></td>'
             }
             else{
                 tmphtml += '<td>'+tasks[i][t]+'</td>';

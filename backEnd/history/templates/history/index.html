@@ -8,7 +8,8 @@
                 label_url = "{% url 'labeler:label_task' %}",
                 main_menu_url = "{% url 'main_menu:index' %}",
                 login_url = "{% url 'login:index' %}",
-                UserName = '{{ UserName|safe }}';
+                TaskList = {{ TaskList|safe }};
+                {% comment %} console.log(TaskList) {% endcomment %}
         </script>
         {% load static %}
         <link rel="stylesheet" href="{% static '/history/CSS/history.css' %}" type="text/css">
