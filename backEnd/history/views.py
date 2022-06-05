@@ -20,7 +20,6 @@ def get_publisher_history(request):
     taskDDL = [i.task_deadline.astimezone(tz).strftime('%Y-%m-%d') for i in tasks]
     taskPublishTime = [i.publish_time.astimezone(tz).strftime('%Y-%m-%d') for i in tasks]
     completeDegree = []
-    completeAcc = []
     for task in tasks:
         inspect_method = task.inspect_method
         task_situation = LabelTaskFile.objects.get(task_id=task).data_file
@@ -42,7 +41,10 @@ def get_publisher_history(request):
     return data
 
 def get_labeler_history(request):
-    pass
+    user_info = UserInfo.objects.get(user=request.user)
+    task_log = user_info.task_log
+    task_log = pd.DataFrame(eval(task_log)).to_dict("records")
+    return task_log
 
 def get_history(request):
     if request.method == "GET":
@@ -52,5 +54,4 @@ def get_history(request):
             data = get_labeler_history(request)
         elif user_type == "publisher":
             data = get_publisher_history(request)
-        print(type(data))
-        return render(request, "history/index.html", {'TaskList':json.dumps(data)})
+        return render(request, "history/index.html", {'UserType': UserInfo.objects.get(user=user).user_type, 'TaskList':json.dumps(data)})

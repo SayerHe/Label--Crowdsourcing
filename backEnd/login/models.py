@@ -4,7 +4,8 @@ import pandas as pd
 
 class UserInfo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    salary = models.FloatField()
+    salary = models.FloatField(default=0)
+    undetermined = models.FloatField(default=0)
     ability = models.IntegerField()
     user_type_choice = (
         ("Publisher", "publisher"),("Labeler", "labeler"),("Manager", "manager")
