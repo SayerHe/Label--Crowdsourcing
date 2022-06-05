@@ -49,6 +49,9 @@ body{
 }
 
 .operation-button{
+    font-size: 14px;
+    /* font-family:Arial,sans-serif; */
+    text-decoration: none;
     margin-right: 1em;
     border: none;
     border-radius: 3px;
