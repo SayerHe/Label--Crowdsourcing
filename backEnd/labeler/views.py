@@ -389,14 +389,14 @@ def submit_label(request, CrossNum):
                         labelers_log = table.loc[table["__ID__"] == label["id"], "__Labelers__"].tolist()
                         right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
                         for i in range(len(labelers_log)):
-                            user_info = UserInfo.objects.get(user__id=labelers_log[i])
+                            user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
                             user_label = table.loc[table["__ID__"] == label["id"], "__Label__"][i]
                             # 用户是否成功的的判断   --好nmd复杂
                             if user_label == right_label:
                                 state = "Success"
                             else:
                                 state = "Fail"
-                            salary_log_cross(user_info, task, label, payment, state, cross_finish=True, method="new")
+                            salary_log_cross(user_info_i, task, label, payment, state, cross_finish=True, method="new")
 
 
 
@@ -410,14 +410,14 @@ def submit_label(request, CrossNum):
                         labelers_log = table.loc[table["__ID__"] == label["id"], "__Labelers__"].tolist()
                         right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
                         for i in range(len(labelers_log)):
-                            user_info = UserInfo.objects.get(user__id=labelers_log[i])
+                            user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
                             user_label = table.loc[table["__ID__"] == label["id"], "__Label__"][i]
                             # 用户是否成功的的判断   --好nmd复杂
                             if user_label == right_label:
                                 state = "Success"
                             else:
                                 state = "Fail"
-                            salary_log_cross(user_info, task, label, payment, state, cross_finish=True, method="update")
+                            salary_log_cross(user_info_i, task, label, payment, state, cross_finish=True, method="update")
                     else:
                         user_info = UserInfo.objects.get(user=request.user)
                         salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="update")
