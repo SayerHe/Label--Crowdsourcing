@@ -38,6 +38,7 @@ def get_publisher_history(request):
             'PublishDate': taskPublishTime,
             'Deadline': taskDDL,
             'Progress': completeDegree,}
+    # print(data["Progress"])
     data = pd.DataFrame(data).to_dict('records')
     return data
 

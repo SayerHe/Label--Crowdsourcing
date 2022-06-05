@@ -9,7 +9,6 @@ import json
 import time
 import base64
 
-
 ZIP_FILES = "zip_tasks"
 
 def show_tasks(request):
@@ -289,6 +288,7 @@ def salary_log_cross(user_info, task, label, payment, state, cross_finish, metho
             user_info.salary_log = str(salary_log.to_dict())
             user_info.undetermined = user_info.undetermined + payment
         else:
+            user_info.undetermined = user_info.undetermined - payment
             if state == "Success":
                 user_info.payment = user_info.payment + payment
             salary_log = pd.DataFrame(eval(user_info.salary_log))
@@ -298,7 +298,6 @@ def salary_log_cross(user_info, task, label, payment, state, cross_finish, metho
         if not cross_finish:
             salary_log = pd.DataFrame(eval(user_info.salary_log))
             salary_log.loc[(salary_log["TaskID"] == task.id) & (salary_log["ItemID"] == label["id"]), "Time"] = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime())
-            user_info.undetermined = user_info.undetermined + payment
         else:
             salary_log = pd.DataFrame(eval(user_info.salary_log))
             old_state = salary_log.loc[(salary_log["TaskID"] == task.id) & (salary_log["ItemID"]==label["id"]), "State"].values[0]
