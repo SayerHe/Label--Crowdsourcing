@@ -153,19 +153,21 @@ function showhtml_labeler(tasks){
 
 function deletebutton(taskid){
     console.log(taskid);
-    $.ajax({
-        url: history_url,
-        type: "POST",        //请求类型
-        data: {'TaskID':taskid},
-        // ConvertEmptyStringToNull: false,
-        // dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
-        success: function (returndata) {
-            console.log(typeof returndata)
-        },
-        error: function () {
-            //当请求错误之后，自动调用
-        }
-    });
+    if(confirm('是否确认删除该任务？')){
+        $.ajax({
+            url: history_url,
+            type: "POST",        //请求类型
+            data: {'TaskID':taskid},
+            // ConvertEmptyStringToNull: false,
+            // dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
+            success: function (returndata) {
+                window.location.reload();
+            },
+            error: function () {
+                //当请求错误之后，自动调用
+            }
+        });
+    }
 }
 function contactbutton(taskid){
     console.log(taskid);
