@@ -1,0 +1,77 @@
+:root{
+    --head-height: 4.5em;
+    --menu-width:15em;
+}
+
+#title{
+    position: relative;
+    text-align: center;
+    color: #3a3a3a;
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+body{
+    margin: 0;
+    background-color: rgb(245,246,248);
+}
+
+#maindiv{
+    position: relative;
+    width: 90%;
+    left: 5%;
+    background-color: white;
+}
+
+#tablediv{
+    position: relative;
+    width: 90%;
+    left: 5%;
+    padding: 2em 0;
+    /* overflow: visible; */
+}
+
+#datatable{
+    width: 100%;
+    border-collapse: collapse;
+}
+#datatable *{
+    text-align: left;
+    color: #6C757D;
+}
+#datatable thead{
+    border-bottom: 2px solid #dee2e6;
+    background-color: #F1F5F7;
+    /* background-color: red; */
+}
+#datatable tr{
+    border-top: 1px solid #dee2e6;
+}
+
+.operation-button{
+    margin-right: 1em;
+    border: none;
+    border-radius: 3px;
+    padding: 3.2px 9.6px;
+    color: white !important;
+    opacity: 0.8;
+}
+#delete-button{
+    background-color: rgb(188, 35, 35);
+}
+#contact-button{
+    background-color: #1ABC9C;
+}
+#delete-button:hover{
+    background-color: darkred;
+}
+#contact-button:hover{
+    background-color: darkcyan;
+}
+
+#pagediv{
+    position: relative;
+    text-align: center;
+    /* margin-top: -60px; */
+    margin: 2em 0;
+}

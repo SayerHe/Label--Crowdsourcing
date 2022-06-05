@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 # Create your models here.
 class LabelTasksBaseInfo(models.Model):
@@ -15,6 +16,7 @@ class LabelTasksBaseInfo(models.Model):
     task_difficulty = models.CharField(max_length=50)
     inspect_method = models.CharField(max_length=10, default="cross")
     choices = models.CharField(max_length=2000, default="")
+    publish_time = models.DateTimeField(default=datetime.datetime.now().strftime('%Y-%m-%d'))
 
     def __str__(self):
         return self.task_name
