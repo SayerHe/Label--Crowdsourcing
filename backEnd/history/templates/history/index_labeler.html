@@ -4,9 +4,7 @@
         <meta charset="utf-8">
         <title></title>
         <script>
-            var label_url = "{% url 'labeler:label_task' %}",
-                TaskList = {{ TaskList|safe }},
-                UserType = '{{ UserType|safe }}';
+            var TaskList = {{ TaskList|safe }};
                 {% comment %} console.log(TaskList) {% endcomment %}
         </script>
         {% load static %}
