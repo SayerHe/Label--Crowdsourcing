@@ -8,12 +8,13 @@
         <script>
             var UserName = '{{ UserName }}', APPName = '{{ APPName }}', Params = '{{ Params }}', UserType = '{{ UserType }}',
                 main_menu_url = "{% url 'main_menu:index' %}",
-                user_url = "{% url 'labeler:show_tasks' %}",
-                publish_url = "{% url 'publisher:create_task' %}",
+                labeler_url = "{% url 'labeler:show_tasks' %}",
+                publisher_url = "{% url 'publisher:create_task' %}",
                 login_url = "{% url 'login:index' %}",
                 Center_url = "{% url 'show_info:Center' %}",
                 finished_url = "{% url 'publisher:finish' %}",
-                check_url = "{% url 'publisher:check' %}";
+                check_url = "{% url 'publisher:check' %}",
+                history_url = "{% url 'show_info:Center' %}";
             console.log(UserType)
         </script>
         <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
