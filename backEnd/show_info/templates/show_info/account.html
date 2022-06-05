@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         {% load static %}
         <title>Welcome</title>
-        <link rel="stylesheet" href="{% static 'CSS/main_menu.css' %}" type="text/css">
+        <link rel="stylesheet" href="{% static 'CSS/account.css' %}" type="text/css">
         <script>
             var UserName = '{{ UserName }}', APPName = '{{ APPName }}', Params = '{{ Params }}', UserType = '{{ UserType }}',
                 main_menu_url = "{% url 'main_menu:index' %}",
@@ -18,7 +18,7 @@
             {% comment %} console.log(UserType) {% endcomment %}
         </script>
         <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
-        <script type="text/javascript" src="{% static 'JS/main_menu.js' %}"></script>
+        <script type="text/javascript" src="{% static 'JS/account.js' %}"></script>
     </head>
 
     <body>
@@ -32,7 +32,7 @@
                         <li><a href="javascript:">个人中心</a></li>
                         <li><a href="javascript:manage_acc()">账号管理</a></li>
                         <li><a href="javascript:Logout()">退出登录</a></li>
-                    </ul>   
+                    </ul>
                 </div>
             </div>
         </div>
@@ -57,8 +57,9 @@
                 </li>
             </ul>
         </div>
+    <div id = "cona">
 
+    </div>
     </body>
 </html>
 
- 
