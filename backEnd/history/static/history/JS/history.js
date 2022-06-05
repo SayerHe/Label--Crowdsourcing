@@ -153,12 +153,6 @@ function showhtml_labeler(tasks){
 
 function deletebutton(taskid){
     console.log(taskid);
-}
-function contactbutton(taskid){
-    console.log(taskid);
-}
-function exportbutton(taskid){
-    console.log(taskid);
     $.ajax({
         url: history_url,
         type: "POST",        //请求类型
@@ -166,12 +160,18 @@ function exportbutton(taskid){
         // ConvertEmptyStringToNull: false,
         // dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
         success: function (returndata) {
-            console.log(returndata)
+            console.log(typeof returndata)
         },
         error: function () {
             //当请求错误之后，自动调用
         }
     });
+}
+function contactbutton(taskid){
+    console.log(taskid);
+}
+function exportbutton(taskid){
+    window.location.href=download_url+'?TaskID='+taskid;
 }
 function continuebutton(taskid){
     window.open(label_url+'?TaskID='+taskid+'&DataNum=3');

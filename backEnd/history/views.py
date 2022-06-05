@@ -57,20 +57,21 @@ def get_history(request):
         elif user_type == "publisher":
             data = get_publisher_history(request)
         return render(request, "history/index.html", {'UserType': UserInfo.objects.get(user=user).user_type, 'TaskList':json.dumps(data)})
-    elif request.method == 'POST':
-        try:
-            task_id=request.POST['TaskID']
-        except KeyError:
-            return JsonResponse({"err": "ERROR !"})
-        data = LabelTaskFile.objects.get(task_id=task_id).data_file
-        data = pd.DataFrame(eval(data), dtype=str)
-        excel_name = os.path.join(settings.MEDIA_ROOT, str(task_id) + '.csv')
-        data.to_csv(excel_name, index=False)  # , encoding='utf_8_sig'
-        try:
-            response = FileResponse(open(excel_name, 'rb'))
-            response['content_type'] = "application/octet-stream"
-            response['Content-Disposition'] = 'attachment; filename=' + os.path.basename(excel_name)
-            return response
-        except Exception:
-            raise Http404
 
+def download(request):
+    try:
+        task_id=request.GET['TaskID']
+    except KeyError:
+        return JsonResponse({"err": "ERROR !"})
+    data = LabelTaskFile.objects.get(task_id=task_id).data_file
+    data = pd.DataFrame(eval(data), dtype=str)
+    excel_name = os.path.join(settings.MEDIA_ROOT, str(task_id) + '.csv')
+    data.to_csv(excel_name, index=False, encoding='utf_8_sig')
+    try:
+        response = FileResponse(open(excel_name, 'rb'))
+        response['content_type'] = "application/octet-stream"
+        response['Content-Disposition'] = 'attachment; filename=' + os.path.basename(excel_name)
+        return response
+    except Exception:
+        raise Http404
+    
