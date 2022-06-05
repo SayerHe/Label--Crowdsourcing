@@ -200,9 +200,16 @@ body{
 #con4 {
 	background-color: #FFFFFF;
 	position: absolute;
-	bottom: 35px;
+	bottom: 0;
 	left: 35px;
 	width: 47%;
-	height: 12.5%;
+	height: 80px;
 }
-
+#button1{
+	position: absolute;
+	background-color: rgba(0, 139, 139, 0.25);
+	top:25px;
+	font-size: 16px;
+	border-radius: 8px;
+	left:5%;
+}

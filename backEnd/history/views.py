@@ -61,8 +61,9 @@ def get_history(request):
     if request.method == "POST":
         try:
             task_id = request.POST["TaskID"]
+            LabelTasksBaseInfo.objects.get(pk=task_id).delete()
         except:
-            pass
+            return JsonResponse({"err": "TaskID Missing !"})
 
 def download(request):
     try:
