@@ -15,6 +15,13 @@ const tableTitle={
     'Deadline':'截止日期',
     'Progress':'任务进度',
     'TaskState':'任务状态',
+},
+DTC = {
+    "text":"文本",
+    "table":"表格",
+    "image":"图像",
+    "audio":"音频",
+    "video":"视频",
 };
 $(document).ready(function(){
     if(UserType == 'publisher'){
@@ -98,12 +105,12 @@ function showhtml_publisher(tasks){
                 }
             }
             tmphtml += '<td>';
-            tmphtml += '<button class="operation-button" id="contact-button" onclick="contactbutton('+tasks[i]['TaskID']+')">联系客服</button>';
+            tmphtml += '<button class="operation-button contact-button" onclick="contactbutton('+tasks[i]['TaskID']+')">联系客服</button>';
             if(tasks[i]['Progress'] == 100){
-                tmphtml += '<button class="operation-button" id="export-button" onclick="exportbutton('+tasks[i]['TaskID']+')">导出结果</button>';
+                tmphtml += '<button class="operation-button export-button" onclick="exportbutton('+tasks[i]['TaskID']+')">导出结果</button>';
             }
             else{
-                tmphtml += '<button class="operation-button" id="delete-button" onclick="deletebutton('+tasks[i]['TaskID']+')">申请退款</button>';
+                tmphtml += '<button class="operation-button delete-button" onclick="deletebutton('+tasks[i]['TaskID']+')">申请退款</button>';
             }
             tmphtml += '</td>';
             tmphtml += '</tr>';
@@ -115,21 +122,26 @@ function showhtml_publisher(tasks){
 
 function showhtml_labeler(tasks){
     var tmphtml = '';
-    tmphtml += '<thead><tr><th>任务ID</th><th>任务名称</th><th>发布日期</th><th>截止日期</th><th>完成度</th><th>操作</th></tr></thead>';
+    tmphtml += '<thead><tr><th>任务ID</th><th>任务名称</th><th>任务类型</th><th>已完成条数</th><th>最近标注时间</th><th>任务状态</th><th>操作</th></tr></thead>';
     if(tasks.length > 0){
         tmphtml += '<tbody>';
         for(var i in tasks){
             tmphtml += '<tr>';
             for(var t in tasks[i]){
-                if(t == 'Progress'){
-                    tmphtml += '<td><div class="skillbar html"><div class="filled" data-width="'+tasks[i][t]+'%"></div></div><span class="percent">'+Math.floor(tasks[i][t])+'%</span></td>'
+                if(t == 'DataType'){
+                    tmphtml += '<td>'+DTC[tasks[i][t]]+'</td>';
                 }
                 else{
                     tmphtml += '<td>'+tasks[i][t]+'</td>';
                 }
             }
             tmphtml += '<td>';
-            tmphtml += '<button class="operation-button" id="continue-button" onclick="continuebutton('+tasks[i]['TaskID']+')">继续标注</button>';
+            if(tasks[i]['TaskState'] == 'Unfinished'){
+                tmphtml += '<button class="operation-button continue-button" onclick="continuebutton('+tasks[i]['TaskID']+')">继续标注</button>';
+            }
+            else{
+                tmphtml += '<button class="operation-button">继续标注</button>';
+            }
             tmphtml += '</td>';
             tmphtml += '</tr>';
         }
