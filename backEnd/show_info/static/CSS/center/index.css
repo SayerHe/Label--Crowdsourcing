@@ -115,3 +115,53 @@ body{
 	left:30px;
 	top:5px;
 }
+
+.tiptool{
+	position: absolute;
+	width:5px;
+	right:180px;
+	bottom:60px;
+}
+
+.tiptool embed{
+	width:15px;
+}
+.tiptool .tooltiptext {
+    visibility: hidden;
+    width: 300px;
+    background-color: rgb(245,246,248);
+    color: black;
+	text-align: center;
+    border-radius: 6px;
+    padding: 5px 6px;
+    position: absolute;
+    z-index: 1000;
+	right:-140px;
+	bottom:-35px;
+    margin-left: calc(-688px + 360px - 1.5em);
+	margin-top: -5px;
+}
+
+.tiptool .tooltiptext::after {
+    content: "";
+    position: absolute;
+	right:150px;
+	bottom:50px;
+    margin-left: calc(-50% + 360px - 5px);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent rgb(245,246,248) transparent;
+}
+
+.tiptool:hover .tooltiptext {
+	visibility: visible;
+}
+
+#con4 {
+	background-color: #FFFFFF;
+	position: absolute;
+	bottom: 35px;
+	left: 35px;
+	width: 47%;
+	height: 12.5%;
+}
