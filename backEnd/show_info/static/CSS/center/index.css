@@ -35,7 +35,7 @@ body{
 #con1 .circleChart{
 	height: 80px;
 	align-self:center;
-	color:darkcyan;
+	color: rgba(0, 139, 139, 1);
 }
 #con1 #mid{
 	color: #98a6ad!important;
@@ -47,7 +47,7 @@ body{
 #con1 .big{
 	position: absolute;
 	top:230px;
-
+	font-family: Comic Sans MS;
 	transform: translateX(-50%);
 	font-size: 26px;
 	font-weight: bold;
@@ -90,12 +90,13 @@ body{
 	font-size: 13px;
 	position: absolute;
 	right:30px;
-	bottom: 20px;
+	margin:0;
+	bottom: 22px;
 	text-align: right;
 }
 
 #con2 .A h5,#con2 .B h5,#con2 .C h5,#con2 .D h5{
-	font-family: Nunito,PingFang SC,Microsoft Yahei,Hiragino Sans GB,Microsoft Sans Serif,WenQuanYi Micro Hei,sans-serif;
+	font-family: Comic Sans MS;
 	color: black!important;
 	font-size: 20px;
 	position: absolute;
@@ -104,7 +105,41 @@ body{
 	top: 30px;
 	text-align: right;
 }
+#a1,#b1,#c1,#d1 {
+	width: 75px;
+	height: 75px;
+	padding: 20px;
+	display: flex;
+}
+#a1 svg,#b1 svg,#c1 svg,#d1 svg{
+	margin:auto
+}
+#a11,#b11,#c11,#d11
+{
+    width: 75px;
+    height: 75px;
+    border-radius: 100px;
+    -webkit-border-radius: 100px;
 
+    position: absolute;
+}
+#a11{
+	background-color: rgba(102,88,221,.25);
+	border:1px solid #6658dd!important;
+}
+#b11{
+	background-color: rgba(26,188,156,.25);
+	border:1px solid #1abc9c!important;
+}
+#c11{
+	background-color: rgba(79,198,225,.25);
+	border:1px solid #4fc6e1!important;
+}
+
+#d11{
+	background-color: rgba(247,184,75,.25);
+	border:1px solid #f7b84b!important;
+}
 #con3{
 	background-color: #FFFFFF;
 	width: 61%;
@@ -170,3 +205,4 @@ body{
 	width: 47%;
 	height: 12.5%;
 }
+

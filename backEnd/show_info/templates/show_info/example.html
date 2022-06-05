@@ -27,24 +27,36 @@
 <h4>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp标注者个人中心</h4>
 <div id="con2">
     <div class="A">
-        <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 24 24" fill="none" stroke="#4a90e2" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8"/></svg>
+        <div id="a1">
+            <div id="a11"></div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6658dd" stroke-width="1.5" stroke-linecap="butt" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8"/></svg>
+        </div>
         <p>已完成任务量</p>
         <h5>125</h5>
     </div>
     <div class="B">
-        <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 24 24" fill="none" stroke="#df7373" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+        <div id="b1">
+            <div id="b11"></div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1abc9c" stroke-width="1.5" stroke-linecap="butt" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+        </div>
         <p>平均准确率</p>
         <h5>93 %</h5>
     </div>
     <div class="C">
-        <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 24 24" fill="none" stroke="#f5a623" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        <div id="c1">
+            <div id="c11"></div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4fc6e1" stroke-width="1.5" stroke-linecap="butt" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        </div>
         <p>钱包余额</p>
-        <h5>666 元</h5>
+        <h5>¥ 666</h5>
     </div>
     <div class="D">
-        <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 24 24" fill="none" stroke="#7ed321" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        <div id="d1">
+            <div id="d11"></div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f7b84b" stroke-width="1.5" stroke-linecap="butt" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        </div>
         <p>待审收入</p>
-        <h5>321 元</h5>
+        <h5>¥ 321</h5>
     </div>
 </div>
 <div id="con1">
@@ -52,14 +64,14 @@
     <div class="circleChart"></div>
         <script>
             $(".circleChart").circleChart({
-            color: "darkcyan",
+            color: "rgba(0, 139, 139, 0.25)",
             startAngle: 25,
             text: true,
             animation: "easeInOutCubic",
             backgroundColor: "#F5F6F8", // 进度条之外颜色
             background: true, // 是否显示进度条之外颜色
             speed: 1000, // 出现的时间
-            widthRatio: 0.1, // 进度条宽度
+            widthRatio: 0.15, // 进度条宽度
             value: 85,  // 进度条占比
             unit: "percent",
             counterclockwise: false, // 进度条反方向
@@ -72,11 +84,11 @@
             textCenter: true,
             textSize: false,
             textWeight: "normal",
-            textFamily: "sans-serif",
+            textFamily: "Comic Sans MS",
             relativeTextSize: 1 / 7, // 进度条中字体占比
             autoCss: true,
             onDraw: function(el, circle) {
-                circle.text(Math.round(circle.value) + "分"); // 根据value修改text
+                circle.text(Math.round(circle.value) ); // 根据value修改text
             }
         });
     </script>
