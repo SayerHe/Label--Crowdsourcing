@@ -52,4 +52,5 @@ def get_history(request):
             data = get_labeler_history(request)
         elif user_type == "publisher":
             data = get_publisher_history(request)
-        return render(request, "history/index.html")
+        print(type(data))
+        return render(request, "history/index.html", {'TaskList':json.dumps(data)})
