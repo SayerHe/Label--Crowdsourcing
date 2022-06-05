@@ -8,10 +8,23 @@ var tempdata=[
     {'TaskID':'7', 'TaskName':'task-7', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'78' },
     {'TaskID':'8', 'TaskName':'task-8', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'88' },
 ];
+const tableTitle={
+    'TaskID':'任务ID',
+    'TaskName':'任务名称',
+    'PublishDate':'发布日期',
+    'Deadline':'截止日期',
+    'Progress':'任务进度',
+    'TaskState':'任务状态',
+};
 $(document).ready(function(){
-    showhtml(TaskList);
+    if(UserType == 'publisher'){
+        showhtml_publisher(TaskList);
+    }
+    else if(UserType == 'labeler'){
+        showhtml_labeler(TaskList);
+    }
     $('.skillbar').skillbar({
-        speed: 1000,
+        speed: 800,
     });
 });
 
@@ -64,26 +77,65 @@ function data_callback(data){
     showhtml(data);
 }
 
-function showhtml(tasks){
+function showhtml_publisher(tasks){
     var tmphtml = '';
     tmphtml += '<thead><tr><th>任务ID</th><th>任务名称</th><th>发布日期</th><th>截止日期</th><th>完成度</th><th>操作</th></tr></thead>';
-    tmphtml += '<tbody>';
-    for(var i in tasks){
-        tmphtml += '<tr>';
-        for(var t in tasks[i]){
-            if(t == 'Progress'){
-                tmphtml += '<td><div class="skillbar html"><div class="filled" data-width="'+tasks[i][t]+'%"></div></div><span class="percent">'+tasks[i][t]+'%</span></td>'
+    // tmphtml += '<thead><tr>';
+    // for(t in tasks[0]){
+    //     tmphtml += '<th>'+tableTitle[t]+'</th>';
+    // }
+    // tmphtml += '</tr></thead>';
+    if(tasks.length > 0){
+        tmphtml += '<tbody>';
+        for(var i in tasks){
+            tmphtml += '<tr>';
+            for(var t in tasks[i]){
+                if(t == 'Progress'){
+                    tmphtml += '<td><div class="skillbar html"><div class="filled" data-width="'+tasks[i][t]+'%"></div></div><span class="percent">'+Math.floor(tasks[i][t])+'%</span></td>'
+                }
+                else{
+                    tmphtml += '<td>'+tasks[i][t]+'</td>';
+                }
+            }
+            tmphtml += '<td>';
+            tmphtml += '<button class="operation-button" id="contact-button" onclick="contactbutton('+tasks[i]['TaskID']+')">联系客服</button>';
+            if(tasks[i]['Progress'] == 100){
+                tmphtml += '<button class="operation-button" id="export-button" onclick="exportbutton('+tasks[i]['TaskID']+')">导出结果</button>';
             }
             else{
-                tmphtml += '<td>'+tasks[i][t]+'</td>';
+                tmphtml += '<button class="operation-button" id="delete-button" onclick="deletebutton('+tasks[i]['TaskID']+')">申请退款</button>';
             }
+            tmphtml += '</td>';
+            tmphtml += '</tr>';
         }
-        tmphtml += '<td>'+'<button class="operation-button" id="contact-button" onclick="contactbutton('+tasks[i]['TaskID']+')">客服</button>'+'<button class="operation-button" id="delete-button" onclick="deletebutton('+tasks[i]['TaskID']+')">删除</button>'+'</td>';
-        tmphtml += '</tr>';
+        tmphtml += '</tbody>';
     }
-    tmphtml += '</tbody>';
     document.getElementById("datatable").innerHTML = tmphtml;
-    // tasklist_init(tasklist);
+}
+
+function showhtml_labeler(tasks){
+    var tmphtml = '';
+    tmphtml += '<thead><tr><th>任务ID</th><th>任务名称</th><th>发布日期</th><th>截止日期</th><th>完成度</th><th>操作</th></tr></thead>';
+    if(tasks.length > 0){
+        tmphtml += '<tbody>';
+        for(var i in tasks){
+            tmphtml += '<tr>';
+            for(var t in tasks[i]){
+                if(t == 'Progress'){
+                    tmphtml += '<td><div class="skillbar html"><div class="filled" data-width="'+tasks[i][t]+'%"></div></div><span class="percent">'+Math.floor(tasks[i][t])+'%</span></td>'
+                }
+                else{
+                    tmphtml += '<td>'+tasks[i][t]+'</td>';
+                }
+            }
+            tmphtml += '<td>';
+            tmphtml += '<button class="operation-button" id="continue-button" onclick="continuebutton('+tasks[i]['TaskID']+')">继续标注</button>';
+            tmphtml += '</td>';
+            tmphtml += '</tr>';
+        }
+        tmphtml += '</tbody>';
+    }
+    document.getElementById("datatable").innerHTML = tmphtml;
 }
 
 function deletebutton(taskid){
@@ -91,4 +143,10 @@ function deletebutton(taskid){
 }
 function contactbutton(taskid){
     console.log(taskid);
+}
+function exportbutton(taskid){
+    console.log(taskid);
+}
+function continuebutton(taskid){
+    window.open(label_url+'?TaskID='+taskid+'&DataNum=3');
 }
