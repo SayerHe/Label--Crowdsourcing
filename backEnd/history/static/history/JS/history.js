@@ -98,7 +98,8 @@ function showhtml_publisher(tasks){
             tmphtml += '<tr>';
             for(var t in tasks[i]){
                 if(t == 'Progress'){
-                    tmphtml += '<td><div class="skillbar html"><div class="filled" data-width="'+tasks[i][t]+'%"></div></div><span class="percent">'+Math.floor(tasks[i][t])+'%</span></td>'
+                    tasks[i][t]=Math.floor(tasks[i][t]*100);
+                    tmphtml += '<td><div class="skillbar html"><div class="filled" data-width="'+tasks[i][t]+'%"></div></div><span class="percent">'+tasks[i][t]+'%</span></td>';
                 }
                 else{
                     tmphtml += '<td>'+tasks[i][t]+'</td>';
@@ -158,6 +159,19 @@ function contactbutton(taskid){
 }
 function exportbutton(taskid){
     console.log(taskid);
+    $.ajax({
+        url: history_url,
+        type: "POST",        //请求类型
+        data: {'TaskID':taskid},
+        // ConvertEmptyStringToNull: false,
+        // dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
+        success: function (returndata) {
+            console.log(returndata)
+        },
+        error: function () {
+            //当请求错误之后，自动调用
+        }
+    });
 }
 function continuebutton(taskid){
     window.open(label_url+'?TaskID='+taskid+'&DataNum=3');
