@@ -11,7 +11,10 @@ def Center(request):
     item_num = salary_log.shape[0]
     item_success = salary_log.loc[salary_log["State"] == "Success"].shape[0]
     item_fail = salary_log.loc[salary_log["State"] == "Fail"].shape[0]
-    rate = item_success/(item_success+item_fail)
+    try:
+        rate = item_success/(item_success+item_fail)
+    except:
+        rate = "Nan"
     payment = user_info.salary
     undetermined = user_info.undetermined
     data = {

@@ -58,6 +58,12 @@ def get_history(request):
             data = get_publisher_history(request)
         return render(request, "history/index.html", {'UserType': UserInfo.objects.get(user=user).user_type, 'TaskList':json.dumps(data)})
 
+    if request.method == "POST":
+        try:
+            task_id = request.POST["TaskID"]
+        except:
+            pass
+
 def download(request):
     try:
         task_id=request.GET['TaskID']

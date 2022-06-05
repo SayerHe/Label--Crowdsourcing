@@ -420,14 +420,14 @@ def submit_label(request, CrossNum):
                     else:
 
                         salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="update")
-    print(table)
+
     table_db.data_file = str(table.to_dict())
     table_db.save()
 
     # 记录task的历史信息
     task_log = pd.DataFrame(eval(user_info.task_log))
     # ["TaskID", "TaskName", "DataType", "ItemNum", "LastTime", "TaskState"]
-    task_state = "Unfinished"
+    task_state = "进行中"
     task_content = LabelTaskFile.objects.get(task_id=task).data_file
     task_content = pd.DataFrame(eval(task_content))
 
@@ -435,11 +435,11 @@ def submit_label(request, CrossNum):
         task_content = task_content.loc[task_content["__Times__"].astype(int) < 10]
         labeled_task = task_content.apply(filter_label_rollback, axis=1, request=request)
         if sum(labeled_task) == task_content.shape[0]:
-            task_state = "Finished"
+            task_state = "已结束"
 
     elif inspect_method == "sampling":
         if task_content.loc[task_content["__Label__"]!=""].shape[0] == task_content.shape[0]:
-            task_state = "Finished"
+            task_state = "已结束"
 
     old_log = task_log.loc[task_log["TaskID"] == task.id]
     if old_log.shape[0] == 0:
