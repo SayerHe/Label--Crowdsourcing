@@ -14,6 +14,7 @@
                 Center_url = "{% url 'show_info:Center' %}",
                 finished_url = "{% url 'publisher:finish' %}",
                 check_url = "{% url 'publisher:check' %}",
+                account_url = "{% url 'show_info:Center' %}",
                 history_url = "{% url 'show_info:Center' %}";
             console.log(UserType)
         </script>
@@ -30,7 +31,7 @@
                 <div id="usermenu">
                     <ul>
                         <li><a href="javascript:">个人中心</a></li>
-                        <li><a href="javascript:">账号管理</a></li>
+                        <li><a href="javascript:manage_acc()">账号管理</a></li>
                         <li><a href="javascript:Logout()">退出登录</a></li>
                     </ul>   
                 </div>

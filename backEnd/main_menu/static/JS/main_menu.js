@@ -75,5 +75,5 @@ function Logout(){
 }
 
 function manage_acc(){
-     window.location.href = account_url;
+     $("#SUBHTML").attr("src", account_url);
 }
