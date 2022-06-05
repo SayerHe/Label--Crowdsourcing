@@ -24,25 +24,29 @@ body{
 #con1 {
 	background-color: #FFFFFF;
 	width: 33%;
-	height: 50%;
+	height: 350px;
 	position: absolute;
-	left: 40px;
-	bottom: 20%;
+	left: 2.46875%;
+	top: 220px;
+	display: flex;
+	flex-direction:column;
 }
 
 #con1 .circleChart{
+	height: 80px;
+	align-self:center;
 	color:darkcyan;
 }
 #con1 #mid{
 	color: #98a6ad!important;
 	position: absolute;
-	bottom:40px;
+	top:280px;
 	transform: translateX(-50%);
 	left: 50%;
 }
 #con1 .big{
 	position: absolute;
-	bottom:60px;
+	top:230px;
 
 	transform: translateX(-50%);
 	font-size: 26px;
@@ -53,10 +57,9 @@ body{
 #con2 {
 	display: flex;
 	width: 97.5%;
-
-	height: 15%;
+	height: 115px;
 	position: absolute;
-	left: 40px;
+	left: 1.25%;
 	top: 9%;
 }
 #con2 .A,#con2 .B, #con2 .C, #con2 .D{
@@ -67,16 +70,16 @@ body{
 	position: absolute;
 }
 #con2 .A{
-	left:0%;
+	left:1.25%;
 }
 #con2 .B{
-	left:25%;
+	left:26.25%;
 }
 #con2 .C{
-	left:50%;
+	left:51.25%;
 }
 #con2 .D{
-	left:75%;
+	left:76.25%;
 }
 #con2 .A svg, #con2 .B svg, #con2 .C svg, #con2 .D svg{
 	padding: 20px;
@@ -87,7 +90,7 @@ body{
 	font-size: 13px;
 	position: absolute;
 	right:30px;
-	bottom: 17.5px;
+	bottom: 20px;
 	text-align: right;
 }
 
@@ -97,17 +100,18 @@ body{
 	font-size: 20px;
 	position: absolute;
 	right:30px;
-	top: -6px;
+	margin:0;
+	top: 30px;
 	text-align: right;
 }
 
 #con3{
 	background-color: #FFFFFF;
 	width: 61%;
-	height: 50%;
+	height: 350px;
 	position: absolute;
-	right: 22px;
-	bottom: 20%;
+	right: 2.468%;
+	top: 220px;
 }
 
 #con3 h4{
@@ -119,8 +123,9 @@ body{
 .tiptool{
 	position: absolute;
 	width:5px;
-	right:180px;
-	bottom:60px;
+	right:39%;
+	top:298px;
+
 }
 
 .tiptool embed{
