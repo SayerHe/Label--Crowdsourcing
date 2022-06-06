@@ -77,7 +77,10 @@ def create_zip_task(request, inspect_method, publisher, task_name, data_type, ru
     if file_type == "zip":
         task_file = zipfile.ZipFile(task_file)
     elif file_type == "rar":
-        task_file = rarfile.RarFile(task_file)
+        try:
+            task_file = rarfile.RarFile(task_file)
+        except:
+            return JsonResponse({"err": "winRAR environment path error !"})
 
     task_file_table = transform_zip_file(task_file, new_task, request)
     if data_type == "audio":
@@ -167,7 +170,7 @@ def create_task(request):
                 if choices_file_type in ["xls", "xlsx", "xlsm"]:
                     choices = pd.read_excel(choices)
                 elif choices_file_type == "csv":
-                    choices = pd.read_excel(choices)
+                    choices = pd.read_csv(choices)
                 choices = choices.to_dict()
                 choices_drop_na = {}
                 for question in choices.items():

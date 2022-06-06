@@ -19,7 +19,7 @@ class LabelTasksBaseInfo(models.Model):
     publish_time = models.DateTimeField(default=datetime.datetime.now().strftime('%Y-%m-%d'))
 
     def __str__(self):
-        return self.task_name
+        return str(self.pk)
 
 class LabelTaskFile(models.Model):
     # 通过外键与BaseInfo关联，级联删除
