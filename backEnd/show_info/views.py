@@ -9,8 +9,8 @@ def Center(request):
     salary_log = pd.DataFrame(eval(user_info.salary_log))
     # task_log = pd.DataFrame(eval(user_info.task_log))
     item_num = salary_log.shape[0]
-    item_success = salary_log.loc(salary_log["State"] == "Success").shape[0]
-    item_fail = salary_log.loc(salary_log["State"] == "Fail").shape[0]
+    item_success = salary_log.loc[salary_log["State"] == "Success"].shape[0]
+    item_fail = salary_log.loc[salary_log["State"] == "Fail"].shape[0]
     try:
         rate = item_success/(item_success+item_fail)
     except:
