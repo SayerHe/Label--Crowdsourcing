@@ -62,6 +62,7 @@ def get_history(request):
         try:
             task_id = request.POST["TaskID"]
             LabelTasksBaseInfo.objects.get(pk=task_id).delete()
+            return JsonResponse({"err": "none"})
         except:
             return JsonResponse({"err": "TaskID Missing !"})
 
