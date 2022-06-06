@@ -344,7 +344,6 @@ def submit_label(request, CrossNum):
     table = table_db.data_file
     table = pd.DataFrame(eval(table), dtype="str")
     if inspect_method == "sampling":
-
         for label in labels:
             if table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0] == "":
                 table.loc[table["__ID__"] == label["id"], "__Label__"] = str([label["label"]])
