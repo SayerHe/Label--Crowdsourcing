@@ -290,7 +290,7 @@ def salary_log_cross(user_info, task, label, payment, state, cross_finish, metho
         else:
             user_info.undetermined = user_info.undetermined - payment
             if state == "Success":
-                user_info.payment = user_info.payment + payment
+                user_info.payment = user_info.salary + payment
             salary_log = pd.DataFrame(eval(user_info.salary_log))
             salary_log.loc[(salary_log["TaskID"] == task.id) & (salary_log["ItemID"] == label["id"]), "State"] = state
 
@@ -387,11 +387,12 @@ def submit_label(request, CrossNum):
                     salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="new")
 
                     if int(times) == int(CrossNum):
-                        labelers_log = table.loc[table["__ID__"] == label["id"], "__Labelers__"].tolist()
+                        labelers_log = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
                         right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
+                        print(labelers_log)
                         for i in range(len(labelers_log)):
                             user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
-                            user_label = table.loc[table["__ID__"] == label["id"], "__Label__"][i]
+                            user_label = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])[i]
                             # 用户是否成功的的判断   --好nmd复杂
                             if user_label == right_label:
                                 state = "Success"
@@ -457,7 +458,7 @@ def submit_label(request, CrossNum):
     return JsonResponse({"err": "none"})
 
 def label_page(request):
-    CrossNum = 10
+    CrossNum = 2
     PageSize = 3
     rollback = False
     current_item_id = None
