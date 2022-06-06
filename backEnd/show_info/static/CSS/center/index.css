@@ -64,6 +64,8 @@ body{
 }
 #con2 .A,#con2 .B, #con2 .C, #con2 .D{
 	background-color: #FFFFFF;
+
+
 	display: flex;
 	width: 22.5%;
 	height: 100%;
@@ -87,7 +89,7 @@ body{
 #con2 .A p,#con2 .B p,#con2 .C p,#con2 .D p{
 	font-family: Nunito,PingFang SC,Microsoft Yahei,Hiragino Sans GB,Microsoft Sans Serif,WenQuanYi Micro Hei,sans-serif;
 	color: #98a6ad!important;
-	font-size: 13px;
+	font-size: 15px;
 	position: absolute;
 	right:30px;
 	margin:0;
@@ -97,8 +99,8 @@ body{
 
 #con2 .A h5,#con2 .B h5,#con2 .C h5,#con2 .D h5{
 	font-family: Comic Sans MS;
-	color: black!important;
-	font-size: 20px;
+	color: rgba(0, 0, 0, 0.68) !important;
+	font-size: 22px;
 	position: absolute;
 	right:30px;
 	margin:0;
@@ -200,16 +202,24 @@ body{
 #con4 {
 	background-color: #FFFFFF;
 	position: absolute;
-	bottom: 0;
-	left: 35px;
+	top: 620px;
+	left: 2.4685%;
 	width: 47%;
 	height: 80px;
 }
 #button1{
 	position: absolute;
-	background-color: rgba(0, 139, 139, 0.25);
+	background-color: #1ABC9C;
 	top:25px;
-	font-size: 16px;
-	border-radius: 8px;
-	left:5%;
+	font-size: 18px;
+	left:2.1%;
+	border: none;
+    border-radius: 3px;
+    padding: 3.2px 9.6px;
+    color: white !important;
+    opacity: 0.8;
+}
+
+#button1:hover{
+    background-color: darkcyan;
 }
