@@ -432,7 +432,7 @@ def submit_label(request, CrossNum):
     task_content = pd.DataFrame(eval(task_content))
 
     if inspect_method == "cross":
-        task_content = task_content.loc[task_content["__Times__"].astype(int) < 10]
+        task_content = task_content.loc[task_content["__Times__"].astype(int) < CrossNum]
         labeled_task = task_content.apply(filter_label_rollback, axis=1, request=request)
         if sum(labeled_task) == task_content.shape[0]:
             task_state = "已结束"

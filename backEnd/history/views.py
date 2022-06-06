@@ -14,6 +14,7 @@ from backEnd import settings
 
 def get_publisher_history(request):
     # 任务号，任务名称，任务类型（图片），完成度，准确度，操作（删除+联系客服）
+    CrossNum = 10
     tasks = LabelTasksBaseInfo.objects.filter(publisher=request.user)
     taskID = [i.pk for i in tasks]
     taskName = [i.task_name for i in tasks]
@@ -31,7 +32,7 @@ def get_publisher_history(request):
         elif inspect_method == "cross":
             total_times = task_situation["__Times__"]
             total_times = pd.to_numeric(total_times).sum()
-            single_completeDegree = total_times/(10*task_situation.shape[0])
+            single_completeDegree = total_times/(CrossNum*task_situation.shape[0])
         completeDegree.append(single_completeDegree)
     data = {'TaskID': taskID,
             'TaskName': taskName,
