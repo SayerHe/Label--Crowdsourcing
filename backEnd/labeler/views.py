@@ -420,6 +420,7 @@ def submit_label(request, CrossNum):
                     else:
 
                         salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="update")
+    print(table)
     table_db.data_file = str(table.to_dict())
     table_db.save()
 
