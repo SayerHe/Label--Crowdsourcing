@@ -15,8 +15,8 @@ def Center(request):
         rate = item_success/(item_success+item_fail)
     except:
         rate = "Nan"
-    payment = user_info.payment
-    undetermined = user_info.undertermined
+    payment = user_info.salary
+    undetermined = user_info.undetermined
 
     return render(request, "show_info/example.html", {'UserName': request.user.username})
 
