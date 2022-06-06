@@ -17,6 +17,7 @@ class LabelTasksBaseInfo(models.Model):
     inspect_method = models.CharField(max_length=10, default="cross")
     choices = models.CharField(max_length=2000, default="")
     publish_time = models.DateTimeField(default=datetime.datetime.now().strftime('%Y-%m-%d'))
+    objects=models.Manager()
 
     def __str__(self):
         return str(self.pk)
@@ -25,7 +26,7 @@ class LabelTaskFile(models.Model):
     # 通过外键与BaseInfo关联，级联删除
     task_id = models.ForeignKey(LabelTasksBaseInfo, on_delete=models.CASCADE)
     data_file = models.TextField()
-
+    objects=models.Manager()
 
 
 
