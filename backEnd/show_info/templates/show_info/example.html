@@ -7,7 +7,8 @@
 
     <meta charset="utf-8">
     <script>
-            var labeler_url = "{% url 'labeler:show_tasks' %}",
+            var UserName = '{{ UserName }}',
+                labeler_url = "{% url 'labeler:show_tasks' %}",
                 label_url = "{% url 'labeler:label_task' %}",
                 main_menu_url = "{% url 'main_menu:index' %}",
                 login_url = "{% url 'login:index' %}",
@@ -21,6 +22,8 @@
     <script type="text/javascript" src="{% static "JS/center/echarts.min.js" %}"></script>
     <script type="text/javascript" src="{% static "JS/center/index.js" %}"></script>
     <script src="{%  static "JS/center/circleChart.min.js" %}"></script>
+
+
 
 </head>
 <body>

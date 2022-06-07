@@ -1,65 +1,92 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        {% load static %}
-        <title>Welcome</title>
-        <link rel="stylesheet" href="{% static 'CSS/account.css' %}" type="text/css">
-        <script>
-            var UserName = '{{ UserName }}', APPName = '{{ APPName }}', Params = '{{ Params }}', UserType = '{{ UserType }}',
-                main_menu_url = "{% url 'main_menu:index' %}",
-                user_url = "{% url 'labeler:show_tasks' %}",
-                publish_url = "{% url 'publisher:create_task' %}",
-                login_url = "{% url 'login:index' %}",
-                Center_url = "{% url 'show_info:Center' %}",
-                finished_url = "{% url 'publisher:finish' %}",
-                account_url = "{% url 'show_info:account' %}",
-                check_url = "{% url 'publisher:check' %}";
-            {% comment %} console.log(UserType) {% endcomment %}
-        </script>
-        <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
-        <script type="text/javascript" src="{% static 'JS/account.js' %}"></script>
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <body>
-        <iframe id="SUBHTML" src="" frameborder="0"></iframe>
-        <div id="head">
-            <a id="Title"><p><b>数据标注平台</b></p></a>
-            <div id="userdiv">
-                <a id="User"><p id="UserName">UserName</p></a>
-                <div id="usermenu">
-                    <ul>
-                        <li><a href="javascript:">个人中心</a></li>
-                        <li><a href="javascript:manage_acc()">账号管理</a></li>
-                        <li><a href="javascript:Logout()">退出登录</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div id="menu">
-            {% comment %} <div id="menu_active"><a></a></div> {% endcomment %}
-            <ul>
-                <li class="menubt" id="Homepage">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                    <a>&nbsp;主页</a>
-                </li>
-                <li class="menubt" id="Publish">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3zM12 8v8m-4-4h8"/></svg>
-                    <a>&nbsp;发布任务</a>
-                </li>
-                <li class="menubt" id="T_Doing">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon></svg>
-                    <a>&nbsp;正在进行的订单</a>
-                </li>
-                <li class="menubt" id="T_Finished">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                    <a>&nbsp;已完成的订单</a>
-                </li>
-            </ul>
-        </div>
-    <div id = "cona">
+    <meta charset="utf-8">
+    <script>
+            var UserName = '{{ UserName }}'
+    </script>
+    {% load static %}
 
+    <link rel="stylesheet" href="{% static 'CSS/account.css' %}" type="text/css">
+    <title>个人中心</title>
+    <script type="text/javascript" src="{% static "JS/jquery-3.6.0.js" %}"></script>
+    <script type="text/javascript" src="{% static "JS/center/echarts.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "JS/account.js" %}"></script>
+    <script src="{%  static "JS/center/circleChart.min.js" %}"></script>
+
+
+
+</head>
+<body>
+<h3>账号管理</h3>
+<div id="con1">
+    <div id="head_pic"></div>
+    <h5 id="nickname">Labeler</h5>
+    <h5 id="seniority">Seniority: 5 years</h5>
+    <div id="web3"></div>
+</div>
+
+<div id="con2">
+    <h2>&nbsp&nbsp基本信息</h2>
+    <HR width="100%" color=#987cb9 SIZE=2>
+    <div id="name_con">
+        <div style="font-size:20px;font-weight:bold;width:30px;flex:1"> 真实姓名 </div>
+        <div contenteditable="True" style="font-size:20px;font-weight:bold;width:30px;flex:1">丁真</div>
     </div>
-    </body>
-</html>
 
+    <div id="ID_con">
+        <div style="font-size:20px;font-weight:bold;width:30px;flex:1"> 用户ID </div>
+        <div style="font-size:20px;font-weight:bold;width:60px;flex:1"> ingenuous  </div>
+    </div>
+
+    <div id="gender_con">
+        <div style="font-size:20px;font-weight:bold;width:30px;flex:1"> 性别 </div>
+        <div style="font-size:20px;font-weight:bold;width:60px;flex:1"> 男  </div>
+    </div>
+
+    <div id="loc_con">
+        <div style="font-size:20px;font-weight:bold;width:30px;flex:1"> 所在地区 </div>
+        <div contenteditable="True" style="font-size:20px;font-weight:bold;width:30px;flex:1">暂无</div>
+    </div>
+
+    <div id="bir_con">
+        <div style="font-size:20px;font-weight:bold;width:30px;flex:1"> 年龄 </div>
+        <div style="font-size:20px;font-weight:bold;width:60px;flex:1"> 26  </div>
+    </div>
+
+    <div id="bir_con">
+        <div style="font-size:20px;font-weight:bold;width:30px;flex:1"> 联系电话 </div>
+        <div style="font-size:20px;font-weight:bold;width:60px;flex:1"> 18903379186  </div>
+    </div>
+</div>
+
+
+<div id="con3">
+    <h2>&nbsp&nbsp工作信息</h2>
+    <HR width="100%" color=#987cb9 SIZE=2>
+    <div id="name_con">
+        <div style="font-size:20px;font-weight:bold;width:30px;flex:1"> 所在公司 </div>
+        <div contenteditable="True" style="font-size:20px;font-weight:bold;width:30px;flex:1">暂无</div>
+    </div>
+
+    <div id="bir_con">
+        <div style="font-size:20px;font-weight:bold;width:30px;flex:1"> 所属职位 </div>
+        <div contenteditable="True" style="font-size:20px;font-weight:bold;width:30px;flex:1">暂无</div>
+    </div>
+
+    <div id="ID_con">
+        <div style="font-size:20px;font-weight:bold;width:30px;flex:1"> 工龄 </div>
+        <div contenteditable="True" style="font-size:20px;font-weight:bold;width:30px;flex:1">暂无</div>
+    </div>
+
+    <div id="gender_con">
+        <div style="font-size:20px;font-weight:bold;width:30px;flex:1"> 工作邮箱 </div>
+        <div contenteditable="True" style="font-size:20px;font-weight:bold;width:30px;flex:1">暂无</div>
+    </div>
+</div>
+</body>
+</html>
