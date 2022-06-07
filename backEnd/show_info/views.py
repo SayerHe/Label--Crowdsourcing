@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from login.models import UserInfo
 import pandas as pd
+import json
 # Create your views here.
 
 def Center(request):
@@ -21,9 +22,11 @@ def Center(request):
         "ItemNum": item_num,
         "Rate": rate,
         "Payment": payment,
-        "Undetermined": undetermined
+        "Undetermined": undetermined,
+        "Level":{"percentage": 80, "level": "B"},
+        "Active": [23, 44, 54, 32, 23, 79, 23, 44, 54, 32, 23, 79]
     }
-    return render(request, "show_info/example.html", {'UserName': request.user.username, "Data": Data})
+    return render(request, "show_info/example.html", json.dumps({'UserName': request.user.username, "Data": Data}))
 
 
 def account(request):
