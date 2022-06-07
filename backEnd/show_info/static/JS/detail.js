@@ -132,12 +132,3 @@ function deletebutton(taskid){
         });
     }
 }
-function contactbutton(taskid){
-    console.log(taskid);
-}
-function exportbutton(taskid){
-    window.location.href=download_url+'?TaskID='+taskid;
-}
-function continuebutton(taskid){
-    window.open(label_url+'?TaskID='+taskid+'&DataNum=3');
-}
