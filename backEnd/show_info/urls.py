@@ -6,5 +6,7 @@ app_name = "show_info"
 
 urlpatterns = [
     path('Center/', views.Center, name="Center"),
-    path('account/', views.account, name="account")
+    path('account/', views.account, name="account"),
+    path('detail/', views.detail, name="detail")
+
 ]

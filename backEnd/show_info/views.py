@@ -31,3 +31,6 @@ def Center(request):
 
 def account(request):
     return render(request, "show_info/account.html", {'UserName': request.user.username})
+
+def detail(request):
+    return render(request, "show_info/detail.html", {'UserName': request.user.username})
