@@ -17,8 +17,13 @@ def Center(request):
         rate = "Nan"
     payment = user_info.salary
     undetermined = user_info.undetermined
-
-    return render(request, "show_info/example.html", {'UserName': request.user.username})
+    Data = {
+        "ItemNum": item_num,
+        "Rate": rate,
+        "Payment": payment,
+        "Undetermined": undetermined
+    }
+    return render(request, "show_info/example.html", {'UserName': request.user.username, "Data": Data})
 
 
 def account(request):

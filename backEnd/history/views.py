@@ -11,12 +11,11 @@ import os
 from backEnd import settings
 import random
 import ast
-import numpy as np
 # Create your views here.
 
 def get_publisher_history(request):
     # 任务号，任务名称，任务类型（图片），完成度，准确度，操作（删除+联系客服）
-    CrossNum = 2
+    CrossNum = 5
     tasks = LabelTasksBaseInfo.objects.filter(publisher=request.user)
     taskID = [i.pk for i in tasks]
     taskName = [i.task_name for i in tasks]

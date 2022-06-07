@@ -476,7 +476,7 @@ def submit_label(request, CrossNum):
     return JsonResponse({"err": "none"})
 
 def label_page(request):
-    CrossNum = 2
+    CrossNum = 5
     PageSize = 3
     rollback = False
     current_item_id = None
