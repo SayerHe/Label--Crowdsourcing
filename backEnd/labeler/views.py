@@ -14,6 +14,7 @@ ZIP_FILES = "zip_tasks"
 def show_tasks(request):
     # 筛选任务  eg：只选图片
     DATA_ON_ONE_PAGE = 10
+    CrossNum=10
     if request.method == 'GET':
         if 'RequestData' not in request.GET:
             return render(request, "labeler/index.html", {'UserName':request.user.username})
@@ -35,7 +36,22 @@ def show_tasks(request):
         except:
             keyword = None
 
-        tasks = LabelTasksBaseInfo.objects.all()
+        old_tasks = LabelTasksBaseInfo.objects.all()
+        tasks=[]
+        for task in old_tasks:
+            inspect_method = task.inspect_method
+            task_situation = LabelTaskFile.objects.get(task_id=task).data_file
+            task_situation = pd.DataFrame(eval(task_situation), dtype=str)
+            single_completeDegree = 0
+            if inspect_method == "sampling":
+                single_completeDegree = task_situation[task_situation["__Label__"] != ""].shape[0] / \
+                                        task_situation.shape[0]
+            elif inspect_method == "cross":
+                total_times = task_situation["__Times__"]
+                total_times = pd.to_numeric(total_times).sum()
+                single_completeDegree = total_times / (CrossNum * task_situation.shape[0])
+            if single_completeDegree != 1:
+                tasks.append(task)
 
         datatypelist = []
         if datatype:
