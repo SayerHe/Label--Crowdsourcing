@@ -26,7 +26,7 @@ def Center(request):
         "Level":{"percentage": 80, "level": "B"},
         "Active": [23, 44, 54, 32, 23, 79, 23, 44, 54, 32, 23, 79]
     }
-    return render(request, "show_info/example.html", json.dumps({'UserName': request.user.username, "Data": Data}))
+    return render(request, "show_info/example.html", {'UserName': request.user.username, "Data": Data})
 
 
 def account(request):
