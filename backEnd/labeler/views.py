@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from publisher.models import LabelTasksBaseInfo, LabelTaskFile
 from login.models import UserInfo
-from django.http import HttpResponse, JsonResponse
-import numpy as np
+from django.http import  JsonResponse
+# import numpy as np
 import pandas as pd
 from pathlib import Path
 import json
@@ -14,6 +14,7 @@ ZIP_FILES = "zip_tasks"
 def show_tasks(request):
     # 筛选任务  eg：只选图片
     DATA_ON_ONE_PAGE = 10
+    CrossNum=10
     if request.method == 'GET':
         if 'RequestData' not in request.GET:
             return render(request, "labeler/index.html", {'UserName':request.user.username})
@@ -35,7 +36,22 @@ def show_tasks(request):
         except:
             keyword = None
 
-        tasks = LabelTasksBaseInfo.objects.all()
+        old_tasks = LabelTasksBaseInfo.objects.all()
+        tasks=[]
+        for task in old_tasks:
+            inspect_method = task.inspect_method
+            task_situation = LabelTaskFile.objects.get(task_id=task).data_file
+            task_situation = pd.DataFrame(eval(task_situation), dtype=str)
+            single_completeDegree = 0
+            if inspect_method == "sampling":
+                single_completeDegree = task_situation[task_situation["__Label__"] != ""].shape[0] / \
+                                        task_situation.shape[0]
+            elif inspect_method == "cross":
+                total_times = task_situation["__Times__"]
+                total_times = pd.to_numeric(total_times).sum()
+                single_completeDegree = total_times / (CrossNum * task_situation.shape[0])
+            if single_completeDegree != 1:
+                tasks.append(task)
 
         datatypelist = []
         if datatype:
@@ -344,7 +360,6 @@ def submit_label(request, CrossNum):
     table = table_db.data_file
     table = pd.DataFrame(eval(table), dtype="str")
     if inspect_method == "sampling":
-
         for label in labels:
             if table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0] == "":
                 table.loc[table["__ID__"] == label["id"], "__Label__"] = str([label["label"]])
@@ -433,15 +448,18 @@ def submit_label(request, CrossNum):
     task_content = pd.DataFrame(eval(task_content))
 
     if inspect_method == "cross":
-        task_content = task_content.loc[task_content["__Times__"].astype(int) < CrossNum]
-        labeled_task = task_content.apply(filter_label_rollback, axis=1, request=request)
-        if sum(labeled_task) == task_content.shape[0]:
+        finished_task = task_content.loc[task_content["__Times__"].astype(int) == CrossNum]
+        if finished_task.shape[0] == task_content.shape[0]:
             task_state = "已结束"
+        else:
+            unfinished_task = task_content.loc[task_content["__Times__"].astype(int) < CrossNum]
+            labeled_task = unfinished_task.apply(filter_label_rollback, axis=1, request=request)
+            if sum(labeled_task) == len(labeled_task):
+                task_state = "已结束"
 
     elif inspect_method == "sampling":
         if task_content.loc[task_content["__Label__"]!=""].shape[0] == task_content.shape[0]:
             task_state = "已结束"
-
     old_log = task_log.loc[task_log["TaskID"] == task.id]
     if old_log.shape[0] == 0:
         task_log.loc[task_log.shape[0]] = [task.id, task.task_name, task.data_type, len(labels),

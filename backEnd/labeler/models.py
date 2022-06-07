@@ -8,7 +8,7 @@ class TempLabel(models.Model):
     task = models.ForeignKey(LabelTasksBaseInfo, on_delete=models.CASCADE)
     labeler = models.ForeignKey(User, on_delete=models.CASCADE)
     log = models.TextField()
-
+    objects=models.Manager()
 
 # salary
 class TempLog(models.Model):
@@ -16,4 +16,4 @@ class TempLog(models.Model):
     labeler = models.ForeignKey(User, on_delete=models.CASCADE)
     salary = models.FloatField(default=0)
     log = models.TextField()
-
+    objects=models.Manager()

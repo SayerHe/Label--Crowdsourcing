@@ -9,12 +9,14 @@ import json
 import pytz
 import os
 from backEnd import settings
-
+import random
+import ast
+import numpy as np
 # Create your views here.
 
 def get_publisher_history(request):
     # 任务号，任务名称，任务类型（图片），完成度，准确度，操作（删除+联系客服）
-    CrossNum = 10
+    CrossNum = 2
     tasks = LabelTasksBaseInfo.objects.filter(publisher=request.user)
     taskID = [i.pk for i in tasks]
     taskName = [i.task_name for i in tasks]
@@ -74,8 +76,82 @@ def download(request):
         return JsonResponse({"err": "ERROR !"})
     data = LabelTaskFile.objects.get(task_id=task_id).data_file
     data = pd.DataFrame(eval(data), dtype=str)
+    labels=list(data['__Label__'])
+    task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
+    new_data=pd.DataFrame()
+    new_data['文件名或ID']=data.iloc[:,0]
+    CrossNum = 2
+    if task.label_type == 'describe':
+        new_labels = []
+        if task.inspect_method == 'sampling':
+            for label in labels:
+                label=ast.literal_eval(label)
+                new_labels.append(label[0])
+        elif task.inspect_method == 'cross':
+            for label in labels:
+                label = ast.literal_eval(label)
+                i=random.randint(0,CrossNum-1)
+                new_labels.append(label[i])
+        new_data['label']=new_labels
+    elif task.label_type == 'choose':
+        if task.inspect_method == 'sampling':
+            for key, value in ast.literal_eval(labels[0])[0].items():
+                label_list = []
+                for label in labels:
+                    label = ast.literal_eval(label)
+                    label_list.append(label[0][str(key)])
+                new_data[key] = label_list
+        elif task.inspect_method == 'cross':
+            for key, value in ast.literal_eval(labels[0])[0].items():
+                label_list = []
+                for label in labels:
+                    draft_list = []
+                    label = ast.literal_eval(label)
+                    for i in range(CrossNum):
+                        draft_list.append(label[i][str(key)])
+                    dic=dict(Counter(draft_list))
+                    result=list(dic.keys())[0]
+                    label_list.append(result)
+                new_data[key] = label_list
+    elif task.label_type == 'frame':
+        new_labels = []
+        if task.inspect_method == 'sampling':
+            if task.data_type == 'text':
+                for label in labels:
+                    label = ast.literal_eval(label)
+                    new_labels.append(label[0])
+            elif task.data_type == 'image':
+                for label in labels:
+                    label = ast.literal_eval(label)
+                    dic= ast.literal_eval(label[0])[0]
+                    new_labels.append(dic)
+        elif task.inspect_method == 'cross':
+            if task.data_type == 'text':
+                for label in labels:
+                    label = ast.literal_eval(label)
+                    i = random.randint(0, CrossNum - 1)
+                    new_labels.append(label[i])
+            elif task.data_type == 'image':
+                for label in labels:
+                    label = ast.literal_eval(label)
+                    x1=[]
+                    x2=[]
+                    y1=[]
+                    y2=[]
+                    for i in range(CrossNum):
+                        dic = ast.literal_eval(label[i])[0]
+                        x1.append(dic['x1'])
+                        x2.append(dic['x2'])
+                        y1.append(dic['y1'])
+                        y2.append(dic['y2'])
+                    new_x1 = np.mean(x1)
+                    new_x2 = np.mean(x2)
+                    new_y1 = np.mean(y1)
+                    new_y2 = np.mean(y2)
+                    new_labels.append({'x1':new_x1,'x2':new_x2,'y1':new_y1,'y2':new_y2})
+        new_data['label'] = new_labels
     excel_name = os.path.join(settings.MEDIA_ROOT, str(task_id) + '.csv')
-    data.to_csv(excel_name, index=False, encoding='utf_8_sig')
+    new_data.to_csv(excel_name, index=False, encoding='utf_8_sig')
     try:
         response = FileResponse(open(excel_name, 'rb'))
         response['content_type'] = "application/octet-stream"
