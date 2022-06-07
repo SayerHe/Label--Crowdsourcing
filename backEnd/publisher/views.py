@@ -194,6 +194,7 @@ def create_task(request):
         elif newTask_param["data_type"] == "text":
             return create_zip_task(request, **newTask_param)
 
+
         return JsonResponse({'err': 'None'})
 
 def check(request):

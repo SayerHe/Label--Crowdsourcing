@@ -24,7 +24,7 @@ def Center(request):
         "Payment": payment,
         "Undetermined": undetermined,
         "Level":{"percentage": 80, "level": "B"},
-        "Active": [23, 44, 54, 32, 23, 79, 23, 44, 54, 32, 23, 79]
+        "Active": [23, 44, 54, 32, 23, 79, 23]
     }
     return render(request, "show_info/example.html", {'UserName': request.user.username, "Data": Data})
 
