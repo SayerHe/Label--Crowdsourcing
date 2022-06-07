@@ -6,7 +6,7 @@ class UserInfo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     salary = models.FloatField(default=0)
     undetermined = models.FloatField(default=0)
-    ability = models.IntegerField()
+    ability = models.FloatField()
     user_type_choice = (
         ("Publisher", "publisher"),("Labeler", "labeler"),("Manager", "manager")
     )
