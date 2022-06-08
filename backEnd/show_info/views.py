@@ -1,5 +1,3 @@
-import datetime
-
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from login.models import UserInfo
@@ -87,4 +85,7 @@ def account(request):
     return render(request, "show_info/account.html", {'UserName': request.user.username})
 
 def detail(request):
-    return render(request, "show_info/detail.html", {'UserName': request.user.username})
+    user_info = UserInfo.objects.get(user=request.user)
+    salary_log = user_info.salary_log
+    salary_log = salary_log.to_dict("records")
+    return render(request, "show_info/detail.html", {'UserName': request.user.username, "Data":json.dumps(salary_log)})
