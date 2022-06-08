@@ -53,6 +53,7 @@ def Center(request):
     item_fail = salary_log.loc[salary_log["State"] == "Fail"].shape[0]
     try:
         rate = item_success/(item_success+item_fail)
+        rate = str(round(rate*100,2))+" %"
     except:
         rate = "Nan"
     level, percentage = cal_level(item_num, rate)
@@ -72,7 +73,7 @@ def Center(request):
 
     Data = {
         "ItemNum": item_num,
-        "Rate": str(round(rate*100,2))+" %",
+        "Rate": rate,
         "Payment": payment,
         "Undetermined": undetermined,
         "Level":{"percentage": percentage, "level": level},
