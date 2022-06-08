@@ -1,6 +1,8 @@
-var tempdata=[
+
+var
+    tempdata=[
     {'TaskID':'1', 'TaskName':'task-1', "Type":"文本", 'Finish_time':'2022-6-3', 'TaskState':'成功完成',"Salary":"100"},
-    {'TaskID':'2', 'TaskName':'task-2', "Type":"文本", 'Finish_time':'2022-6-3', 'TaskState':'待审核',"Salary":"0"},
+    {'TaskID':'2', 'TaskNa':'task-2', "Type":"文本", 'Finish_time':'2022-6-3', 'TaskState':'待审核',"Salary":"0"},
     {'TaskID':'3', 'TaskName':'task-3', "Type":"文本", 'Finish_time':'2022-6-3', 'TaskState':'无效完成',"Salary":"0"},
     {'TaskID':'4', 'TaskName':'task-4', "Type":"文本", 'Finish_time':'2022-6-3', 'TaskState':'待审核',"Salary":"0"},
 ]
@@ -27,7 +29,7 @@ $(document).ready(function(){
         showhtml_publisher(tempdata);
     }
     else if(UserType == 'labeler'){
-        showhtml_labeler(tempdata);
+        showhtml_labeler(Data);
     }
     $('.skillbar').skillbar({
         speed: 800,

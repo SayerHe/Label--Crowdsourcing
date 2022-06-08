@@ -4,6 +4,10 @@
         <meta charset="utf-8">
         <title></title>
         {% load static %}
+        <script>
+            var Data = {{ Data|safe }},
+                UserName = '{{ UserName|safe }}';
+        </script>
         <script> var UserType = "labeler" </script>
         <link rel="stylesheet" href="{% static '/CSS/detail.css' %}" type="text/css">
         <link rel="stylesheet" href="{% static '/history/CSS/pagination.css' %}" type="text/css">
@@ -13,7 +17,9 @@
         <script type="text/javascript" src="{% static '/JS/detail.js' %}"></script>
         <script type="text/javascript" src="{% static '/history/JS/pagination.js' %}"></script>
         <script type="text/javascript" src="{% static '/history/JS/an-skill-bar.js' %}"></script>
+        <script>
 
+        </script>
         {% comment %} <script type="text/javascript" src="{% static 'JS/accordion-menu.js' %}"></script> {% endcomment %}
     </head>
 
