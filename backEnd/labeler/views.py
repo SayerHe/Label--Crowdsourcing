@@ -8,6 +8,7 @@ from pathlib import Path
 import json
 import time
 import base64
+import ast
 
 ZIP_FILES = "zip_tasks"
 
@@ -46,12 +47,26 @@ def show_tasks(request):
             if inspect_method == "sampling":
                 single_completeDegree = task_situation[task_situation["__Label__"] != ""].shape[0] / \
                                         task_situation.shape[0]
+                if single_completeDegree != 1:
+                    tasks.append(task)
             elif inspect_method == "cross":
                 total_times = task_situation["__Times__"]
                 total_times = pd.to_numeric(total_times).sum()
                 single_completeDegree = total_times / (CrossNum * task_situation.shape[0])
-            if single_completeDegree != 1:
-                tasks.append(task)
+                Labelers = list(task_situation["__Labelers__"])
+                num = 0
+                new_Labelers=[k.strip("[]").split(',') for k in Labelers]
+                for labeler in new_Labelers:
+                    if str(request.user.id) in labeler:
+                        num+=1
+                if single_completeDegree != 1 :
+                    if num!=len(Labelers):
+                        tasks.append(task)
+            else:
+                if single_completeDegree != 1:
+                    tasks.append(task)
+            # if single_completeDegree != 1:
+            #     tasks.append(task)
 
         datatypelist = []
         if datatype:

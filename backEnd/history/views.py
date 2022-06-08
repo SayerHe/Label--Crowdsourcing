@@ -79,7 +79,7 @@ def download(request):
     task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
     new_data=pd.DataFrame()
     new_data['文件名或ID']=data.iloc[:,0]
-    CrossNum = 2
+    CrossNum = 5
     if task.label_type == 'describe':
         new_labels = []
         if task.inspect_method == 'sampling':
