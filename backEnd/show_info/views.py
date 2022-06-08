@@ -87,6 +87,6 @@ def account(request):
 
 def detail(request):
     user_info = UserInfo.objects.get(user=request.user)
-    salary_log = user_info.salary_log
+    salary_log = pd.DataFrame(eval(user_info.salary_log))
     salary_log = salary_log.to_dict("records")
     return render(request, "show_info/detail.html", {'UserName': request.user.username, "Data":json.dumps(salary_log)})
