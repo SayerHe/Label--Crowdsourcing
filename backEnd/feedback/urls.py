@@ -5,5 +5,6 @@ from feedback import views
 app_name = "feedback"
 
 urlpatterns = [
-    path('', views.get_feedback, name="get_feedback"),
+    # path('', views.get_feedback, name="get_feedback"),
+    path('/feedback', views.feedback, name="feedback"),
 ]
