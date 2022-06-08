@@ -53,7 +53,6 @@ def Center(request):
     item_fail = salary_log.loc[salary_log["State"] == "Fail"].shape[0]
     try:
         rate = item_success/(item_success+item_fail)
-        rate = str(round(rate*100,2))+" %"
     except:
         rate = "Nan"
     level, percentage = cal_level(item_num, rate)
@@ -70,7 +69,8 @@ def Center(request):
     for i in range(len(last_seven_days)-1):
         valid_salary = salary_log[(last_seven_days[i]<=salary_log["Time"]) & (salary_log["Time"]<last_seven_days[i+1])]
         active.append(valid_salary.shape[0])
-
+    if rate != "Nan":
+        rate = str(round(rate*100,2))+" %"
     Data = {
         "ItemNum": item_num,
         "Rate": rate,
