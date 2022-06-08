@@ -10,6 +10,8 @@ var urls = {
     "#T_Finished":history_url,
     "#Center":Center_url,
     "#C":account_url,
+    "#Feedback":Feedback_url
+
 };
 
 $(document).ready(function(){

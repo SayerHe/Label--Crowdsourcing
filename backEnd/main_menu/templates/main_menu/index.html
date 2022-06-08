@@ -15,6 +15,7 @@
                 finished_url = "{% url 'publisher:finish' %}",
                 account_url = "{% url 'show_info:account' %}",
                 check_url = "{% url 'publisher:check' %}",
+                Feedback_url = "{% url 'publisher:Feedback' %}",
                 history_url = "{% url 'history:get_history' %}";
             {% comment %} console.log(UserType) {% endcomment %}
         </script>
@@ -55,6 +56,10 @@
                 <li class="menubt" id="T_Finished">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
                     <a>&nbsp;已完成的订单</a>
+                </li>
+                <li class="menubt" id="Feedback">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                    <a>&nbsp;反馈</a>
                 </li>
             </ul>
         </div>

@@ -201,3 +201,5 @@ def check(request):
     return render(request, "publisher/check.html", {'UserName': request.user.username})
 def finish(request):
     return render(request, "publisher/finish.html", {'UserName': request.user.username})
+def Feedback(request):
+    return render(request, "publisher/feedback.html", {'UserName': request.user.username})
