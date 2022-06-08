@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import pandas as pd
 import datetime
 
 # Create your models here.
@@ -26,6 +27,7 @@ class LabelTaskFile(models.Model):
     # 通过外键与BaseInfo关联，级联删除
     task_id = models.ForeignKey(LabelTasksBaseInfo, on_delete=models.CASCADE)
     data_file = models.TextField()
+    sample = models.TextField(default=str(pd.DataFrame(columns=["Index", "Label"]).to_dict()))
     objects=models.Manager()
 
 

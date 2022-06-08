@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'labeler.apps.LabelerConfig',
     'show_info.apps.ShowInfoConfig',
     'history.apps.HistoryConfig',
+    'feedback.apps.FeedbackConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -70,6 +71,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'labeler/templates'),
             os.path.join(BASE_DIR, 'show_info/templates'),
             os.path.join(BASE_DIR, 'history/templates'),
+            os.path.join(BASE_DIR, 'feedback/templates'),
 
         ],
         'APP_DIRS': True,
@@ -145,6 +147,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'labeler/static'),
     os.path.join(BASE_DIR, 'show_info/static'),
     os.path.join(BASE_DIR, 'history/static'),
+    os.path.join(BASE_DIR, 'feedback/static'),
 
 ]
 # Default primary key field type

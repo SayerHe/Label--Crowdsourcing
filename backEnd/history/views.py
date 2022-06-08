@@ -35,11 +35,39 @@ def get_publisher_history(request):
             total_times = pd.to_numeric(total_times).sum()
             single_completeDegree = total_times/(CrossNum*task_situation.shape[0])
         completeDegree.append(single_completeDegree)
+    accuracy = []
+    for i in range(len(completeDegree)):
+        temp_ans = []
+        if completeDegree[i] < 1:
+            accuracy.append("待定")
+        else:
+            task = tasks[i]
+            content = pd.DataFrame(eval(LabelTaskFile.objects.get(task_id=task).data_file))
+            if task.inspect_method == "sampling":
+                sample = pd.DataFrame(eval(LabelTaskFile.objects.get(task_id=task).sample))
+                for j in range(sample.shape[0]):
+                    right_ans = sample.iloc[j, 1]
+                    index = right_ans.iloc[j,0]
+                    if task.data_type == "table":
+                        label = eval(content.loc[content["id"]==index, "__Label__"].values[0])[0]
+                    else:
+                        label = eval(content.loc[content["file"]==index, "__Label__"].values[0])[0]
+                    if right_ans == label:
+                        temp_ans.append(True)
+                    else: temp_ans.append(False)
+            # else:
+            #     for j in range(content.shape[0]):
+            #         labels = eval(content.loc[j, "__Label__"].values[0])
+            #         if task.label_type == "choose":
+            #             right_ans = max(labels, key=labels.count)
+
+
     data = {'TaskID': taskID,
             'TaskName': taskName,
             'PublishDate': taskPublishTime,
             'Deadline': taskDDL,
-            'Progress': completeDegree,}
+            'Progress': completeDegree,
+            "Accuracy": ""}
     # print(data["Progress"])
     data = pd.DataFrame(data).to_dict('records')
     return data

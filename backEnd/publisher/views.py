@@ -58,7 +58,7 @@ def determine_payment(*args):
     return 1
 
 def create_zip_task(request, inspect_method, publisher, task_name, data_type, rule_file,
-                          label_type, task_deadline, task_payment, choices):
+                          label_type, task_deadline, task_payment, choices, sample):
     try:
         task_file = request.FILES["DataFile"]
     except:
@@ -72,7 +72,7 @@ def create_zip_task(request, inspect_method, publisher, task_name, data_type, ru
     new_task = LabelTasksBaseInfo(inspect_method=inspect_method, publisher=publisher, task_name=task_name,
                                   data_type=data_type, rule_file=rule_file,
                                   label_type=label_type, task_deadline=task_deadline, task_payment=task_payment,
-                                  task_difficulty=task_difficulty, choices=choices)
+                                  task_difficulty=task_difficulty, choices=choices, sample=sample)
     new_task.save()
     if file_type == "zip":
         task_file = zipfile.ZipFile(task_file)
@@ -102,12 +102,12 @@ def create_zip_task(request, inspect_method, publisher, task_name, data_type, ru
             return JsonResponse({"err": "Support txt only! "})
 
     task_file_string = str(task_file_table.to_dict())
-    new_task_file = LabelTaskFile(task_id=new_task, data_file=task_file_string)
+    new_task_file = LabelTaskFile(task_id=new_task, data_file=task_file_string, sample=sample)
     new_task_file.save()
     return JsonResponse({'err': 'None'})
 
 def create_table_task(request, inspect_method, publisher, task_name, data_type, rule_file,
-                          label_type, task_deadline, task_payment, choices):
+                          label_type, task_deadline, task_payment, choices, sample):
 
     try:
         task_file = request.FILES["DataFile"]
@@ -159,6 +159,24 @@ def create_task(request):
         except KeyError:
             rule_text = request.POST["RuleText"]
             newTask_param["rule_file"] = rule_text
+
+        if newTask_param["inspect_method"] == "sampling":
+            try:
+                sample = request.FILE["SampleFile"]
+                sample_format = str(sample).split(".")[-1]
+                if sample_format == "csv":
+                    sample = pd.read_csv(sample_format)
+                elif sample_format in ["xls", "xlsx", "xlsm"]:
+                    sample = pd.read_excel(sample_format)
+                else:
+                    return JsonResponse({"err": "Sample file format error! (csv, xls, xlsx, xlsm)"})
+                newTask_param["sample"] = sample
+
+            except KeyError:
+                return JsonResponse({"err": "Please provide some samples"})
+        else:
+            sample = ""
+            newTask_param["sample"] = sample
 
         if newTask_param["label_type"] == "choose":
             try:
