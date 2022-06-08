@@ -88,16 +88,20 @@ function data_callback(data){
 
 function showhtml_labeler(tasks){
     var tmphtml = '';
-    tmphtml += '<thead><tr><th>任务ID</th><th>任务名称</th><th>任务类型</th><th>完成时间</th><th>审核状态</th><th>已结收入</th></thead>';
+    tmphtml += '<thead><tr><th>任务ID</th><th>任务名称</th><th>任务类型</th><th>完成时间</th><th>审核状态</th><th>已结收入</th><th> </th></thead>';
     if(tasks.length > 0){
         tmphtml += '<tbody>';
         for(var i in tasks){
             tmphtml += '<tr>';
             for(var t in tasks[i]){
-                if(t == 'DataType'){
-                    tmphtml += '<td>'+DTC[tasks[i][t]]+'</td>';
+                if(t == 'State'){
+                    tmphtml += '<td>'+tasks[i]["Payment"]+'</td>';
                 }
-                else{
+                else if(t == 'Payment'){
+                    tmphtml += '<td>'+tasks[i]["State"]+'</td>';
+                }
+                else
+                {
                     tmphtml += '<td>'+tasks[i][t]+'</td>';
                 }
             }

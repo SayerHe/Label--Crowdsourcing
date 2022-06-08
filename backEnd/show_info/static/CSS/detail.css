@@ -32,7 +32,7 @@ body{
 }
 
 #datatable{
-    width: 100%;
+    width:100%;
     border-collapse: collapse;
 }
 #datatable *{
@@ -47,46 +47,6 @@ body{
 #datatable tr{
     border-top: 1px solid #dee2e6;
 }
-
-.operation-button{
-    font-size: 14px;
-    /* font-family:Arial,sans-serif; */
-    text-decoration: none;
-    margin-right: 1em;
-    border: none;
-    border-radius: 3px;
-    padding: 3.2px 9.6px;
-    color: white !important;
-    opacity: 0.8;
-}
-.delete-button{
-    background-color: rgb(188, 35, 35);
-}
-.delete-button:hover{
-    background-color: darkred;
-}
-
-.contact-button{
-    background-color: #1ABC9C;
-}
-.contact-button:hover{
-    background-color: darkcyan;
-}
-
-.export-button{
-    background-color: #1a7ebc;
-}
-.export-button:hover{
-    background-color: #0f4e7e;
-}
-
-.continue-button{
-    background-color: #1ABC9C;
-}
-.continue-button:hover{
-    background-color: darkcyan;
-}
-
 #pagediv{
     position: relative;
     text-align: center;
