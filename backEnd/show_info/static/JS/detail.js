@@ -88,7 +88,7 @@ function data_callback(data){
 
 function showhtml_labeler(tasks){
     var tmphtml = '';
-    tmphtml += '<thead><tr><th>任务ID</th><th>任务名称</th><th>任务类型</th><th>完成时间</th><th>审核状态</th><th>已结收入</th><th>操作</th></tr></thead>';
+    tmphtml += '<thead><tr><th>任务ID</th><th>任务名称</th><th>任务类型</th><th>完成时间</th><th>审核状态</th><th>已结收入</th></thead>';
     if(tasks.length > 0){
         tmphtml += '<tbody>';
         for(var i in tasks){
@@ -102,35 +102,9 @@ function showhtml_labeler(tasks){
                 }
             }
             tmphtml += '<td>';
-            if(1){
-                tmphtml += '<button class="operation-button continue-button" onclick="continuebutton('+tasks[i]['TaskID']+')">删除记录</button>';
-            }
-            else{
-                tmphtml += '<button class="operation-button">继续标注</button>';
-            }
-            tmphtml += '</td>';
             tmphtml += '</tr>';
         }
         tmphtml += '</tbody>';
     }
     document.getElementById("datatable").innerHTML = tmphtml;
-}
-
-function deletebutton(taskid){
-    console.log(taskid);
-    if(confirm('是否确认删除该任务？')){
-        $.ajax({
-            url: history_url,
-            type: "POST",        //请求类型
-            data: {'TaskID':taskid},
-            // ConvertEmptyStringToNull: false,
-            // dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
-            success: function (returndata) {
-                window.location.reload();
-            },
-            error: function () {
-                //当请求错误之后，自动调用
-            }
-        });
-    }
 }
