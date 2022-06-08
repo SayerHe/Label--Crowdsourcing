@@ -60,7 +60,7 @@ body{
     color: #6c757d;
     text-align: left;
 }
-#name0,#email0,#topic0,#detail0,#pri0{
+#name0,#email0,#topic0,#detail0,#pri0,#task0{
     position: absolute;
     top:50px;
     font-family: Nunito,PingFang SC,Microsoft Yahei,Hiragino Sans GB,Microsoft Sans Serif,WenQuanYi Micro Hei,sans-serif;
@@ -74,6 +74,9 @@ body{
     padding: 7.2px 2.5%;
 }
 
+#task0{
+    width:96%;
+}
 #pri0{
     top:42px;
     left:0px;
@@ -82,7 +85,7 @@ body{
 }
 w
 #topic0{
-    padding: 7.2px 1.25%!important;
+    padding: 7.2px 0%!important;
     width:92%;
     color: rgba(108, 117, 125, 0.5)!important;
 }
