@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style>
+body{background:#000;}
+.svgs{width:105px;height:105px;background:#fff;}
+</style>
+<script src="js/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="svgs">
+</div>
+</body>
+</html>
+<script type="text/javascript">
+//协议
+var svgNS = "http://www.w3.org/2000/svg";
+//封装方法创建标签
+function createTag(tag,tagAttr){
+	var oTag=document.createElementNS(svgNS,tag);
+	for(var attr in tagAttr){
+		oTag.setAttribute(attr,tagAttr[attr]);
+	};
+	return oTag;
+};
+//画圆弧的路径
+function drawArcByRadiusDeg(startX, startY, r, deg, clockwise) {
+	var cw = typeof clockwise !== 'undefined' ? clockwise : 1;
+	var x = startX - r + r*Math.cos(deg*Math.PI/180);
+	var y = startY + (1===cw ? 1 : -1)*r*Math.sin(deg*Math.PI/180);
+	var bigOrSmall = deg>180 ? 1 : 0;
+	return "M " + startX +" "+ startY + " A "+ r +" " + r + " 0 " + bigOrSmall + " " +cw+ " " + x + " " + y
+}
+//画图
+function drawPath(data){
+	var x=102,y=52,r = 50,clockwise=1;//x,y圆心位置   r圆弧的半径   clockwise顺时针
+	var Percentage=data*359.9999;
+	var circle1=createTag('path',{'d':drawArcByRadiusDeg(x, y, r, 359.99, clockwise),'stroke':"#ccc",'fill-opacity':"0",'stroke-width':"4"});
+	var circle2=createTag('path',{'d':drawArcByRadiusDeg(x, y, r, Percentage, clockwise),'stroke':"red",'fill-opacity':"0",'stroke-width':"4"});
+	var text1=createTag('text',{'x':x-50,'y':y-10,'fill':"red",'font-size':"20",'text-anchor':"middle"});
+	var text2=createTag('text',{'x':x-50,'y':y+20,'fill':"#333",'font-size':"20",'text-anchor':"middle"});
+	$(text1).html(data*100+'%');
+	$(text2).html('好评率');
+
+	$(oSvg).append(circle1);
+	$(oSvg).append(circle2);
+	$(oSvg).append(text1);
+	$(oSvg).append(text2);
+}
+
+//创建svg
+var oSvg=createTag('svg',{"width":"100%","height":"100%",'xmlns':svgNS});
+$('.svgs').append(oSvg);
+
+//调用
+drawPath(0.7);
+</script>
+- canvas
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>canvas制作原生的百分比圆形比例等</title>
+<style>
+*{margin:0;padding:0;}
+body{text-align:center;}
+</style>
+</head>
+<body>
+<div class="chart">
+     <canvas  id="canvas" width="300" height="300" style="border:1px solid #e5e5e5"></canvas>
+     <a onclick="down(event)" id="aHref">下载图片</a>
+     <a href="images/12.jpg">下载2</a>
+</div>
+<script type="text/javascript">
+window.onload = function(){
+var draw = document.getElementById("canvas");
+    if(!draw.getContext){
+      return false;
+    }
+    var context=draw.getContext('2d'), centerX=draw.width/2,
+        centerY=draw.height/2,
+        angle= 0.5, //占的百分数
+        color=[], //"#e5e5e5","red","#F00"
+        font="40px Arial";
+        speed = 0; //从度数开始70---》表示从70度开始
+        context.lineCap="round";  //square 平角的帽
+
+    //绘制外圈的圆
+    function blueCircle(){
+        context.save();//save() 方法保存当前图像状态的一份拷贝。
+        context.strokeStyle = color[0] || "#e5e5e5"; //设置描边样式
+        context.lineWidth = 5; //设置线宽
+        context.beginPath();//路径开始
+        //context.arc(centerX, centerY, 100 , -Math.PI/2, -Math.PI/2 +n*rad, false);
+        //用于绘制圆弧context.arc(x坐标，y坐标，半径，起始角度，终止角度，顺时针/逆时针)
+        context.arc(centerX,centerY,centerX-5,0,2*Math.PI,false);
+        /*context.moveTo(210,55);
+        context.arc(55,55,20,0,2*Math.PI,false);*/
+        context.stroke();
+        context.closePath(); //路径结束
+        context.restore();//save() 方法把当前状态的一份拷贝压入到一个保存图像状态的栈中。这就允许您临时地改变图像状态，然后，通过调用 restore() 来恢复以前的值。
+    }
+
+     //绘制红色外圈
+    function redCircle(n){
+            context.save();
+            context.strokeStyle = color[1] || "red"; //设置描边样式
+            context.lineWidth = 5; //设置线宽
+            context.beginPath();
+            context.arc(centerX, centerY, centerX-5 ,  -Math.PI /2, (n * 3.6 - 90) * Math.PI / 180, false);
+            context.stroke();
+            context.closePath();
+            context.restore();
+    }
+     //百分比文字绘制
+    function text(n){
+            context.save(); //save和restore可以保证样式属性只运用于该段canvas元素
+            //context.strokeStyle = "#F00"; //设置描边样式
+            //context.fillStyle='#f00';//文字颜色
+            context.beginPath();
+            context.font =font || "40px Arial"; //设置字体大小和字体
+            context.fillStyle=color[2] || "#333";
+            context.textAlign='center';//文本程度对齐方法
+            context.textBaseline='middle';//文本垂曲标的目的，基线位置
+            //绘制字体，并且指定位置
+            context.fillText(n.toFixed(0)+"%", centerX, centerY);
+            context.stroke(); //执行绘制
+            context.closePath();
+            context.restore();
+    }
+
+    //自己一直调用自己动画循环
+    var timer=null;
+    (function drawFrame(){
+            timer=setTimeout(drawFrame,10);
+            //window.requestAnimationFrame(drawFrame);
+            context.clearRect(0, 0, draw.width, draw.height);
+            blueCircle();
+            redCircle(speed);
+            text(speed);
+            if(speed > angle*100)  clearTimeout(timer);
+              speed += 0.2;
+    }());
+
+
+    //下载
+
+}
+function down(event){
+           event.preventDefault();
+       var canvas = document.getElementById("canvas");
+       var src = canvas.toDataURL("image/png");
+           document.getElementById("aHref").href= window.location+src;
+    }
+</script>
+</body>
+</html>
