@@ -18,6 +18,7 @@ class LabelTasksBaseInfo(models.Model):
     inspect_method = models.CharField(max_length=10, default="cross")
     choices = models.CharField(max_length=2000, default="")
     publish_time = models.DateTimeField(default=datetime.datetime.now().strftime('%Y-%m-%d'))
+    sample = models.TextField(default=str(pd.DataFrame(columns=["Index", "Label"]).to_dict()))
     objects=models.Manager()
 
     def __str__(self):
@@ -26,8 +27,9 @@ class LabelTasksBaseInfo(models.Model):
 class LabelTaskFile(models.Model):
     # 通过外键与BaseInfo关联，级联删除
     task_id = models.ForeignKey(LabelTasksBaseInfo, on_delete=models.CASCADE)
+    batch_id = models.IntegerField(default=-1)
     data_file = models.TextField()
-    sample = models.TextField(default=str(pd.DataFrame(columns=["Index", "Label"]).to_dict()))
+    labelers =  models.CharField(max_length=500, default=str([]))
     objects=models.Manager()
 
 
