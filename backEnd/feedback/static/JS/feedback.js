@@ -26,6 +26,7 @@ function btsubmit(){
          }
      });
 }
+
 function show_his(){
     $("#SUBHTML").attr("src", fhistory_url);
 }

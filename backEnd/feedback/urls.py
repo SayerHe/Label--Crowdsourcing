@@ -6,5 +6,5 @@ app_name = "feedback"
 
 urlpatterns = [
     path('/feedback', views.feedback, name="feedback"),
-    path('history/', views.history, name="history"),
+    path('history/', views.history, name="fhistory"),
 ]

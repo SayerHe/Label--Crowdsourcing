@@ -8,7 +8,6 @@
         var name = "{{ UserName|safe }}";
         var email = "{{ Email}}";
         var feedback_url = "{% url 'feedback:feedback' %}";
-        var fhistory_url = "{% url 'feedback:history' %}";
     </script>
     <script type="text/javascript" src="{% static 'JS/feedback.js' %}"></script>
     <meta charset="UTF-8">
@@ -59,7 +58,6 @@
         </div>
 
         <button id="button1" onclick="btsubmit()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="butt" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg> 发送</button>
-        <button class = "menubt" id="button2" onclick="show_his()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="butt" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8"/></svg> 历史反馈</button>
 
     </div>
 </body>
