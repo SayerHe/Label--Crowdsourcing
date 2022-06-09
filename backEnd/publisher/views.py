@@ -122,6 +122,7 @@ def create_zip_task(request, inspect_method, publisher, task_name, data_type, ru
     batch_id = 0
 
     for batch in split_task(task_file_table):
+        batch["__ID__"] = list(range(1,batch.shape[0]+1))
         batch = str(batch.to_dict())
         new_task_file = LabelTaskFile(task_id=new_task, data_file=batch,batch_id=batch_id)
         batch_id += 1
@@ -155,6 +156,7 @@ def create_table_task(request, inspect_method, publisher, task_name, data_type, 
     new_task.save()
     batch_id = 0
     for batch in split_task(task_file_table):
+        batch["__ID__"] = list(range(1,batch.shape[0]+1))
         batch = str(batch.to_dict())
         new_task_file = LabelTaskFile(task_id = new_task, batch_id=batch_id, data_file=batch)
         batch_id += 1
