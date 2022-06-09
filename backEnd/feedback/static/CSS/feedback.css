@@ -3,6 +3,30 @@ body{
     color: #323A46;
     font-family: Comic Sans MS ;
 }
+textarea {
+    writing-mode: horizontal-tb !important;
+    font-family: monospace;
+    text-rendering: auto;
+    letter-spacing: normal;
+    word-spacing: normal;
+    line-height: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    appearance: auto;
+    -webkit-rtl-ordering: logical;
+    cursor: text;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    column-count: initial !important;
+    margin: 0em;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    padding: 2px;
+}
 #con0{
     background-color: white;
     width:95%;
@@ -60,7 +84,7 @@ body{
     color: #6c757d;
     text-align: left;
 }
-#name0,#email0,#topic0,#detail0,#pri0,#task0,#ID0{
+#name0,#email0,#topic0,#detail0,#pri0,#task0,#ID0,#type0{
     position: absolute;
     top:50px;
     font-family: Nunito,PingFang SC,Microsoft Yahei,Hiragino Sans GB,Microsoft Sans Serif,WenQuanYi Micro Hei,sans-serif;
@@ -91,9 +115,10 @@ body{
 }
 #detail0{
     padding: 7.2px 0.6125%!important;
-    color: rgba(108, 117, 125, 0.5)!important;
+    color: rgba(108, 117, 125, 1)!important;
     width:93%;
     height:100px;
+
 }
 
 #button1{
