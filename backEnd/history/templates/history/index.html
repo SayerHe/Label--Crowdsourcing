@@ -37,14 +37,18 @@
                 </div>
             </div>
         </div> {% endcomment %}
-        <h1 id="title">历史记录</h1>
+        {% comment %} <h1 id="title">历史记录</h1> {% endcomment %}
         <div id="maindiv">
+            <div id="beforediv">
+                <p id='tabletitle'>我的订单</p>
+                <label>Search:&nbsp;<input id='searchinput' type='search'></input></label>
+            </div>
             <div id="tablediv">
                 <table id="datatable" cellpadding="13.6" cellspacing="0">
                 </table>
             </div>
         </div>
-        <div id="pagediv"><div id="pagination" size="0" on-change="changepage"></div></div>
+        <div id="pagediv"><div id="pagination" size="0" page="1" on-change="changepage"></div></div>
     </body>
 </html>
 

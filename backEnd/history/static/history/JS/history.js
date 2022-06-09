@@ -1,13 +1,3 @@
-var tempdata=[
-    {'TaskID':'1', 'TaskName':'task-1', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'100'},
-    {'TaskID':'2', 'TaskName':'task-2', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'28' },
-    {'TaskID':'3', 'TaskName':'task-3', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'38' },
-    {'TaskID':'4', 'TaskName':'task-4', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'48' },
-    {'TaskID':'5', 'TaskName':'task-5', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'58' },
-    {'TaskID':'6', 'TaskName':'task-6', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'68' },
-    {'TaskID':'7', 'TaskName':'task-7', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'78' },
-    {'TaskID':'8', 'TaskName':'task-8', 'PublishDate':'2022-6-3', 'Deadline':'2022-6-3', 'Progress':'88' },
-];
 const tableTitle={
     'TaskID':'任务ID',
     'TaskName':'任务名称',
@@ -23,65 +13,41 @@ DTC = {
     "audio":"音频",
     "video":"视频",
 };
+const TaskNumOnOnePage = 10;
+var Tasks;
+
 $(document).ready(function(){
-    if(UserType == 'publisher'){
-        showhtml_publisher(TaskList);
-    }
-    else if(UserType == 'labeler'){
-        showhtml_labeler(TaskList);
-    }
-    $('.skillbar').skillbar({
-        speed: 800,
-    });
+    Tasks = TaskList;
+    page_init(Math.max(1, Math.ceil(Tasks.length/TaskNumOnOnePage)));
+    changepage(1);
+    $('#searchinput').change(function(){
+        var s = this.value
+        Tasks = [];
+        for(i in TaskList){
+            if(TaskList[i]['TaskName'].indexOf(s) != -1){
+                Tasks.push(TaskList[i]);
+            }
+        }
+        page_init(Math.max(1, Math.ceil(Tasks.length/TaskNumOnOnePage)));
+        changepage(1);
+    })
 });
 
 window.onload=function(){
 }
 
 function changepage(page){
-    askfordata(getsss(page));
-    $("html,body").animate({
-        scrollTop: "0px"
-    }, 100);
-}
-
-var Tasks = [],
-    Page = 1;
-const CN = true;
-
-function askfordata(data){
-    return;
-    window.parent.history.pushState(
-        data,
-        document.title,
-        window.parent.location.pathname+DataToString(data)
-    );
-    $.ajax({
-        url: labeler_url,
-        type: "GET",        //请求类型
-        data: data,
-        // ConvertEmptyStringToNull: false,
-        dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
-        success: function (returndata) {
-            data_callback(returndata)
-        },
-        error: function () {
-            //当请求错误之后，自动调用
-        }
-    });
-}
-
-function data_callback(data){
-    //更新页码
-    const TaskNumOnOnePage = 10;
-    pagedata = Math.max(1, Math.ceil(data.length/TaskNumOnOnePage));
-    if(pagedata != document.getElementById("pagination").getAttribute("size")){
-        pagination = document.getElementById("pagination");
-        pagination.setAttribute("size", pagedata);
-        pagination.setAttribute("page", Page);
-        Pagination_init();
+    if(UserType == 'publisher'){
+        showhtml_publisher(Tasks.slice((page-1)*TaskNumOnOnePage, page*TaskNumOnOnePage));
     }
-    showhtml(data);
+    else if(UserType == 'labeler'){
+        showhtml_labeler(Tasks.slice((page-1)*TaskNumOnOnePage, page*TaskNumOnOnePage));
+    }
+}
+
+function page_init(pagedata){
+    document.getElementById("pagination").setAttribute("size", pagedata);
+    Pagination_init();
 }
 
 function showhtml_publisher(tasks){
@@ -98,8 +64,7 @@ function showhtml_publisher(tasks){
             tmphtml += '<tr>';
             for(var t in tasks[i]){
                 if(t == 'Progress'){
-                    tasks[i][t]=Math.floor(tasks[i][t]*100);
-                    tmphtml += '<td><div class="skillbar html"><div class="filled" data-width="'+tasks[i][t]+'%"></div></div><span class="percent">'+tasks[i][t]+'%</span></td>';
+                    tmphtml += '<td><div class="skillbar html"><div class="filled" data-width="'+tasks[i][t]*100+'%"></div></div><span class="percent">'+Math.floor(tasks[i][t]*100)+'%</span></td>';
                 }
                 else{
                     tmphtml += '<td>'+tasks[i][t]+'</td>';
@@ -107,7 +72,7 @@ function showhtml_publisher(tasks){
             }
             tmphtml += '<td>';
             tmphtml += '<button class="operation-button contact-button" onclick="contactbutton('+tasks[i]['TaskID']+')">联系客服</button>';
-            if(tasks[i]['Progress'] == 100){
+            if(tasks[i]['Progress'] == 1){
                 tmphtml += '<button class="operation-button export-button" onclick="exportbutton('+tasks[i]['TaskID']+')">导出结果</button>';
             }
             else{
@@ -119,11 +84,14 @@ function showhtml_publisher(tasks){
         tmphtml += '</tbody>';
     }
     document.getElementById("datatable").innerHTML = tmphtml;
+    $('.skillbar').skillbar({
+        speed: 800,
+    });
 }
 
 function showhtml_labeler(tasks){
     var tmphtml = '';
-    tmphtml += '<thead><tr><th>任务ID</th><th>任务名称</th><th>任务类型</th><th>已完成条数</th><th>最近标注时间</th><th>任务状态</th><th>操作</th></tr></thead>';
+    tmphtml += '<thead><tr><th>任务名称</th><th>任务类型</th><th>已完成条数</th><th>最近标注时间</th><th>任务状态</th><th>操作</th></tr></thead>';
     if(tasks.length > 0){
         tmphtml += '<tbody>';
         for(var i in tasks){
@@ -132,13 +100,13 @@ function showhtml_labeler(tasks){
                 if(t == 'DataType'){
                     tmphtml += '<td>'+DTC[tasks[i][t]]+'</td>';
                 }
-                else{
+                else if(t != 'TaskID' && t != 'BatchID'){
                     tmphtml += '<td>'+tasks[i][t]+'</td>';
                 }
             }
             tmphtml += '<td>';
             if(tasks[i]['TaskState'] == '进行中'){
-                tmphtml += '<button class="operation-button continue-button" onclick="continuebutton('+tasks[i]['TaskID']+')">继续标注</button>';
+                tmphtml += '<button class="operation-button continue-button" onclick="continuebutton('+tasks[i]['TaskID']+','+tasks[i]['BatchID']+')">继续标注</button>';
             }
             else{
                 tmphtml += '<button class="operation-button">继续标注</button>';
@@ -175,6 +143,6 @@ function contactbutton(taskid){
 function exportbutton(taskid){
     window.location.href=download_url+'?TaskID='+taskid;
 }
-function continuebutton(taskid){
-    window.open(label_url+'?TaskID='+taskid+'&DataNum=3');
+function continuebutton(taskid, batchid){
+    window.open(label_url+'?TaskID='+taskid+'&BatchID='+batchid+'&DataNum=3');
 }

@@ -21,12 +21,37 @@ $(document).ready(function(){
     $("#choicesfile").change(function(){
         $("#choicesfiletext").val($(this).val());
     });
+    $("#answerfiletext").click(function(){
+        $("#answerfile").trigger('click');
+    });
+    $("#answerfile").change(function(){
+        $("#answerfiletext").val($(this).val());
+    });
+    $("input[name='datatype']").change(function(){
+        if(this.value == 'text' || this.value == 'image'){
+            $("#label_frame").css('display', 'flex');
+        }
+        else{
+            if($("input[name='marktype']:checked").val() == 'frame'){
+                document.getElementById("label-0").checked = true;
+            }
+            $("#label_frame").css('display', 'none');
+        }
+    })
     $("input[name='marktype']").change(function(){
         if(this.value == 'choose'){
             $("#choices_div").css('display', 'block');
         }
         else{
             $("#choices_div").css('display', 'none');
+        }
+    })
+    $("input[name='checktype']").change(function(){
+        if(this.value == 'sampling'){
+            $("#answer_div").css('display', 'block');
+        }
+        else{
+            $("#answer_div").css('display', 'none');
         }
     })
 });

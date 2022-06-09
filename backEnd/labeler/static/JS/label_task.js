@@ -47,18 +47,19 @@ $(document).ready(function(){
     if(RuleText.length == 0){
         $('#foldbutton').click();
     }
-    if(window.location.search.split('&').length > 2){
+    if(window.location.search.split('&').length > 3){
         $("#nowpage").css('display', 'inline');
     }
     $('input').change(function(){
         if(this.className == 'tasknumber'){
             var s = window.location.search.split('&');
-            if(s.length >= 2){
-                s[1] = 'DataNum='+$("input[name='sc-0']:checked").val();
+            if(s.length >= 3){
+                s[2] = 'DataNum='+$("input[name='sc-0']:checked").val();
                 window.location.search = s.join('&');
             }
             else{
-                window.location.search = window.location.search.split('&')[0]+'&DataNum='+$("input[name='sc-0']:checked").val();
+                s.push('&DataNum='+$("input[name='sc-0']:checked").val());
+                window.location.search = s.join('&');
             }
         }
         else{
@@ -73,7 +74,7 @@ $(document).ready(function(){
 });
 
 window.onload=function(){
-    datanum = window.location.search.split('&')[1].split('=')[1];
+    datanum = window.location.search.split('&')[2].split('=')[1];
     $('#sc-0-'+datanum).attr("checked", true);
 }
 
@@ -390,8 +391,8 @@ function cancelframe(id){
 }
 function pageup_callback(){
     var s = window.location.search.split('&');
-    if(s.length >= 3){
-        s[2] = 'CurrentItem=-'+DataList[0]['__ID__'];
+    if(s.length >= 4){
+        s[3] = 'CurrentItem=-'+DataList[0]['__ID__'];
         window.location.search = s.join('&');
     }
     else{
@@ -400,12 +401,13 @@ function pageup_callback(){
 }
 function nowpage_callback(){
     var s = window.location.search.split('&');
-    window.location.search = s[0]+'&'+s[1];
+    window.location.search = s[0]+'&'+s[1]+'&'+s[2];
 }
 
 function SubmitLabelResult(){
     var labelData = [], finished = true, scr = 0;
-    var taskid = window.location.search.split('&')[0].split('=')[1];
+    var s = window.location.search.split('&')
+    var taskid = s[0].split('=')[1], batchid = s[1].split('=')[1];
     if(LabelType == 'choose'){
         for(i in DataList){
             id = DataList[i]['__ID__'];
@@ -491,12 +493,12 @@ function SubmitLabelResult(){
             type: "POST",        //请求类型
             data: {
                 "TaskID":taskid,
+                "BatchID":batchid,
                 "Labels":labelData,
             },
             // dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
             success: function (callback) {
                 alert("提交成功！");
-
                 var s = window.location.search.split('&');
                 if(s.length >= 3){
                     s[2] = 'CurrentItem='+Math.max(0, DataList[DataList.length-1]['__ID__']);
