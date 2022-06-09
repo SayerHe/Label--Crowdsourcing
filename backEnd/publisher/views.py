@@ -63,8 +63,8 @@ def split_task(task_content):
     batch_size = 5
     total_round = task_content.shape[0]//batch_size
     for i in range(total_round-1):
-        yield task_content[i*50:(i+1)*50]
-    yield task_content[(total_round-1)*50: ]
+        yield task_content[i*batch_size:(i+1)*batch_size]
+    yield task_content[(total_round-1)*batch_size: ]
 
 def create_zip_task(request, inspect_method, publisher, task_name, data_type, rule_file,
                           label_type, task_deadline, task_payment, choices, sample):
@@ -95,7 +95,7 @@ def create_zip_task(request, inspect_method, publisher, task_name, data_type, ru
         except:
             return JsonResponse({"err": "winRAR environment path error !"})
 
-    task_file_table, new_task_dir = transform_zip_file(task_file, new_task_id, request)
+    task_file_table, new_task_dir = transform_zip_file(task_file, new_task_id+1, request)
     if data_type == "audio":
         audio_type = task_file_table.apply(lambda x: x[0].split(".")[-1] in ["mp3", "mp4"], axis=1)
         if not audio_type.all():
@@ -166,10 +166,8 @@ def create_task(request):
     if request.method == 'GET':
         return render(request, "Publisher/index.html")
     else:
-        # print(request.POST)
         newTask_param = dict()
         try:
-            # print(json.loads(request.body))
             newTask_param["publisher"] = request.user
             newTask_param["task_name"] = request.POST["TaskName"]
             newTask_param["data_type"] = request.POST["DataType"]

@@ -12,7 +12,7 @@ class LabelTasksBaseInfo(models.Model):
     data_type = models.CharField(max_length=10)
     label_type = models.CharField(max_length=10)
     task_deadline = models.DateTimeField()
-    task_payment = models.IntegerField()
+    task_payment = models.FloatField()
     rule_file = models.TextField(max_length=500)
     task_difficulty = models.CharField(max_length=50)
     inspect_method = models.CharField(max_length=10, default="cross")
