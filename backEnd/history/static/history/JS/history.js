@@ -91,7 +91,7 @@ function showhtml_publisher(tasks){
 
 function showhtml_labeler(tasks){
     var tmphtml = '';
-    tmphtml += '<thead><tr><th>任务ID</th><th>任务名称</th><th>任务类型</th><th>已完成条数</th><th>最近标注时间</th><th>任务状态</th><th>操作</th></tr></thead>';
+    tmphtml += '<thead><tr><th>任务名称</th><th>任务类型</th><th>已完成条数</th><th>最近标注时间</th><th>任务状态</th><th>操作</th></tr></thead>';
     if(tasks.length > 0){
         tmphtml += '<tbody>';
         for(var i in tasks){
@@ -100,13 +100,13 @@ function showhtml_labeler(tasks){
                 if(t == 'DataType'){
                     tmphtml += '<td>'+DTC[tasks[i][t]]+'</td>';
                 }
-                else{
+                else if(t != 'TaskID' && t != 'BatchID'){
                     tmphtml += '<td>'+tasks[i][t]+'</td>';
                 }
             }
             tmphtml += '<td>';
             if(tasks[i]['TaskState'] == '进行中'){
-                tmphtml += '<button class="operation-button continue-button" onclick="continuebutton('+tasks[i]['TaskID']+')">继续标注</button>';
+                tmphtml += '<button class="operation-button continue-button" onclick="continuebutton('+tasks[i]['TaskID']+','+tasks[i]['BatchID']+')">继续标注</button>';
             }
             else{
                 tmphtml += '<button class="operation-button">继续标注</button>';
@@ -143,6 +143,6 @@ function contactbutton(taskid){
 function exportbutton(taskid){
     window.location.href=download_url+'?TaskID='+taskid;
 }
-function continuebutton(taskid){
-    window.open(label_url+'?TaskID='+taskid+'&DataNum=3');
+function continuebutton(taskid, batchid){
+    window.open(label_url+'?TaskID='+taskid+'&BatchID='+batchid+'&DataNum=3');
 }
