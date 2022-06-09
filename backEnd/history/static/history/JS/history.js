@@ -121,7 +121,7 @@ function showhtml_labeler(tasks){
                 }
             }
             tmphtml += '<td>';
-            if(tasks[i]['TaskState'] == '进行中'){
+            if(tasks[i][t][0] < tasks[i][t][1]){
                 tmphtml += '<button class="operation-button continue-button" onclick="continuebutton('+tasks[i]['TaskID']+','+tasks[i]['BatchID']+')">继续标注</button>';
             }
             else{

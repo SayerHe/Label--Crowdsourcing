@@ -15,10 +15,11 @@
                 finished_url = "{% url 'publisher:finish' %}",
                 account_url = "{% url 'show_info:account' %}",
                 check_url = "{% url 'publisher:check' %}",
-                Feedback_url = "{% url 'feedback:feedback' %}",
+                feedback_url = "{% url 'feedback:feedback' %}",
                 fhistory_url = "{% url 'feedback:fhistory' %}",
                 history_url = "{% url 'history:get_history' %}";
-            {% comment %} console.log(UserType) {% endcomment %}
+            const HOMEPAGE = 'TaskList';
+                {% comment %} console.log(UserType) {% endcomment %}
         </script>
         <script type="text/javascript" src="{% static 'JS/jquery-3.6.0.js' %}"></script>
         <script type="text/javascript" src="{% static 'JS/jquery.slimscroll.min.js' %}"></script>
@@ -40,34 +41,70 @@
                 </div>
             </div>
         </div>
-        <div id="menu">
-            {% comment %} <div id="menu_active"><a></a></div> {% endcomment %}
-            <ul>
-                <li class="menubt" id="Homepage">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                    <a>&nbsp;主页</a>
-                </li>
-                <li class="menubt" id="Publish">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3zM12 8v8m-4-4h8"/></svg>
-                    <a>&nbsp;发布任务</a>
-                </li>
-                <li class="menubt" id="T_Doing">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon></svg>
-                    <a>&nbsp;正在进行的订单</a>
-                </li>
-                <li class="menubt" id="T_Finished">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                    <a>&nbsp;已完成的订单</a>
-                </li>
-                <li class="menubt" id="feedback">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                    <a>&nbsp;反馈</a>
-                </li>
-                <li class="menubt" id="fhistory">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                    <a>&nbsp;历史反馈</a>
-                </li>
-            </ul>
+        <div class="left-side-menu" >
+            <div class="lsm-expand-btn">
+                <div class="lsm-mini-btn">
+                    <label>
+                        <input type="checkbox" checked="checked">
+                        <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="30" />
+                            <path class="line--1" d="M0 40h62c18 0 18-20-17 5L31 55" />
+                            <path class="line--2" d="M0 50h80" />
+                            <path class="line--3" d="M0 60h62c18 0 18 20-17-5L31 45" />
+                        </svg>
+                    </label>
+                </div>
+            </div>
+            <div class="lsm-container">
+                <div class="lsm-scroll" >
+                    <div class="lsm-sidebar">
+                        <ul>
+                            <li class="lsm-sidebar-item">
+                                <a id="TaskList" >
+                                    <svg class="my-icon before-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                    <span>主页</span>
+                                </a>
+                            </li>
+                            <li class="lsm-sidebar-item">
+                                <a id='Publish'>
+                                    <svg class="my-icon before-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon></svg>
+                                    <span>发布任务</span>
+                                </a>
+                            </li>
+                            <li class="lsm-sidebar-item">
+                                <a >
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8"/></svg>
+                                    <span>我的订单</span>
+                                    <svg class="my-icon lsm-sidebar-more" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                                </a>
+                                <ul>
+                                    <li><a id='History'><span>已完成的订单</span></a></li>
+                                    <li><a id='FHistory'><span>正在进行的订单</span></a></li>
+                                </ul>
+                            </li>
+                            <li class="lsm-sidebar-item">
+                                <a >
+                                    {% comment %} <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> {% endcomment %}
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                                    <span>联系客服</span>
+                                    <svg class="my-icon lsm-sidebar-more" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                                </a>
+                                <ul>
+                                    <li><a id='Feedback'><span>反馈记录</span></a></li>
+                                    <li><a id='Feedback'><span>新建反馈</span></a></li>
+                                </ul>
+                            </li>
+                            <li class="lsm-sidebar-item">
+                                <a id='Center'>
+                                    <svg class="my-icon before-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                    <span>个人中心</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        
         </div>
 
     </body>
