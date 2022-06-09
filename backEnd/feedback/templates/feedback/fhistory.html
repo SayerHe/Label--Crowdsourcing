@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        {% load static %}
+{#        <script>#}
+{#            var Data = {{ Data|safe }},#}
+{#                UserName = '{{ UserName|safe }}';#}
+{#        </script>#}
+        <script> var UserType = "labeler" </script>
+        <link rel="stylesheet" href="{% static '/CSS/fhistory.css' %}" type="text/css">
+        <link rel="stylesheet" href="{% static '/history/CSS/pagination.css' %}" type="text/css">
+        <link rel="stylesheet" href="{% static '/history/CSS/an-skill-bar.css' %}" type="text/css">
+        {% comment %} <link rel="stylesheet" href="{% static 'CSS/accordion-menu.css' %}" type="text/css"> {% endcomment %}
+        <script type="text/javascript" src="{% static '/history/JS/jquery-3.6.0.js' %}"></script>
+        <script type="text/javascript" src="{% static '/JS/fhistory.js' %}"></script>
+        <script type="text/javascript" src="{% static '/history/JS/pagination.js' %}"></script>
+        <script type="text/javascript" src="{% static '/history/JS/an-skill-bar.js' %}"></script>
+        <script>
+
+        </script>
+        {% comment %} <script type="text/javascript" src="{% static 'JS/accordion-menu.js' %}"></script> {% endcomment %}
+    </head>
+
+    <body>
+        {% comment %} <div id="head">
+            <a id="Title"><p><b>数据标注平台</b></p></a>
+            <div id="userdiv">
+                <a id="User"><p id="UserName">UserName</p></a>
+                <div id="usermenu">
+                    <ul>
+                        <li><a href="javascript:">个人中心</a></li>
+                        <li><a href="javascript:">账号管理</a></li>
+                        <li><a href="javascript:Logout()">退出登录</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div> {% endcomment %}
+        <h1 id="title">历史反馈</h1>
+        <div id="maindiv">
+            <div id="tablediv">
+                <table id="datatable" cellpadding="13.6" cellspacing="0">
+                </table>
+            </div>
+        </div>
+        <div id="pagediv"><div id="pagination" size="0" on-change="changepage"></div></div>
+    </body>
+</html>
+

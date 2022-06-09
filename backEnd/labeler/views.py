@@ -9,6 +9,7 @@ import datetime
 import json
 import time
 import base64
+from pytz import timezone
 import ast
 
 ZIP_FILES = "zip_tasks"
@@ -123,14 +124,21 @@ def show_tasks(request):
         except:
             return JsonResponse({"err": "Missing task info"})
 
-        # 记录task的历史信息
-        user_info = UserInfo.objects.get(user=request.user)
-        task_log = pd.DataFrame(eval(user_info.task_log))
         task = LabelTasksBaseInfo.objects.get(id= task_id)
+        task_content = LabelTaskFile.objects.get(task_id=task, batch_id=batch_id).data_file
+        task_content = pd.DataFrame(eval(task_content))
+        ddl = task.task_deadline
+        tzchina = timezone('Asia/Shanghai')
+        ddl = ddl.astimezone(tzchina).strftime("%Y-%m-%d")
+        user_info = UserInfo.objects.get(user=request.user)
+
+        # user_info.task_log = str(pd.DataFrame(columns=["TaskID", "BatchID", "TaskName", "DataType", "Progress", "LastTime", "Deadline", "TaskState"]).to_dict())
+        # user_info.save()
+
+        task_log = pd.DataFrame(eval(user_info.task_log))
         # "TaskID", "BatchID", "TaskName", "DataType", "ItemNum", "LastTime", "TaskState"
-        task_log.loc[task_log.shape[0]] = [task_id, batch_id, task.task_name, task.data_type, 0,
-                                           datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "进行中"]
-        # print(task_log)
+        task_log.loc[task_log.shape[0]] = [task_id, batch_id, task.task_name, task.data_type, [0, task_content.shape[0]],
+                                           datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), ddl, "进行中"]
         user_info.task_log = str(task_log.to_dict())
         user_info.save()
         return JsonResponse({"err": "none"})
@@ -441,7 +449,6 @@ def submit_label(request, CrossNum):
                     if int(times) == int(CrossNum):
                         labelers_log = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
                         right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
-                        print(labelers_log)
                         for i in range(len(labelers_log)):
                             user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
                             user_label = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])[i]
@@ -477,13 +484,16 @@ def submit_label(request, CrossNum):
 
     # 记录task的历史信息
     task_log = pd.DataFrame(eval(user_info.task_log))
-    # ["TaskID", "BatchID", "TaskName", "DataType", "Process", "LastTime", "TaskState"]
+    # ["TaskID", "BatchID", "TaskName", "DataType", "Progress", "LastTime", "TaskState"]
     task_content = LabelTaskFile.objects.get(task_id=task, batch_id=batch_id).data_file
     task_content = pd.DataFrame(eval(task_content))
     process = []
     if inspect_method == "cross":
         for i in range(task_content.shape[0]):
-            labelers = eval(task_content.iloc[i, :]["__Labelers__"].values[0])
+            try:
+                labelers = eval(task_content.iloc[i, :]["__Labelers__"])
+            except:
+                labelers = []
             if str(request.user.id) in labelers:
                 process.append(True)
             else:
@@ -494,16 +504,15 @@ def submit_label(request, CrossNum):
         labeled = task_content.loc[task_content["__Label__"] != ""]
         process = [labeled.shape[0], task_content.shape[0]]
 
-    old_log = task_log.loc[task_log["TaskID"] == task.id]
-    if old_log.shape[0] == 0:
-        task_log.loc[task_log.shape[0]] = [task.id, batch_id, task.task_name, task.data_type, process,
-                                           time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), ""]
-
+    if process[0]/process[1] == 1:
+        state = "Finished"
     else:
-        new_log = [task.id, batch_id, task.task_name, task.data_type, process,
-                   time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), ""]
-        task_log.loc[task_log["TaskID"] == task.id] = new_log
+        state ="Unfinished"
 
+    new_log = [task.id, batch_id, task.task_name, task.data_type, process,
+               time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), task.task_deadline, state]
+
+    task_log.loc[task_log["TaskID"] == task.id] = new_log
     user_info.task_log = str(task_log.to_dict())
     user_info.save()
 

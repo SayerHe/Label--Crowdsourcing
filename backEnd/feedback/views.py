@@ -45,3 +45,5 @@ def feedback(request):
 
 def show_feedback(request):
     pass
+def history(request):
+    return render(request, "feedback/fhistory.html", {'UserName': request.user.username});
