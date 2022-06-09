@@ -114,8 +114,7 @@ function showhtml_labeler(tasks){
                     tmphtml += '<td>'+DTC[tasks[i][t]]+'</td>';
                 }
                 else if(t == 'Progress'){
-                    console.log(DTC[tasks[i][t]])
-                    tmphtml += '<td>'+DTC[tasks[i][t]][0]+'/'+DTC[tasks[i][t]][1]+'</td>';
+                    tmphtml += '<td>'+tasks[i][t][0]+'/'+tasks[i][t][1]+'</td>';
                 }
                 else{
                     tmphtml += '<td>'+tasks[i][t]+'</td>';

@@ -271,7 +271,7 @@ a{text-decoration:none;} */
 .lsm-mini-btn input:checked+svg .line--1, .lsm-mini-btn input:checked+svg .line--3 {--offset: -109.1770175568;}
 
 .lsm-mini .lsm-container, .lsm-mini .lsm-container{width: 60px;}
-.lsm-container.lsm-mini .lsm-sidebar .lsm-sidebar-icon{/* margin-left:-2px; */}
+/* .lsm-container.lsm-mini .lsm-sidebar .lsm-sidebar-icon{margin-left:-2px;} */
 .left-side-menu.lsm-mini ul:first-child>li.lsm-sidebar-item>a span{display: none;}
 .left-side-menu.lsm-mini ul:first-child>li.lsm-sidebar-item>a> i.lsm-sidebar-more{margin-right: -20px;}
 
