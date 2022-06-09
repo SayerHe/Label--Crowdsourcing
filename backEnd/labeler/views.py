@@ -55,7 +55,7 @@ def show_tasks(request):
                 for batch in batches:
                     if request.user.id in eval(batch.labelers):
                         break
-                    if len(eval(batch.labelers))!=10:
+                    if len(eval(batch.labelers))!=CrossNum:
                         batch_id.append(batch.batch_id)
                         tasks.append(task_base)
                         break
