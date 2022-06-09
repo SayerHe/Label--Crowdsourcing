@@ -9,6 +9,7 @@ import datetime
 import json
 import time
 import base64
+from pytz import timezone
 import ast
 
 ZIP_FILES = "zip_tasks"
@@ -119,14 +120,15 @@ def show_tasks(request):
         except:
             return JsonResponse({"err": "Missing task info"})
 
-        # 记录task的历史信息
+        task = LabelTasksBaseInfo.objects.get(id= task_id)
+        ddl = task.task_deadline
+        tzchina = timezone('Asia/Shanghai')
+        ddl = ddl.astimezone(tzchina).strftime("%Y-%m-%d")
         user_info = UserInfo.objects.get(user=request.user)
         task_log = pd.DataFrame(eval(user_info.task_log))
-        task = LabelTasksBaseInfo.objects.get(id= task_id)
         # "TaskID", "BatchID", "TaskName", "DataType", "ItemNum", "LastTime", "TaskState"
         task_log.loc[task_log.shape[0]] = [task_id, batch_id, task.task_name, task.data_type, 0,
-                                           datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "进行中"]
-        # print(task_log)
+                                           datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), ddl, "进行中"]
         user_info.task_log = str(task_log.to_dict())
         user_info.save()
         return JsonResponse({"err": "none"})
@@ -194,7 +196,6 @@ def forward_index(x, request):
         return eval(x["__Labelers__"]).index(request.user.id)
 
 def find_rollback(request, task_content_all, current_item_id, PageSize):
-
     if current_item_id < 0:
         finished = False
         current_item_id = abs(current_item_id)
@@ -277,7 +278,8 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
             ]
         else:
             task_content, finished = find_rollback(request, task_content_all, current_item_id, PageSize)
-
+            if len(task_content) == 0:
+                task_content = task_content_all[:PageSize].to_dict("records")
         Data = pack_data(request, task_content, task_data_type, task_id, task, label_type, finished)
         return render(request, "labeler/label.html", Data)
 
@@ -310,6 +312,8 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
 
         else:
             task_content, finished = find_rollback(request, task_content_all, current_item_id, PageSize)
+            if len(task_content) == 0:
+                task_content = task_content_all[:PageSize].to_dict("records")
 
         Data = pack_data(request, task_content, task_data_type, task_id, task, label_type, finished)
 
@@ -435,7 +439,6 @@ def submit_label(request, CrossNum):
                     if int(times) == int(CrossNum):
                         labelers_log = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
                         right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
-                        print(labelers_log)
                         for i in range(len(labelers_log)):
                             user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
                             user_label = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])[i]
@@ -466,37 +469,42 @@ def submit_label(request, CrossNum):
                             salary_log_cross(user_info_i, task, label, payment, state, cross_finish=True, method="update")
                     else:
                         salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="update")
-
     table_db.data_file = str(table.to_dict())
     table_db.save()
 
-    # # 记录task的历史信息
-    # task_log = pd.DataFrame(eval(user_info.task_log))
-    # # ["TaskID", "TaskName", "DataType", "ItemNum", "LastTime", "TaskState"]
-    # task_state = "进行中"
-    # task_content = LabelTaskFile.objects.get(task_id=task).data_file
-    # task_content = pd.DataFrame(eval(task_content))
-    #
-    # if inspect_method == "cross":
-    #     for i in range(task_content.shape[0]):
-    #         labelers = eval(task_content.iloc[i, :]["__Labelers__"].values[0])
-    #         # if str(request.user.id) in
-    #
-    # elif inspect_method == "sampling":
-    #     if task_content.loc[task_content["__Label__"]!=""].shape[0] == task_content.shape[0]:
-    #         task_state = "已结束"
-    # old_log = task_log.loc[task_log["TaskID"] == task.id]
-    # if old_log.shape[0] == 0:
-    #     task_log.loc[task_log.shape[0]] = [task.id, task.task_name, task.data_type, len(labels),
-    #                                        time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), task_state]
-    #
-    # else:
-    #     new_log = [task.id, task.task_name, task.data_type, old_log["ItemNum"] + len(labels),
-    #                time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), task_state]
-    #     task_log.loc[task_log["TaskID"] == task.id] = new_log
-    #
-    # user_info.task_log = str(task_log.to_dict())
-    # user_info.save()
+    # 记录task的历史信息
+    task_log = pd.DataFrame(eval(user_info.task_log))
+    # ["TaskID", "BatchID", "TaskName", "DataType", "Progress", "LastTime", "TaskState"]
+    task_content = LabelTaskFile.objects.get(task_id=task, batch_id=batch_id).data_file
+    task_content = pd.DataFrame(eval(task_content))
+    process = []
+    if inspect_method == "cross":
+        for i in range(task_content.shape[0]):
+            try:
+                labelers = eval(task_content.iloc[i, :]["__Labelers__"])
+            except:
+                labelers = []
+            if str(request.user.id) in labelers:
+                process.append(True)
+            else:
+                process.append(False)
+        process = [sum(process), len(process)]
+
+    elif inspect_method == "sampling":
+        labeled = task_content.loc[task_content["__Label__"] != ""]
+        process = [labeled.shape[0], task_content.shape[0]]
+
+    if process[0]/process[1] == 1:
+        state = "Finished"
+    else:
+        state ="Unfinished"
+
+    new_log = [task.id, batch_id, task.task_name, task.data_type, process,
+               time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), task.task_deadline, state]
+
+    task_log.loc[task_log["TaskID"] == task.id] = new_log
+    user_info.task_log = str(task_log.to_dict())
+    user_info.save()
 
     return JsonResponse({"err": "none"})
 
