@@ -144,10 +144,16 @@ def show_tasks(request):
 
         task_log = pd.DataFrame(eval(user_info.task_log))
         # "TaskID", "BatchID", "TaskName", "DataType", "ItemNum", "LastTime", "TaskState"
-        task_log.loc[task_log.shape[0]] = [task_id, batch_id, task.task_name, task.data_type, [0, task_content.shape[0]],
-                                           datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), ddl, "进行中"]
+        task_log.loc[task_log.shape[0]] = [str(task_id), str(batch_id), task.task_name, task.data_type, [0, task_content.shape[0]],
+                                           datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), ddl, "Unfinished"]
         user_info.task_log = str(task_log.to_dict())
         user_info.save()
+        task_file = LabelTaskFile.objects.get(task_id=task, batch_id=batch_id)
+        old_labelers = eval(task_file.labelers)
+        old_labelers.append(request.user.id)
+        task_file.labelers = str(old_labelers)
+        task_file.save()
+
         return JsonResponse({"err": "none"})
 
 
@@ -326,7 +332,9 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
             task_content = [
                 dict(task_content_not_labeled.iloc[i, :]) for i in range(task_content_not_labeled.shape[0])
             ]
-
+            # 防止出现 ["1"] 的默认标签
+            for i in task_content:
+                i["__Label__"] = ""
         else:
             task_content, finished = find_rollback(request, task_content_all, current_item_id, PageSize)
             if len(task_content) == 0:
@@ -425,12 +433,12 @@ def submit_label(request, CrossNum):
             if table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0] == "":
                 table.loc[table["__ID__"] == label["id"], "__Label__"] = str([label["label"]])
                 table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str([request.user.id])
-                salary_log_sample(user_info, task, label, payment, "Success", method="new")
+                # salary_log_sample(user_info, task, label, payment, "Success", method="new")
             else:
                 old_label = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])
                 old_label[0] = str(label["label"])
                 table.loc[table["__ID__"] == label["id"], "__Label__"] = str(old_label)
-                salary_log_sample(user_info, task, label, payment, "Success", method="update")
+                # salary_log_sample(user_info, task, label, payment, "Success", method="update")
 
     elif inspect_method == "cross":
         for label in labels:
@@ -451,20 +459,20 @@ def submit_label(request, CrossNum):
                     old_labelers.append(request.user.id)
                     table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str(old_labelers)
                     # 记录历史行为
-                    times = table.loc[table["__ID__"] == label["id"], "__Times__"].values[0]
-                    salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="new")
-                    if int(times) == int(CrossNum):
-                        labelers_log = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
-                        right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
-                        for i in range(len(labelers_log)):
-                            user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
-                            user_label = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])[i]
-                            # 用户是否成功的的判断   --好nmd复杂
-                            if user_label == right_label:
-                                state = "Success"
-                            else:
-                                state = "Fail"
-                            salary_log_cross(user_info_i, task, label, payment, state, cross_finish=True, method="new")
+                    # times = table.loc[table["__ID__"] == label["id"], "__Times__"].values[0]
+                    # salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="new")
+                    # if int(times) == int(CrossNum):
+                    #     labelers_log = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
+                    #     right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
+                    #     for i in range(len(labelers_log)):
+                    #         user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
+                    #         user_label = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])[i]
+                    #         # 用户是否成功的的判断   --好nmd复杂
+                    #         if user_label == right_label:
+                    #             state = "Success"
+                    #         else:
+                    #             state = "Fail"
+                    #         salary_log_cross(user_info_i, task, label, payment, state, cross_finish=True, method="new")
 
                 else:
                     old_labels = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])
@@ -472,23 +480,23 @@ def submit_label(request, CrossNum):
                     user_index = old_labelers.index(request.user.id)
                     old_labels[user_index] = label["label"]
                     table.loc[table["__ID__"] == label["id"], "__Label__"] = str(old_labels)
-                    if table.loc[table["__ID__"] == label["id"], "__Times__"].values[0] == CrossNum:
-                        labelers_log = table.loc[table["__ID__"] == label["id"], "__Labelers__"].tolist()
-                        right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
-                        for i in range(len(labelers_log)):
-                            user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
-                            user_label = table.loc[table["__ID__"] == label["id"], "__Label__"][i]
-                            # 用户是否成功的的判断   --好nmd复杂
-                            if user_label == right_label:
-                                state = "Success"
-                            else:
-                                state = "Fail"
-                            salary_log_cross(user_info_i, task, label, payment, state, cross_finish=True, method="update")
-                    else:
-                        salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="update")
+                    # if table.loc[table["__ID__"] == label["id"], "__Times__"].values[0] == CrossNum:
+                    #     labelers_log = table.loc[table["__ID__"] == label["id"], "__Labelers__"].tolist()
+                    #     right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
+                    #     for i in range(len(labelers_log)):
+                    #         user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
+                    #         user_label = table.loc[table["__ID__"] == label["id"], "__Label__"][i]
+                    #         # 用户是否成功的的判断   --好nmd复杂
+                    #         if user_label == right_label:
+                    #             state = "Success"
+                    #         else:
+                    #             state = "Fail"
+                    #         salary_log_cross(user_info_i, task, label, payment, state, cross_finish=True, method="update")
+                    # else:
+                    #     salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="update")
+
     table_db.data_file = str(table.to_dict())
     table_db.save()
-
     # 记录task的历史信息
     task_log = pd.DataFrame(eval(user_info.task_log))
     # ["TaskID", "BatchID", "TaskName", "DataType", "Progress", "LastTime", "TaskState"]
@@ -501,7 +509,7 @@ def submit_label(request, CrossNum):
                 labelers = eval(task_content.iloc[i, :]["__Labelers__"])
             except:
                 labelers = []
-            if str(request.user.id) in labelers:
+            if request.user.id in labelers:
                 process.append(True)
             else:
                 process.append(False)
@@ -511,15 +519,19 @@ def submit_label(request, CrossNum):
         labeled = task_content.loc[task_content["__Label__"] != ""]
         process = [labeled.shape[0], task_content.shape[0]]
 
+    print(process)
+
     if process[0]/process[1] == 1:
         state = "Finished"
     else:
         state ="Unfinished"
+    ddl = task.task_deadline
+    tzchina = timezone('Asia/Shanghai')
+    ddl = ddl.astimezone(tzchina).strftime("%Y-%m-%d")
+    new_log = [str(task.id), str(batch_id), task.task_name, task.data_type, process,
+               time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), ddl, state]
 
-    new_log = [task.id, batch_id, task.task_name, task.data_type, process,
-               time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), task.task_deadline, state]
-
-    task_log.loc[task_log["TaskID"] == task.id] = new_log
+    task_log.loc[(task_log["TaskID"] == str(task.id)) & (task_log["BatchID"] == str(batch_id))] = new_log
     user_info.task_log = str(task_log.to_dict())
     user_info.save()
 

@@ -500,8 +500,8 @@ function SubmitLabelResult(){
             success: function (callback) {
                 alert("提交成功！");
                 var s = window.location.search.split('&');
-                if(s.length >= 3){
-                    s[2] = 'CurrentItem='+Math.max(0, DataList[DataList.length-1]['__ID__']);
+                if(s.length >= 4){
+                    s[3] = 'CurrentItem='+Math.max(0, DataList[DataList.length-1]['__ID__']);
                     window.location.search = s.join('&');
                 }
                 else{
