@@ -6,4 +6,6 @@ from django.shortcuts import render
 #
 #     return 0
 def feedback(request):
-    return render(request, "feedback/feedback.html", {'UserName': request.user.username})
+    if request.method == "GET":
+        return render(request, "feedback/feedback.html", {'UserName': request.user.username})
+
