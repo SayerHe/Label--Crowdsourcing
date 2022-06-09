@@ -123,7 +123,7 @@ textarea {
 #type0{
     width:96%;
 }
-#button1{
+#button1,#button2{
 	position: absolute;
 	background-color: #1ABC9C;
 	top:540px;
@@ -136,6 +136,9 @@ textarea {
     opacity: 0.8;
 }
 
-#button1:hover{
+#button1:hover,#button2:hover{
     background-color: darkcyan;
+}
+#button2{
+    left:12.5%;
 }
