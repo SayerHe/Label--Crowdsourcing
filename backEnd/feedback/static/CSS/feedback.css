@@ -120,7 +120,9 @@ textarea {
     height:100px;
 
 }
-
+#type0{
+    width:96%;
+}
 #button1{
 	position: absolute;
 	background-color: #1ABC9C;
