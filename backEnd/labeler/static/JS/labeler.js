@@ -128,7 +128,7 @@ function showhtml(tasks){
                                 '<p class="detailcontent">'+tasks[i].RuleText+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
-                                '<button type="button" class="dotaskbutton" onclick="dotaskbt('+tasks[i].TaskID+')">开始标注</p>'+
+                                '<button type="button" class="dotaskbutton" onclick="dotaskbt('+tasks[i].TaskID+','+tasks[i].BatchID+')">开始标注</p>'+
                             '</div>'+
                         '</div>'+
                     '</details>';
@@ -138,9 +138,22 @@ function showhtml(tasks){
     tasklist_init(tasklist);
 }
 
-function dotaskbt(taskid){
+function dotaskbt(taskid, batchid){
     // console.log(taskid);
-    window.open(label_url+'?TaskID='+taskid+'&DataNum=3');
+    // window.open(label_url+'?TaskID='+taskid+'&DataNum=3');
+    $.ajax({
+        url: labeler_url,
+        type: "POST",        //请求类型
+        data: {'TaskID':taskid, 'BatchID':batchid},
+        // ConvertEmptyStringToNull: false,
+        dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
+        success: function (returndata) {
+            console.log(returndata)
+        },
+        error: function () {
+            //当请求错误之后，自动调用
+        }
+    });
 }
 
 function getsss(page){
@@ -222,6 +235,7 @@ function totaskclass(data){
     tmpdata.TaskDeadline = data["TaskDeadline"];
     tmpdata.Payment = data["Payment"];
     tmpdata.RuleText = data["RuleText"];
+    tmpdata.BatchID = data["BatchID"];
     return tmpdata;
 }
 
