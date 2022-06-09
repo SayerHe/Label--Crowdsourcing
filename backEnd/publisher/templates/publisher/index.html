@@ -43,9 +43,9 @@
                 <p class="subtitle">标注类型 ：</p>
                 <div class="submodels">
                     <div class="container">
-                        <label><input type="radio" name="marktype" value="describe" checked="checked"><span>描述</span></label>
+                        <label><input type="radio" name="marktype" value="describe" id="label-0" checked="checked"><span>描述</span></label>
                         <label><input type="radio" name="marktype" value="choose"><span>选择</span></label>
-                        <label><input type="radio" name="marktype" value="frame"><span>框选</span></label>
+                        <label id='label_frame'><input type="radio" name="marktype" value="frame"><span>框选</span></label>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                 <div class="submodels">
                     <div class="container">
                         <label><input type="radio" name="checktype" value="cross" checked="checked"><span>交叉检验</span></label>
-                        <label><input type="radio" name="checktype" value="multilevel"><span>多级检验</span></label>
+                        {% comment %} <label><input type="radio" name="checktype" value="multilevel"><span>多级检验</span></label> {% endcomment %}
                         <label><input type="radio" name="checktype" value="sampling"><span>抽样检验</span></label>
                     </div>
                 </div>
@@ -104,6 +104,14 @@
                 <div class="submodels">
                     <input type="text" class="filetext" id="choicesfiletext" placeholder="请选择文件···" readonly="readonly"/>
                     <input type="file" id="choicesfile">
+                </div>
+            </div>
+
+            <div class="main_div" id="answer_div">
+                <p class="subtitle">答案文件 ：</p>
+                <div class="submodels">
+                    <input type="text" class="filetext" id="answerfiletext" placeholder="请选择文件···" readonly="readonly"/>
+                    <input type="file" id="answerfile">
                 </div>
             </div>
 
