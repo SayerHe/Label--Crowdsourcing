@@ -1,10 +1,16 @@
-const tableTitle={
+const tableTitle_publisher={
     'TaskID':'任务ID',
     'TaskName':'任务名称',
     'PublishDate':'发布日期',
     'Deadline':'截止日期',
-    'Progress':'任务进度',
-    'TaskState':'任务状态',
+    'Progress':'完成度',
+},
+tableTitle_labeler={
+    'TaskName':'任务名称',
+    'DataType':'任务类型',
+    'Progress':'已完成条数',
+    'LastTime':'最近标注时间',
+    'Deadline':'截止日期',
 },
 DTC = {
     "text":"文本",
@@ -52,17 +58,18 @@ function page_init(pagedata){
 
 function showhtml_publisher(tasks){
     var tmphtml = '';
-    tmphtml += '<thead><tr><th>任务ID</th><th>任务名称</th><th>发布日期</th><th>截止日期</th><th>完成度</th><th>操作</th></tr></thead>';
-    // tmphtml += '<thead><tr>';
-    // for(t in tasks[0]){
-    //     tmphtml += '<th>'+tableTitle[t]+'</th>';
-    // }
-    // tmphtml += '</tr></thead>';
+    // tmphtml += '<thead><tr><th>任务ID</th><th>任务名称</th><th>发布日期</th><th>截止日期</th><th>完成度</th><th>操作</th></tr></thead>';
+    tmphtml += '<thead><tr>';
+    for(t in tableTitle_publisher){
+        tmphtml += '<th>'+tableTitle_publisher[t]+'</th>';
+    }
+    tmphtml += '<th>操作</th>';
+    tmphtml += '</tr></thead>';
     if(tasks.length > 0){
         tmphtml += '<tbody>';
         for(var i in tasks){
             tmphtml += '<tr>';
-            for(var t in tasks[i]){
+            for(var t in tableTitle_labeler){
                 if(t == 'Progress'){
                     tmphtml += '<td><div class="skillbar html"><div class="filled" data-width="'+tasks[i][t]*100+'%"></div></div><span class="percent">'+Math.floor(tasks[i][t]*100)+'%</span></td>';
                 }
@@ -91,16 +98,25 @@ function showhtml_publisher(tasks){
 
 function showhtml_labeler(tasks){
     var tmphtml = '';
-    tmphtml += '<thead><tr><th>任务名称</th><th>任务类型</th><th>已完成条数</th><th>最近标注时间</th><th>任务状态</th><th>操作</th></tr></thead>';
+    // tmphtml += '<thead><tr><th>任务名称</th><th>任务类型</th><th>已完成条数</th><th>最近标注时间</th><th>任务状态</th><th>操作</th></tr></thead>';
+    tmphtml += '<thead><tr>';
+    for(t in tableTitle_labeler){
+        tmphtml += '<th>'+tableTitle_labeler[t]+'</th>';
+    }
+    tmphtml += '<th>操作</th>';
+    tmphtml += '</tr></thead>';
     if(tasks.length > 0){
         tmphtml += '<tbody>';
         for(var i in tasks){
             tmphtml += '<tr>';
-            for(var t in tasks[i]){
+            for(var t in tableTitle_labeler){
                 if(t == 'DataType'){
                     tmphtml += '<td>'+DTC[tasks[i][t]]+'</td>';
                 }
-                else if(t != 'TaskID' && t != 'BatchID'){
+                else if(t == 'Progress'){
+                    tmphtml += '<td>'+DTC[tasks[i][t]][0]+'/'+DTC[tasks[i][t]][1]+'</td>'
+                }
+                else{
                     tmphtml += '<td>'+tasks[i][t]+'</td>';
                 }
             }
