@@ -16,7 +16,7 @@ ZIP_FILES = "zip_tasks"
 
 def show_tasks(request):
     DATA_ON_ONE_PAGE = 10
-    CrossNum=10
+    CrossNum=5
     if request.method == 'GET':
         if 'RequestData' not in request.GET:
             return render(request, "labeler/index.html", {'UserName':request.user.username})
