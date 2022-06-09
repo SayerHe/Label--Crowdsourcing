@@ -43,15 +43,22 @@ def show_tasks(request):
         batch_id = []
         for task_base in task_bases:
             batches = LabelTaskFile.objects.filter(task_id=task_base)
-            num=0
-            flag=0
             if task_base.inspect_method == "sampling":
                 for batch in batches:
-                    batch_id.append(batch.batch_id)
-                    if batch
-                # 应该是在这里判断batch的labelers
-                # 注意一个人一次只能看到一个任务的一个batch，所以后面应该找到了一个batch之后要break
-                tasks.append(task_base)
+                    if request.user.id in eval(batch.labelers):
+                        break
+                    if len(eval(batch.labelers))==0:
+                        batch_id.append(batch.batch_id)
+                        tasks.append(task_base)
+                        break
+            elif task_base.inspect_method == "cross":
+                for batch in batches:
+                    if request.user.id in eval(batch.labelers):
+                        break
+                    if len(eval(batch.labelers))!=10:
+                        batch_id.append(batch.batch_id)
+                        tasks.append(task_base)
+                        break
 
         datatypelist = []
         if datatype:
