@@ -489,15 +489,14 @@ def submit_label(request, CrossNum):
     elif inspect_method == "sampling":
         labeled = task_content.loc[task_content["__Label__"] != ""]
         process = [labeled.shape[0], task_content.shape[0]]
-
     old_log = task_log.loc[task_log["TaskID"] == task.id]
     if old_log.shape[0] == 0:
         task_log.loc[task_log.shape[0]] = [task.id, batch_id, task.task_name, task.data_type, process,
-                                           time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), ""]
+                                           time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), task.task_deadline]
 
     else:
         new_log = [task.id, batch_id, task.task_name, task.data_type, process,
-                   time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), ""]
+                   time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), task.task_deadline]
         task_log.loc[task_log["TaskID"] == task.id] = new_log
 
     user_info.task_log = str(task_log.to_dict())
