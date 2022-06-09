@@ -121,13 +121,19 @@ def show_tasks(request):
             return JsonResponse({"err": "Missing task info"})
 
         task = LabelTasksBaseInfo.objects.get(id= task_id)
+        task_content = LabelTaskFile.objects.get(task_id=task, batch_id=batch_id).data_file
+        task_content = pd.DataFrame(eval(task_content))
         ddl = task.task_deadline
         tzchina = timezone('Asia/Shanghai')
         ddl = ddl.astimezone(tzchina).strftime("%Y-%m-%d")
         user_info = UserInfo.objects.get(user=request.user)
+
+        # user_info.task_log = str(pd.DataFrame(columns=["TaskID", "BatchID", "TaskName", "DataType", "Progress", "LastTime", "Deadline", "TaskState"]).to_dict())
+        # user_info.save()
+
         task_log = pd.DataFrame(eval(user_info.task_log))
         # "TaskID", "BatchID", "TaskName", "DataType", "ItemNum", "LastTime", "TaskState"
-        task_log.loc[task_log.shape[0]] = [task_id, batch_id, task.task_name, task.data_type, 0,
+        task_log.loc[task_log.shape[0]] = [task_id, batch_id, task.task_name, task.data_type, [0, task_content.shape[0]],
                                            datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), ddl, "进行中"]
         user_info.task_log = str(task_log.to_dict())
         user_info.save()
