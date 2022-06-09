@@ -60,7 +60,7 @@ body{
     color: #6c757d;
     text-align: left;
 }
-#name0,#email0,#topic0,#detail0,#pri0,#task0{
+#name0,#email0,#topic0,#detail0,#pri0,#task0,#ID0{
     position: absolute;
     top:50px;
     font-family: Nunito,PingFang SC,Microsoft Yahei,Hiragino Sans GB,Microsoft Sans Serif,WenQuanYi Micro Hei,sans-serif;
