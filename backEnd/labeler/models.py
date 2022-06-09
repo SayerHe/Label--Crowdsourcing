@@ -7,13 +7,19 @@ from publisher.models import LabelTasksBaseInfo
 class TempLabel(models.Model):
     task = models.ForeignKey(LabelTasksBaseInfo, on_delete=models.CASCADE)
     labeler = models.ForeignKey(User, on_delete=models.CASCADE)
-    log = models.TextField()
+    label = models.TextField()
+    objects=models.Manager()
 
-
-# salary
-class TempLog(models.Model):
+class TempSalaryLog(models.Model):
     task = models.ForeignKey(LabelTasksBaseInfo, on_delete=models.CASCADE)
     labeler = models.ForeignKey(User, on_delete=models.CASCADE)
     salary = models.FloatField(default=0)
     log = models.TextField()
+    objects=models.Manager()
+
+class TempTaskLog(models.Model):
+    task = models.ForeignKey(LabelTasksBaseInfo, on_delete=models.CASCADE)
+    labeler = models.ForeignKey(User, on_delete=models.CASCADE)
+    log = models.TextField()
+    objects = models.Manager()
 

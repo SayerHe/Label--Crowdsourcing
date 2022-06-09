@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        a {
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        li {
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div>
+            <ul>
+                <li><a id="link_1" target="blank">
+                        <span id="link_detail_1"></span></li>
+                <li><a id="link_2" target="blank">
+                        <span id="link_detail_2"></span></li>
+                <li><a id="link_3" target="blank">
+                        <span id="link_detail_3"></span></li>
+                <li><a id="link_4" target="blank">
+                        <span id="link_detail_4"></span></li>
+                <li><a id="link_5" target="blank">
+                        <span id="link_detail_5"></span></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        // 链接框链接的id号
+        var link_id = ["link_1", "link_2", "link_3", "link_4", "link_5"];
+        // 链接框内容id号
+        var link_detail_id = ["link_detail_1", "link_detail_2", "link_detail_3", "link_detail_4", "link_detail_5"];
+        // 链接网址
+        var link_url = ['https://www.baidu.com', 'https://www.baidu.com', 'https://www.baidu.com', 'https://www.baidu.com', 'https://www.baidu.com'];
+        // 链接内容
+        var link_url_event = ["test1", "test2", "test3", "test4", "test5"];
+
+        for (var i = 0; i <= 5; i++) {
+            document.getElementById(link_id[i]).href = link_url[i];//非常重要
+            document.getElementById(link_detail_id[i]).innerHTML = link_url_event[i];//同样非常重要
+        }
+
+
+    </script>
+
+</body>
+
+</html>

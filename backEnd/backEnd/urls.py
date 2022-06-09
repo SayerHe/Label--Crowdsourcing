@@ -26,5 +26,5 @@ urlpatterns = [
     path('labeler/', include('labeler.urls')),
     path('show_info/', include('show_info.urls')),
     path('history/', include('history.urls')),
-
+    path('feedback/', include('feedback.urls')),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

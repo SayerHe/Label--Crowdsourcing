@@ -124,14 +124,6 @@ function showhtml(tasks){
                                 '<p class="detailcontent">'+'￥'+tasks[i].Payment+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
-                                '<p class="detailtitle">完成进度</p>'+
-                                '<progress max="100" value="40" style="width:150px;height:20px;"> 70%</progress>'+
-                            '</div>'+
-                            '<div class="details-styling">'+
-                                '<p class="detailtitle">准确率</p>'+
-                                '<progress max="100" value="85" style="width:150px;height:20px;"> 70%</progress>'+
-                            '</div>'+
-                            '<div class="details-styling">'+
                                 '<p class="detailtitle">标注规则</p>'+
                                 '<p class="detailcontent">'+tasks[i].RuleText+'</p>'+
                             '</div>'+

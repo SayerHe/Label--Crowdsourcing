@@ -9,6 +9,9 @@ var urls = {
     "#T_Doing":check_url,
     "#T_Finished":history_url,
     "#Center":Center_url,
+    "#C":account_url,
+    "#feedback":Feedback_url
+
 };
 
 $(document).ready(function(){

@@ -125,6 +125,6 @@ body{
 #userdiv:hover #usermenu{
     top: var(--head-height);
 }
-#progress0:{
+#progress0{
     left:1000px;
 }
