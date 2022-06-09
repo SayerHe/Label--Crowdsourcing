@@ -10,7 +10,8 @@ var urls = {
     "#T_Finished":history_url,
     "#Center":Center_url,
     "#C":account_url,
-    "#feedback":Feedback_url
+    "#feedback":Feedback_url,
+    "#fhistory":fhistory_url,
 
 };
 

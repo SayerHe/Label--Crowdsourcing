@@ -88,7 +88,9 @@ def get_publisher_history(request):
 def get_labeler_history(request):
     user_info = UserInfo.objects.get(user=request.user)
     task_log = user_info.task_log
+
     task_log = pd.DataFrame(eval(task_log)).to_dict("records")
+    print(task_log)
     return task_log
 
 def get_history(request):
