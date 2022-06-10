@@ -88,7 +88,14 @@ def account(request):
 def detail(request):
     user_info = UserInfo.objects.get(user=request.user)
     salary_log = pd.DataFrame(eval(user_info.salary_log))
-
+    task_log = pd.DataFrame(eval(user_info.task_log))
+    tasks_id = list(task_log["TaskID"])
+    for task_id in tasks_id:
+        state = task_log.loc[task_log["TaskID"] == task_id]["TaskState"].values[0]
+        if str(state) == "Unfinished":
+            tasks_id.remove(task_id)
+    print(salary_log["TaskID"].isin(tasks_id))
+    salary_log=salary_log.loc[salary_log["TaskID"].isin(tasks_id)]
     salary_log = salary_log.to_dict("records")
 
     return render(request, "show_info/detail.html", {'UserName': request.user.username, "Data":json.dumps(salary_log)})
