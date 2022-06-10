@@ -25,8 +25,12 @@ def get_publisher_history(request):
     completeDegree = []
     for task in tasks:
         inspect_method = task.inspect_method
-        task_situation = LabelTaskFile.objects.get(task_id=task).data_file
-        task_situation = pd.DataFrame(eval(task_situation), dtype=str)
+        batches = LabelTaskFile.objects.filter(task_id=task)
+        task_situation = pd.DataFrame(eval(batches[0].data_file), dtype=str)
+        for batch in batches:
+            batch = pd.DataFrame(eval(batch.data_file), dtype=str)
+            task_situation = pd.concat((task_situation, batch), axis=0)
+
         single_completeDegree = 0
         if inspect_method == "sampling":
             single_completeDegree = task_situation[task_situation["__Label__"] != ""].shape[0]/task_situation.shape[0]
@@ -71,9 +75,6 @@ def get_publisher_history(request):
     #                     temp_ans.append(1)
     #             accuracy.append(sum(temp_ans)/len(temp_ans))
 
-
-
-
     data = {'TaskID': taskID,
             'TaskName': taskName,
             'PublishDate': taskPublishTime,
@@ -114,8 +115,15 @@ def download(request):
         task_id=request.GET['TaskID']
     except KeyError:
         return JsonResponse({"err": "ERROR !"})
-    data = LabelTaskFile.objects.get(task_id=task_id).data_file
-    data = pd.DataFrame(eval(data), dtype=str)
+
+    task = LabelTasksBaseInfo.objects.get(pk=task_id)
+
+    batches = LabelTaskFile.objects.filter(task_id=task)
+    data = pd.DataFrame(eval(batches[0].data_file), dtype=str)
+    for batch in batches:
+        batch = pd.DataFrame(eval(batch.data_file), dtype=str)
+        data = pd.concat((data, batch), axis=0)
+
     labels=list(data['__Label__'])
     task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
     new_data=pd.DataFrame()

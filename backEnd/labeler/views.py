@@ -431,12 +431,12 @@ def submit_label(request, CrossNum):
             if table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0] == "":
                 table.loc[table["__ID__"] == label["id"], "__Label__"] = str([label["label"]])
                 table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str([request.user.id])
-                # salary_log_sample(user_info, task, label, payment, "Success", method="new")
+                salary_log_sample(user_info, task, label, payment, "Success", method="new")
             else:
                 old_label = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])
                 old_label[0] = str(label["label"])
                 table.loc[table["__ID__"] == label["id"], "__Label__"] = str(old_label)
-                # salary_log_sample(user_info, task, label, payment, "Success", method="update")
+                salary_log_sample(user_info, task, label, payment, "Success", method="update")
 
     elif inspect_method == "cross":
         for label in labels:
@@ -445,7 +445,7 @@ def submit_label(request, CrossNum):
                 table.loc[table["__ID__"] == label["id"], "__Times__"] = str(1)
                 table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str([request.user.id])
                 # 记录历史行为
-                # salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="new")
+                salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="new")
             else:
                 if request.user.id not in eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0]):
                     old_labels = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])
@@ -457,20 +457,20 @@ def submit_label(request, CrossNum):
                     old_labelers.append(request.user.id)
                     table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str(old_labelers)
                     # 记录历史行为
-                    # times = table.loc[table["__ID__"] == label["id"], "__Times__"].values[0]
-                    # salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="new")
-                    # if int(times) == int(CrossNum):
-                    #     labelers_log = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
-                    #     right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
-                    #     for i in range(len(labelers_log)):
-                    #         user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
-                    #         user_label = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])[i]
-                    #         # 用户是否成功的的判断   --好nmd复杂
-                    #         if user_label == right_label:
-                    #             state = "Success"
-                    #         else:
-                    #             state = "Fail"
-                    #         salary_log_cross(user_info_i, task, label, payment, state, cross_finish=True, method="new")
+                    times = table.loc[table["__ID__"] == label["id"], "__Times__"].values[0]
+                    salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="new")
+                    if int(times) == int(CrossNum):
+                        labelers_log = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
+                        right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
+                        for i in range(len(labelers_log)):
+                            user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
+                            user_label = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])[i]
+                            # 用户是否成功的的判断   --好nmd复杂
+                            if user_label == right_label:
+                                state = "Success"
+                            else:
+                                state = "Fail"
+                            salary_log_cross(user_info_i, task, label, payment, state, cross_finish=True, method="new")
 
                 else:
                     old_labels = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])
@@ -478,20 +478,20 @@ def submit_label(request, CrossNum):
                     user_index = old_labelers.index(request.user.id)
                     old_labels[user_index] = label["label"]
                     table.loc[table["__ID__"] == label["id"], "__Label__"] = str(old_labels)
-                    # if table.loc[table["__ID__"] == label["id"], "__Times__"].values[0] == CrossNum:
-                    #     labelers_log = table.loc[table["__ID__"] == label["id"], "__Labelers__"].tolist()
-                    #     right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
-                    #     for i in range(len(labelers_log)):
-                    #         user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
-                    #         user_label = table.loc[table["__ID__"] == label["id"], "__Label__"][i]
-                    #         # 用户是否成功的的判断   --好nmd复杂
-                    #         if user_label == right_label:
-                    #             state = "Success"
-                    #         else:
-                    #             state = "Fail"
-                    #         salary_log_cross(user_info_i, task, label, payment, state, cross_finish=True, method="update")
-                    # else:
-                    #     salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="update")
+                    if table.loc[table["__ID__"] == label["id"], "__Times__"].values[0] == CrossNum:
+                        labelers_log = table.loc[table["__ID__"] == label["id"], "__Labelers__"].tolist()
+                        right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
+                        for i in range(len(labelers_log)):
+                            user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
+                            user_label = table.loc[table["__ID__"] == label["id"], "__Label__"][i]
+                            # 用户是否成功的的判断   --好nmd复杂
+                            if user_label == right_label:
+                                state = "Success"
+                            else:
+                                state = "Fail"
+                            salary_log_cross(user_info_i, task, label, payment, state, cross_finish=True, method="update")
+                    else:
+                        salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="update")
 
     table_db.data_file = str(table.to_dict())
     table_db.save()
@@ -530,6 +530,7 @@ def submit_label(request, CrossNum):
                time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), ddl, state]
 
     task_log.loc[(task_log["TaskID"] == str(task.id)) & (task_log["BatchID"] == str(batch_id))] = new_log
+    print(task_log)
     user_info.task_log = str(task_log.to_dict())
     user_info.save()
 
