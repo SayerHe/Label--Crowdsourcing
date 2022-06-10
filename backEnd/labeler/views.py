@@ -13,10 +13,11 @@ from pytz import timezone
 import ast
 
 ZIP_FILES = "zip_tasks"
+CrossNum = 5
 
 def show_tasks(request):
     DATA_ON_ONE_PAGE = 10
-    CrossNum=5
+    CrossNum=3
     if request.method == 'GET':
         if 'RequestData' not in request.GET:
             return render(request, "labeler/index.html", {'UserName':request.user.username})
@@ -267,7 +268,7 @@ def find_rollback(request, task_content_all, current_item_id, PageSize):
                 pass
     return task_content, finished
 
-def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
+def show_label_page(request, CrossNum, PageSize, rollback, current_item_id, try_tag):
     try:
         task_id = request.GET["TaskID"]
         batch_id = request.GET["BatchID"]
@@ -305,7 +306,6 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
             if len(task_content) == 0:
                 task_content = task_content_all[:PageSize].to_dict("records")
         Data = pack_data(request, task_content, task_data_type, task_id, task, label_type, finished)
-        return render(request, "labeler/label.html", Data)
 
     elif LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "cross":
         if rollback is False:
@@ -343,7 +343,10 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
 
         Data = pack_data(request, task_content, task_data_type, task_id, task, label_type, finished)
 
+    if not try_tag:
         return render(request, "labeler/label.html", Data)
+    else:
+        return render(request, "labeler/try.html", Data)
 
 
 def salary_log_sample(user_info, task, label, payment, state, method="new"):
@@ -563,7 +566,6 @@ def submit_label(request, CrossNum):
     return JsonResponse({"err": "none"})
 
 def label_page(request):
-    CrossNum = 5
     PageSize = 3
     rollback = False
     current_item_id = None
@@ -573,9 +575,16 @@ def label_page(request):
             rollback = True
         except KeyError:
             pass
-        return show_label_page(request, CrossNum, PageSize, rollback, current_item_id)
+        return show_label_page(request, CrossNum, PageSize, rollback, current_item_id, try_tag = False)
 
     elif request.method == "POST":
         return submit_label(request, CrossNum)
+
+def try_task(request):
+    if request.method == "GET":
+        PageSize = 3
+        rollback = False
+        current_item_id = None
+        return show_label_page(request, CrossNum, PageSize, rollback, current_item_id, try_tag = True)
 
 

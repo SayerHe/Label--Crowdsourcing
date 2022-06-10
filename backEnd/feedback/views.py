@@ -11,7 +11,11 @@ from publisher.models import LabelTasksBaseInfo, LabelTaskFile
 #     return 0
 def feedback(request):
     if request.method == "GET":
-        return render(request, "feedback/feedback.html", {'UserName': request.user.username,'Email':request.user.email})
+        try:
+            task_id = request.GET["TaskID"]
+        except:
+            task_id = ""
+        return render(request, "feedback/feedback.html", {'UserName': request.user.username,'Email':request.user.email, "TaskID": task_id})
     else:
         try:
             user=request.user

@@ -1,4 +1,10 @@
 $(document).ready(function(){
+    if(Finished == 'True'){
+        alert('finished');
+        return;
+    }
+    datanum = window.location.search.split('&')[2].split('=')[1];
+    $('#sc-0-'+datanum).attr("checked", true);
     document.getElementById('ruletext').innerHTML = '<pre>'+RuleText+'</pre>';
     if(LabelType == 'frame'){
         $('#radiobox').css('display', 'none');
@@ -73,11 +79,6 @@ $(document).ready(function(){
     })
 });
 
-window.onload=function(){
-    datanum = window.location.search.split('&')[2].split('=')[1];
-    $('#sc-0-'+datanum).attr("checked", true);
-}
-
 var frame_pos = {}, tmpframe = {}, img_list = {}, text_his = {};
 
 function offset(curEle){
@@ -148,7 +149,7 @@ function taskList_init_text(){
         ih += draw_question(id, DataList[i]['__Label__']);
         ih += '</div>';
     }
-    ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
+    // ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
 
     document.getElementById('tasktablediv').innerHTML = ih;
 }
@@ -178,7 +179,7 @@ function taskList_init_table(){
         ih += draw_question(id, DataList[i]['__Label__']);
         ih += '</div>';
     }
-    ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
+    // ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
 
     document.getElementById('tasktablediv').innerHTML = ih;
 }
@@ -227,7 +228,7 @@ function taskList_init_image_frame(){
         // ih += draw_question(id);
         ih += '</div>';
     }
-    ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
+    // ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
     document.getElementById('tasktablediv').innerHTML = ih;
 
     for(var i in DataList){
@@ -292,7 +293,7 @@ function taskList_init_text_frame(){
         ih += '<div class="questiondiv">';
         ih += '</div>';
     }
-    ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
+    // ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>';
 
     document.getElementById('tasktablediv').innerHTML = ih;
 }

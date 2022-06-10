@@ -199,10 +199,17 @@ summary h3{
   /* height: max-content; */
 }
 .details-styling .dotaskbutton{
-  padding: 1em 2em 0;
-  margin: 1em 0 0;
+  padding: 1em 1.2em 0;
+  margin: 1em 0 0 1.5em;
   float: right;
   color: #3a3a3a;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  box-shadow: 1px 1px 5px 0.1px rgb(205, 205, 205);
+}
+.details-styling .dotaskbutton:active{
+  box-shadow: -1px -1px 5px 0.1px rgb(205, 205, 205);
 }
 .details-styling:first-child{
   margin-top: 0;
