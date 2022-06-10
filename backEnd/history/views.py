@@ -100,6 +100,7 @@ def get_publisher_history(request, task_state):
             'Progress': [completeDegree[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
             "Accuracy": [accuracy[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
         }
+
     print(data["Accuracy"])
     data = pd.DataFrame(data).to_dict('records')
     return data

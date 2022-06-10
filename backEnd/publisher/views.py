@@ -188,19 +188,21 @@ def create_task(request):
             newTask_param["rule_file"] = rule_text
 
         if newTask_param["inspect_method"] == "sampling":
-            try:
-                sample = request.FILE["SampleFile"]
-                sample_format = str(sample).split(".")[-1]
-                if sample_format == "csv":
-                    sample = pd.read_csv(sample, header=None)
-                elif sample_format in ["xls", "xlsx", "xlsm"]:
-                    sample = pd.read_excel(sample, header=None)
-                else:
-                    return JsonResponse({"err": "Sample file format error! (csv, xls, xlsx, xlsm)"})
-                newTask_param["sample"] = sample
-
-            except KeyError:
-                return JsonResponse({"err": "Please provide some samples"})
+            sample = ""
+            newTask_param["sample"] = sample
+            # try:
+            #     sample = request.FILE["SampleFile"]
+            #     sample_format = str(sample).split(".")[-1]
+            #     if sample_format == "csv":
+            #         sample = pd.read_csv(sample, header=None)
+            #     elif sample_format in ["xls", "xlsx", "xlsm"]:
+            #         sample = pd.read_excel(sample, header=None)
+            #     else:
+            #         return JsonResponse({"err": "Sample file format error! (csv, xls, xlsx, xlsm)"})
+            #     newTask_param["sample"] = sample
+            #
+            # except KeyError:
+            #     return JsonResponse({"err": "Please provide some samples"})
         else:
             sample = ""
             newTask_param["sample"] = sample
