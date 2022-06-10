@@ -141,7 +141,7 @@ function menu_init(e){
     document.getElementById("UserName").innerHTML = UserName;
     $('.active').removeClass('active');
     $('#'+APPName).addClass('active');
-    $("#SUBHTML").attr("src", urls[APPName]);
+    $("#SUBHTML").attr("src", urls[APPName]+window.location.search);
 }
 
 function switchpage(pagename){

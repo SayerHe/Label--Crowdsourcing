@@ -1,10 +1,17 @@
+
 function btsubmit(){
     if(1){
+        var radios = document.getElementsByName('colors')
         var form_data = new FormData();
         form_data.append("TaskID"         ,$("#ID0").val());
         form_data.append("ProblemDescription"     ,$("#topic0").val());
-        form_data.append("Priority"      ,$("#type0").val());
-        form_data.append('ProblemType'       ,$("#pri0").val());
+        for (var i = 0, length = radios.length; i < length; i++) {
+                if (radios[i].checked) {
+                    form_data.append("Priority"     ,radios[i].value);
+                    break;
+                }
+            }
+        form_data.append('ProblemType'       ,$("#type0").val());
         form_data.append("ProblemDetails"    ,$("#detail0").val());
     }
      $.ajax({

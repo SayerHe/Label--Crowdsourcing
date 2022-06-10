@@ -90,7 +90,7 @@ function showhtml_publisher(tasks){
                 }
             }
             tmphtml += '<td>';
-            tmphtml += '<button class="operation-button contact-button" onclick="window.location.href = feedback_url"('+tasks[i]['TaskID']+')">联系客服</button>';
+            tmphtml += '<button class="operation-button contact-button" onclick="contactbutton('+tasks[i]['TaskID']+')">联系客服</button>';
             if(TaskState == 'Finished'){
                 tmphtml += '<button class="operation-button export-button" onclick="exportbutton('+tasks[i]['TaskID']+')">导出结果</button>';
             }
@@ -167,8 +167,7 @@ function deletebutton(taskid){
     }
 }
 function contactbutton(taskid){
-    $('.active').removeClass('active');
-    switchpage('Account');
+    window.parent.location.href = main_menu_url+'Feedback/?TaskID='+taskid;
 }
 function exportbutton(taskid){
     window.location.href=download_url+'?TaskID='+taskid;

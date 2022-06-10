@@ -8,6 +8,7 @@
                 history_url = "{% url 'history:get_history' %}",
                 download_url = "{% url 'history:download' %}",
                 feedback_url = "{% url 'feedback:feedback' %}",
+                main_menu_url = "{% url 'main_menu:index' %}",
                 TaskList = {{ TaskList|safe }},
                 TaskState = '{{ TaskState|safe }}',
                 UserType = '{{ UserType|safe }}';
