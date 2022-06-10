@@ -8,8 +8,8 @@ const tableTitle_publisher={
     'TaskID':'任务ID',
     'TaskName':'任务名称',
     'PublishDate':'发布日期',
-    'Deadline':'截止日期',
-    'Progress':'完成度',
+    'Deadline':'完成日期',
+    'Progress':'准确度',
 },
 tableTitle_labeler={
     'TaskName':'任务名称',
@@ -83,8 +83,8 @@ function showhtml_publisher(tasks){
                 }
             }
             tmphtml += '<td>';
-            tmphtml += '<button class="operation-button contact-button" onclick="window.location.href = feedback_url"('+tasks[i]['TaskID']+')">联系客服</button>';
-            if(tasks[i]['Progress'] == 1){
+            // tmphtml += '<button class="operation-button contact-button" onclick="window.location.href = feedback_url"('+tasks[i]['TaskID']+')">联系客服</button>';
+            if(1){
                 tmphtml += '<button class="operation-button export-button" onclick="exportbutton('+tasks[i]['TaskID']+')">导出结果</button>';
             }
             // else{
