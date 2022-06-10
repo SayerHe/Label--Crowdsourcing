@@ -110,6 +110,25 @@ def get_history(request):
         except:
             return JsonResponse({"err": "TaskID Missing !"})
 
+def get_doing(request):
+    if request.method == "GET":
+        user = request.user
+        user_type = UserInfo.objects.get(user=user).user_type
+        if user_type == "labeler":
+            data = get_labeler_history(request)
+        elif user_type == "publisher":
+            data = get_publisher_history(request)
+        return render(request, "history/index0.html", {'UserType': UserInfo.objects.get(user=user).user_type, 'TaskList':json.dumps(data)})
+
+    if request.method == "POST":
+        try:
+            task_id = request.POST["TaskID"]
+            LabelTasksBaseInfo.objects.get(pk=task_id).delete()
+            return JsonResponse({"err": "none"})
+        except:
+            return JsonResponse({"err": "TaskID Missing !"})
+
+
 def download(request):
     try:
         task_id=request.GET['TaskID']

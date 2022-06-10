@@ -11,6 +11,7 @@ var urls = {
     "Account":account_url,
     "Feedback":feedback_url,
     "FHistory":fhistory_url,
+    "Doing":doing_url,
 
 };
 
