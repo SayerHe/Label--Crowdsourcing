@@ -39,26 +39,6 @@ def show_tasks(request):
             keyword = None
 
         task_bases = LabelTasksBaseInfo.objects.all()
-        tasks = []
-        batch_id = []
-        for task_base in task_bases:
-            batches = LabelTaskFile.objects.filter(task_id=task_base)
-            if task_base.inspect_method == "sampling":
-                for batch in batches:
-                    if request.user.id in eval(batch.labelers):
-                        break
-                    if len(eval(batch.labelers))==0:
-                        batch_id.append(batch.batch_id)
-                        tasks.append(task_base)
-                        break
-            elif task_base.inspect_method == "cross":
-                for batch in batches:
-                    if request.user.id in eval(batch.labelers):
-                        break
-                    if len(eval(batch.labelers))!=CrossNum:
-                        batch_id.append(batch.batch_id)
-                        tasks.append(task_base)
-                        break
 
         datatypelist = []
         if datatype:
@@ -93,15 +73,38 @@ def show_tasks(request):
 
         try:
             if keyword:
-                tasks = tasks.filter(task_name__icontains=keyword)
+                task_bases = task_bases.filter(task_name__icontains=keyword)
             if datatype:
-                tasks = tasks.filter(data_type__in=datatypelist)
+                task_bases = task_bases.filter(data_type__in=datatypelist)
             if label_type:
-                tasks = tasks.filter(label_type__in=labeltypelist)
+                task_bases = task_bases.filter(label_type__in=labeltypelist)
             if TaskDifficulty:
-                tasks = tasks.filter(task_difficulty__in=TaskDifficultyList)
+                task_bases = task_bases.filter(task_difficulty__in=TaskDifficultyList)
         except:
             pass
+
+        tasks = []
+        batch_id = []
+        for task_base in task_bases:
+            batches = LabelTaskFile.objects.filter(task_id=task_base)
+            if task_base.inspect_method == "sampling":
+                for batch in batches:
+                    if request.user.id in eval(batch.labelers):
+                        break
+                    if len(eval(batch.labelers))==0:
+                        batch_id.append(batch.batch_id)
+                        tasks.append(task_base)
+                        break
+            elif task_base.inspect_method == "cross":
+                for batch in batches:
+                    if request.user.id in eval(batch.labelers):
+                        break
+                    if len(eval(batch.labelers))!=CrossNum:
+                        batch_id.append(batch.batch_id)
+                        tasks.append(task_base)
+                        break
+
+
 
         dataList = []
 
