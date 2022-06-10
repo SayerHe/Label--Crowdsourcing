@@ -536,25 +536,26 @@ def submit_label(request, CrossNum):
     task_log.loc[(task_log["TaskID"] == str(task.id)) & (task_log["BatchID"] == str(batch_id))] = new_log
     user_info.task_log = str(task_log.to_dict())
     user_info.save()
-
-    user_info.salary=0
-    user_info.undetermined=0
+    salary=0
+    undetermined_salary=0
     new_task_log = pd.DataFrame(eval(user_info.task_log))
     tasks_id=list(new_task_log["TaskID"])
     for task_id in tasks_id:
-        state = new_task_log.loc[new_task_log["TaskID"] == task_id]["TaskState"]
-        if state == "Finished":
+        state = new_task_log.loc[new_task_log["TaskID"] == task_id]["TaskState"].values[0]
+        if str(state) == "Finished":
+            task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
             salary_log = pd.DataFrame(eval(user_info.salary_log))
-            salary_log = salary_log.loc[salary_log["TaskID"] == task_id]
+            salary_log = salary_log.loc[salary_log["TaskID"] == int(task_id)]
             if task.inspect_method == "sampling":
                 payment = list(salary_log["Payment"])
-                salary = sum(payment)
-                user_info.salary = user_info.salary + salary
+                salary=salary+sum(payment)
             elif task.inspect_method == "cross":
-                success = list(salary_log.loc[salary_log["TaskState"] == "Success"]["payment"])
-                undetermined =  list(salary_log.loc[salary_log["TaskState"] == "Undetermined"]["payment"])
-                user_info.salary = user_info.salary + sum(success)
-                user_info.undetermined = user_info.salary + sum(undetermined)
+                success = list(salary_log.loc[salary_log["State"] == "Success"]["Payment"])
+                undetermined =  list(salary_log.loc[salary_log["State"] == "Undetermined"]["Payment"])
+                salary = salary + sum(success)
+                undetermined_salary =undetermined_salary  + sum(undetermined)
+    user_info.salary=salary
+    user_info.undetermined=undetermined_salary
     user_info.save()
 
     return JsonResponse({"err": "none"})

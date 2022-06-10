@@ -25,7 +25,8 @@ def feedback(request):
             problem_details=request.POST["ProblemDetails"]
         except:
             problem_details=None
-
+        print(task_id)
+        print(type(task_id))
         user_info = UserInfo.objects.get(user=user)
         task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
         task_log = pd.DataFrame(eval(user_info.task_log))
@@ -41,6 +42,7 @@ def feedback(request):
         feedback_file["ProblemDetails"]=problem_details
         feedback_file["UpdatedTime"]=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         user_info.feedback_file = str(feedback_file.to_dict())
+        print(user_info.feedback_file)
         user_info.save()
 
 def show_feedback(request):
