@@ -71,7 +71,7 @@ def cal_accuracy(completeDegree, tasks, CrossNum):
                 accuracy.append(sum(temp_ans)/len(temp_ans))
     return accuracy
 
-def get_publisher_history(request, task_type):
+def get_publisher_history(request, task_state):
     # 任务号，任务名称，任务类型（图片），完成度，准确度，操作（删除+联系客服）
     CrossNum = 5
     tasks = LabelTasksBaseInfo.objects.filter(publisher=request.user)
@@ -82,7 +82,7 @@ def get_publisher_history(request, task_type):
     taskPublishTime = [i.publish_time.astimezone(tz).strftime('%Y-%m-%d') for i in tasks]
     completeDegree = cal_progress(tasks, CrossNum)
     accuracy = cal_accuracy(completeDegree, tasks, CrossNum)
-    if task_type == "Unfinished":
+    if task_state == "Unfinished":
         data = {
                 'TaskID': [taskID[i] for i in range(len(completeDegree))  if completeDegree[i] < 1],
                 'TaskName': [taskName[i] for i in range(len(completeDegree))  if completeDegree[i] < 1],
@@ -119,29 +119,11 @@ def get_history(request):
         if user_type == "labeler":
             data = get_labeler_history(request)
         elif user_type == "publisher":
-            # task_type = request.GET["TaskType"]
-            task_type = "Unfinished"
-            data = get_publisher_history(request, task_type)
+            # task_state = request.GET["TaskState"]
+            task_state = "Unfinished"
+            data = get_publisher_history(request, task_state)
 
         return render(request, "history/index.html", {'UserType': UserInfo.objects.get(user=user).user_type, 'TaskList':json.dumps(data)})
-
-    if request.method == "POST":
-        try:
-            task_id = request.POST["TaskID"]
-            LabelTasksBaseInfo.objects.get(pk=task_id).delete()
-            return JsonResponse({"err": "none"})
-        except:
-            return JsonResponse({"err": "TaskID Missing !"})
-
-def get_doing(request):
-    if request.method == "GET":
-        user = request.user
-        user_type = UserInfo.objects.get(user=user).user_type
-        if user_type == "labeler":
-            data = get_labeler_history(request)
-        elif user_type == "publisher":
-            data = get_publisher_history(request)
-        return render(request, "history/index0.html", {'UserType': UserInfo.objects.get(user=user).user_type, 'TaskList':json.dumps(data)})
 
     if request.method == "POST":
         try:
