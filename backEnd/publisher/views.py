@@ -192,9 +192,9 @@ def create_task(request):
                 sample = request.FILE["SampleFile"]
                 sample_format = str(sample).split(".")[-1]
                 if sample_format == "csv":
-                    sample = pd.read_csv(sample_format)
+                    sample = pd.read_csv(sample, header=None)
                 elif sample_format in ["xls", "xlsx", "xlsm"]:
-                    sample = pd.read_excel(sample_format)
+                    sample = pd.read_excel(sample, header=None)
                 else:
                     return JsonResponse({"err": "Sample file format error! (csv, xls, xlsx, xlsm)"})
                 newTask_param["sample"] = sample
