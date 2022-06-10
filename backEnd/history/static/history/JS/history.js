@@ -4,13 +4,20 @@ var urls = {
 
 
 
-const tableTitle_publisher={
+const tableTitle_publisher={'Finished': {
+    'TaskID':'任务ID',
+    'TaskName':'任务名称',
+    'PublishDate':'发布日期',
+    'Deadline':'截止日期',
+    'Accuracy':'准确度',
+},
+'Unfinished':{
     'TaskID':'任务ID',
     'TaskName':'任务名称',
     'PublishDate':'发布日期',
     'Deadline':'截止日期',
     'Progress':'完成度',
-},
+}},
 tableTitle_labeler={
     'TaskName':'任务名称',
     'DataType':'任务类型',
@@ -65,8 +72,8 @@ function page_init(pagedata){
 function showhtml_publisher(tasks){
     var tmphtml = '';
     tmphtml += '<thead><tr>';
-    for(t in tableTitle_publisher){
-        tmphtml += '<th>'+tableTitle_publisher[t]+'</th>';
+    for(t in tableTitle_publisher[TaskState]){
+        tmphtml += '<th>'+tableTitle_publisher[TaskState][t]+'</th>';
     }
     tmphtml += '<th>操作</th>';
     tmphtml += '</tr></thead>';
@@ -74,7 +81,7 @@ function showhtml_publisher(tasks){
         tmphtml += '<tbody>';
         for(var i in tasks){
             tmphtml += '<tr>';
-            for(var t in tableTitle_publisher){
+            for(var t in tableTitle_publisher[TaskState]){
                 if(t == 'Progress'){
                     tmphtml += '<td><div class="skillbar html"><div class="filled" data-width="'+tasks[i][t]*100+'%"></div></div><span class="percent">'+Math.floor(tasks[i][t]*100)+'%</span></td>';
                 }
@@ -84,12 +91,12 @@ function showhtml_publisher(tasks){
             }
             tmphtml += '<td>';
             tmphtml += '<button class="operation-button contact-button" onclick="window.location.href = feedback_url"('+tasks[i]['TaskID']+')">联系客服</button>';
-            if(tasks[i]['Progress'] == 1){
+            if(TaskState == 'Finished'){
                 tmphtml += '<button class="operation-button export-button" onclick="exportbutton('+tasks[i]['TaskID']+')">导出结果</button>';
             }
-            // else{
-            //     tmphtml += '<button class="operation-button delete-button" onclick="deletebutton('+tasks[i]['TaskID']+')"></button>';
-            // }
+            else{
+                tmphtml += '<button class="operation-button delete-button" onclick="deletebutton('+tasks[i]['TaskID']+')">申请退款</button>';
+            }
             tmphtml += '</td>';
             tmphtml += '</tr>';
         }
@@ -141,24 +148,24 @@ function showhtml_labeler(tasks){
     document.getElementById("datatable").innerHTML = tmphtml;
 }
 
-// function deletebutton(taskid){
-//     console.log(taskid);
-//     if(confirm('是否确认删除该任务？')){
-//         $.ajax({
-//             url: history_url,
-//             type: "POST",        //请求类型
-//             data: {'TaskID':taskid},
-//             // ConvertEmptyStringToNull: false,
-//             // dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
-//             success: function (returndata) {
-//                 window.location.reload();
-//             },
-//             error: function () {
-//                 //当请求错误之后，自动调用
-//             }
-//         });
-//     }
-// }
+function deletebutton(taskid){
+    console.log(taskid);
+    if(confirm('是否确认删除该任务？')){
+        $.ajax({
+            url: history_url,
+            type: "POST",        //请求类型
+            data: {'TaskID':taskid},
+            // ConvertEmptyStringToNull: false,
+            // dataType: "json",   // 这里指定了 dateType 为json后，服务端响应的内容为json.dumps(date)，下面 success 的callback 数据无需进行JSON.parse(callback)，已经是一个对象了，如果没有指定dateType则需要执行 JSON.parse(callback)
+            success: function (returndata) {
+                window.location.reload();
+            },
+            error: function () {
+                //当请求错误之后，自动调用
+            }
+        });
+    }
+}
 function contactbutton(taskid){
     $('.active').removeClass('active');
     switchpage('Account');

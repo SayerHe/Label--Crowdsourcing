@@ -361,6 +361,7 @@ def salary_log_sample(user_info, task, label, payment, state, method="new"):
         # elif old_state == "Success" and state == "Fail":
         #     user_info.salary = user_info.salary - payment
         salary_log.loc[(salary_log["TaskID"] == task.id) & (salary_log["ItemID"]==label["id"]), ["Time", "State"]] = [time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),state]
+    print(salary_log)
     user_info.salary_log = str(salary_log.to_dict())
     user_info.save()
 
@@ -390,7 +391,7 @@ def salary_log_cross(user_info, task, label, payment, state, cross_finish, metho
             # elif old_state == "Success" and state == "Fail":
             #     user_info.salary = user_info.salary - payment
             salary_log.loc[(salary_log["TaskID"] == task.id) & (salary_log["ItemID"] == label["id"]), ["Time", "State"]] = [time.strftime("%Y-%m-%d %H:%M:%S",time.localtime()),state]
-    # print(salary_log)
+    print(salary_log)
     user_info.salary_log = str(salary_log.to_dict())
     user_info.save()
 
@@ -536,27 +537,26 @@ def submit_label(request, CrossNum):
     task_log.loc[(task_log["TaskID"] == str(task.id)) & (task_log["BatchID"] == str(batch_id))] = new_log
     user_info.task_log = str(task_log.to_dict())
     user_info.save()
-    salary=0
-    undetermined_salary=0
-    new_task_log = pd.DataFrame(eval(user_info.task_log))
-    tasks_id=list(new_task_log["TaskID"])
-    for task_id in tasks_id:
-        state = new_task_log.loc[new_task_log["TaskID"] == task_id]["TaskState"].values[0]
-        if str(state) == "Finished":
-            task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
-            salary_log = pd.DataFrame(eval(user_info.salary_log))
-            salary_log = salary_log.loc[salary_log["TaskID"] == int(task_id)]
-            if task.inspect_method == "sampling":
-                payment = list(salary_log["Payment"])
-                salary=salary+sum(payment)
-            elif task.inspect_method == "cross":
-                success = list(salary_log.loc[salary_log["State"] == "Success"]["Payment"])
-                undetermined =  list(salary_log.loc[salary_log["State"] == "Undetermined"]["Payment"])
-                salary = salary + sum(success)
-                undetermined_salary =undetermined_salary  + sum(undetermined)
-    user_info.salary=salary
-    user_info.undetermined=undetermined_salary
-    user_info.save()
+
+    # user_info.salary=0
+    # user_info.undetermined=0
+    # new_task_log = pd.DataFrame(eval(user_info.task_log))
+    # tasks_id=list(new_task_log["TaskID"])
+    # for task_id in tasks_id:
+    #     state = new_task_log.loc[new_task_log["TaskID"] == task_id]["TaskState"]
+    #     if state == "Finished":
+    #         salary_log = pd.DataFrame(eval(user_info.salary_log))
+    #         salary_log = salary_log.loc[salary_log["TaskID"] == task_id]
+    #         if task.inspect_method == "sampling":
+    #             payment = list(salary_log["Payment"])
+    #             salary = sum(payment)
+    #             user_info.salary = user_info.salary + salary
+    #         elif task.inspect_method == "cross":
+    #             success = list(salary_log.loc[salary_log["TaskState"] == "Success"]["payment"])
+    #             undetermined =  list(salary_log.loc[salary_log["TaskState"] == "Undetermined"]["payment"])
+    #             user_info.salary = user_info.salary + sum(success)
+    #             user_info.undetermined = user_info.salary + sum(undetermined)
+    # user_info.save()
 
     return JsonResponse({"err": "none"})
 

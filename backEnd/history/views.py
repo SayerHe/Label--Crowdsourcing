@@ -90,7 +90,6 @@ def get_publisher_history(request, task_state):
                 'Deadline': [taskDDL[i] for i in range(len(completeDegree))  if completeDegree[i] < 1],
                 'Progress': [completeDegree[i] for i in range(len(completeDegree))  if completeDegree[i] < 1],
                 "Accuracy": [accuracy[i] for i in range(len(completeDegree))  if completeDegree[i] < 1],
-                "TaskState": task_state,
                 }
     else:
         data = {
@@ -100,8 +99,8 @@ def get_publisher_history(request, task_state):
             'Deadline': [taskDDL[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
             'Progress': [completeDegree[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
             "Accuracy": [accuracy[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
-            "TaskState": task_state,
         }
+
     print(data["Accuracy"])
     data = pd.DataFrame(data).to_dict('records')
     return data
@@ -118,6 +117,7 @@ def get_history(request):
         user_type = UserInfo.objects.get(user=user).user_type
         if user_type == "labeler":
             data = get_labeler_history(request)
+            task_state = 'Unfinished'
         elif user_type == "publisher":
             try:
                 task_state = request.GET["TaskState"]
@@ -125,7 +125,7 @@ def get_history(request):
                 task_state = "Unfinished"
             data = get_publisher_history(request, task_state)
 
-        return render(request, "history/index.html", {'UserType': UserInfo.objects.get(user=user).user_type, 'TaskList':json.dumps(data)})
+        return render(request, "history/index.html", {'UserType': UserInfo.objects.get(user=user).user_type, 'TaskState':task_state, 'TaskList':json.dumps(data)})
 
     if request.method == "POST":
         try:

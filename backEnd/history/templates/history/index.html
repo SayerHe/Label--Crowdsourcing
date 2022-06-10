@@ -9,7 +9,9 @@
                 download_url = "{% url 'history:download' %}",
                 feedback_url = "{% url 'feedback:feedback' %}",
                 TaskList = {{ TaskList|safe }},
+                TaskState = '{{ TaskState|safe }}',
                 UserType = '{{ UserType|safe }}';
+                console.log(TaskState)
         </script>
         {% load static %}
         <link rel="stylesheet" href="{% static '/history/CSS/history.css' %}" type="text/css">
