@@ -10,18 +10,15 @@
                 feedback_url = "{% url 'feedback:feedback' %}",
                 TaskList = {{ TaskList|safe }},
                 UserType = '{{ UserType|safe }}';
-                {% comment %} console.log(TaskList) {% endcomment %}
         </script>
         {% load static %}
         <link rel="stylesheet" href="{% static '/history/CSS/history.css' %}" type="text/css">
         <link rel="stylesheet" href="{% static '/history/CSS/pagination.css' %}" type="text/css">
         <link rel="stylesheet" href="{% static '/history/CSS/an-skill-bar.css' %}" type="text/css">
-        {% comment %} <link rel="stylesheet" href="{% static 'CSS/accordion-menu.css' %}" type="text/css"> {% endcomment %}
         <script type="text/javascript" src="{% static '/history/JS/jquery-3.6.0.js' %}"></script>
         <script type="text/javascript" src="{% static '/history/JS/history0.js' %}"></script>
         <script type="text/javascript" src="{% static '/history/JS/pagination.js' %}"></script>
         <script type="text/javascript" src="{% static '/history/JS/an-skill-bar.js' %}"></script>
-        {% comment %} <script type="text/javascript" src="{% static 'JS/accordion-menu.js' %}"></script> {% endcomment %}
     </head>
 
     <body>
