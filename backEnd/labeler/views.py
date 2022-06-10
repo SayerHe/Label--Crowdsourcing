@@ -306,10 +306,6 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id, try_
             if len(task_content) == 0:
                 task_content = task_content_all[:PageSize].to_dict("records")
         Data = pack_data(request, task_content, task_data_type, task_id, task, label_type, finished)
-        if not try_tag:
-            return render(request, "labeler/label.html", Data)
-        else:
-            return render(request, "labeler/label.html", Data)
 
     elif LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "cross":
         if rollback is False:
@@ -347,7 +343,10 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id, try_
 
         Data = pack_data(request, task_content, task_data_type, task_id, task, label_type, finished)
 
+    if not try_tag:
         return render(request, "labeler/label.html", Data)
+    else:
+        return render(request, "labeler/try.html", Data)
 
 
 def salary_log_sample(user_info, task, label, payment, state, method="new"):

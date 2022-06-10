@@ -12,7 +12,7 @@
                 label_url = "{% url 'labeler:label_task' %}",
                 main_menu_url = "{% url 'main_menu:index' %}",
                 login_url = "{% url 'login:index' %}",
-                detail_url = "{% url 'show_info:detail' %}"
+                detail_url = "{% url 'show_info:detail' %}",
                 UserName = '{{ UserName|safe }}';
     </script>
     {% load static %}
@@ -147,7 +147,7 @@
     </div>
 
 <div id="con4">
-    <button id="button1" onclick="window.location.href = detail_url">收入明细</button>
+    <button id="button1" onclick="window.parent.location.href = main_menu_url+'Detail/'">收入明细</button>
     <button id="button2">收入提现</button>
     <button id="button3">联系客服</button>
 </div>

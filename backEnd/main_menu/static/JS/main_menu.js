@@ -12,6 +12,7 @@ var urls = {
     "Feedback":feedback_url,
     "FHistory":fhistory_url,
     "Doing":history_url,
+    "Detail":detail_url,
 };
 
 $(document).ready(function(){
@@ -141,17 +142,23 @@ function menu_init(e){
     document.getElementById("UserName").innerHTML = UserName;
     $('.active').removeClass('active');
     $('#'+APPName).addClass('active');
-    $("#SUBHTML").attr("src", urls[APPName]+window.location.search);
+    if(APPName == 'History'){
+        $("#SUBHTML").attr("src", urls[APPName]+'?TaskState=Finished');
+    }
+    else if(APPName == 'Doing'){
+        $("#SUBHTML").attr("src", urls[APPName]+'?TaskState=Unfinished');
+    }
+    else{
+        $("#SUBHTML").attr("src", urls[APPName]);
+    }
 }
 
 function switchpage(pagename){
-    if(urls[pagename] == history_url){
-        if(pagename == 'History'){
-            $("#SUBHTML").attr("src", urls[pagename]+'?TaskState=Finished');
-        }
-        else{
-            $("#SUBHTML").attr("src", urls[pagename]+'?TaskState=Unfinished');
-        }
+    if(pagename == 'History'){
+        $("#SUBHTML").attr("src", urls[pagename]+'?TaskState=Finished');
+    }
+    else if(pagename == 'Doing'){
+        $("#SUBHTML").attr("src", urls[pagename]+'?TaskState=Unfinished');
     }
     else{
         $("#SUBHTML").attr("src", urls[pagename]);

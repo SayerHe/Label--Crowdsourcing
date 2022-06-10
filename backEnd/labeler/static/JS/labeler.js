@@ -129,7 +129,8 @@ function showhtml(tasks){
                                 '<p class="detailcontent">'+tasks[i].RuleText+'</p>'+
                             '</div>'+
                             '<div class="details-styling">'+
-                                '<button type="button" class="dotaskbutton" onclick="dotaskbt('+tasks[i].TaskID+','+tasks[i].BatchID+')">开始标注</p>'+
+                            '<button type="button" class="dotaskbutton" onclick="dotaskbt('+tasks[i].TaskID+','+tasks[i].BatchID+')">开 始 标 注</p>'+
+                            '<button type="button" class="dotaskbutton" onclick="trytaskbt('+tasks[i].TaskID+','+tasks[i].BatchID+')">任 务 样 例</p>'+
                             '</div>'+
                         '</div>'+
                     '</details>';
@@ -157,6 +158,10 @@ function dotaskbt(taskid, batchid){
         });        
     }
 }
+function trytaskbt(taskid, batchid){
+    window.open(try_url+'?TaskID='+taskid+'&BatchID='+batchid+'&DataNum=3');
+}
+
 
 function getsss(page){
     var keyword = $("#searchinput").val(),

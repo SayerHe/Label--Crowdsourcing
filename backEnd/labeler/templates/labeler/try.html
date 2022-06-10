@@ -4,7 +4,8 @@
         <meta charset="utf-8">
         <title></title>
         <script>
-            var label_url = "{% url 'labeler:label_task' %}";
+            var label_url = "{% url 'labeler:label_task' %}",
+                try_url = "{% url 'labeler:try_task' %}";
             var RuleText = {{ RuleText|safe }},
                 DataType = '{{ DataType|safe }}',
                 LabelType = '{{ LabelType|safe }}',
@@ -44,21 +45,7 @@
         <button id="foldbutton" onclick='foldbutton_onclick()' show='1'></button>
         <div id='taskdiv'>
             <h3 id='tasktitle'>数据标注</h3>
-            <button type="button" id="pageup" onclick="pageup_callback()">上一页</button>
-            <button type="button" id="nowpage" onclick="nowpage_callback()">回到当前页</button>
-            <div id='radiobox'>
-                <a>单页数据条数：</a>
-                <nav class="segmented-control segmented-control--turquoise" style="width: 120px;">
-                    <input type="radio" class="tasknumber" name="sc-0" value='3' id="sc-0-3" checked="checked" />
-                    <input type="radio" class="tasknumber" name="sc-0" value='5' id="sc-0-5" />
-                    <input type="radio" class="tasknumber" name="sc-0" value='10' id="sc-0-10" />
-                    <label for="sc-0-3" data-value="3">3</label>
-                    <label for="sc-0-5" data-value="5">5</label>
-                    <label for="sc-0-10" data-value="10">10</label>
-                </nav>
-            </div>
             <div id='tasktablediv'></div>
-            <button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>
         </div>
         {% comment %} <progress id='taskprogress' value='30' max='100'></progress> {% endcomment %}
     </body>

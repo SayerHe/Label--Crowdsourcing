@@ -192,8 +192,8 @@ body{
     top: 24px;
 }
 #tasktablediv{
-    position: absolute;
-    top: 70px;
+    position: relative;
+    top: 10px;
     left: 10%;
     width: 80%;
     margin: 0;
@@ -331,12 +331,12 @@ audio::-webkit-media-controls-enclosure{
     border-bottom: 1px solid rgba(128, 128, 128, 0.5);
 }
 
-#submit{
+/* #submit{
     position: relative;
     display: block;
-    /* left: 1.3em; */
+    left: 5%;
     margin-top: 3em;
-}
+} */
 
 #foldbutton {
     position: absolute; 
@@ -408,9 +408,12 @@ audio::-webkit-media-controls-enclosure{
     left: calc(10% + 12em);
     width: 6em;
 }
+
 #submit{
 	position: relative;
-	left: 0;
+    display: block;
+	left: 10%;
+    top: 10px;
 	color: darkcyan;
 	font-size: 16px;
 	font-family: Lucida Bright;
@@ -419,7 +422,7 @@ audio::-webkit-media-controls-enclosure{
 	border-radius: 2px;
 	padding: 5px 20px;
     margin: 0;
-    /* margin-bottom: 2em; */
+    margin-bottom: 2em;
     width: 5em;
 }
 #submit:hover{
