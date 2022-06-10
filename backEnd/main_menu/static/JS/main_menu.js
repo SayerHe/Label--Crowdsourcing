@@ -149,7 +149,7 @@ function menu_init(e){
         $("#SUBHTML").attr("src", urls[APPName]+'?TaskState=Unfinished');
     }
     else{
-        $("#SUBHTML").attr("src", urls[APPName]);
+        $("#SUBHTML").attr("src", urls[APPName]+window.location.search);
     }
 }
 
