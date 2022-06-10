@@ -5,7 +5,7 @@ function btsubmit(){
         form_data.append("ProblemDescription"     ,$("#topic0").val());
         form_data.append("Priority"      ,$("#type0").val());
         form_data.append('ProblemType'       ,$("#pri0").val());
-        form_data.append("ProblemDescription"    ,$("#detail0").val());
+        form_data.append("ProblemDetails"    ,$("#detail0").val());
     }
      $.ajax({
          url: feedback_url,
