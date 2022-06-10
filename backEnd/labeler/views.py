@@ -268,7 +268,7 @@ def find_rollback(request, task_content_all, current_item_id, PageSize):
                 pass
     return task_content, finished
 
-def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
+def show_label_page(request, CrossNum, PageSize, rollback, current_item_id, try_tag):
     try:
         task_id = request.GET["TaskID"]
         batch_id = request.GET["BatchID"]
@@ -306,7 +306,10 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id):
             if len(task_content) == 0:
                 task_content = task_content_all[:PageSize].to_dict("records")
         Data = pack_data(request, task_content, task_data_type, task_id, task, label_type, finished)
-        return render(request, "labeler/label.html", Data)
+        if not try_tag:
+            return render(request, "labeler/label.html", Data)
+        else:
+            return render(request, "labeler/label.html", Data)
 
     elif LabelTasksBaseInfo.objects.get(pk=int(task_id)).inspect_method == "cross":
         if rollback is False:
@@ -573,7 +576,7 @@ def label_page(request):
             rollback = True
         except KeyError:
             pass
-        return show_label_page(request, CrossNum, PageSize, rollback, current_item_id)
+        return show_label_page(request, CrossNum, PageSize, rollback, current_item_id, try_tag = False)
 
     elif request.method == "POST":
         return submit_label(request, CrossNum)
@@ -583,6 +586,6 @@ def try_task(request):
         PageSize = 3
         rollback = False
         current_item_id = None
-        return show_label_page(request, CrossNum, PageSize, rollback, current_item_id)
+        return show_label_page(request, CrossNum, PageSize, rollback, current_item_id, try_tag = True)
 
 
