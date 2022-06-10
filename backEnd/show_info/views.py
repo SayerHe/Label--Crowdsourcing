@@ -74,8 +74,8 @@ def Center(request):
     Data = {
         "ItemNum": item_num,
         "Rate": rate,
-        "Payment": str(payment)+" ￥",
-        "Undetermined": str(undetermined) + " ￥",
+        "Payment": str(round(payment,2))+" ￥",
+        "Undetermined": str(round(undetermined,2)) + " ￥",
         "Level":{"percentage": percentage, "level": level},
         "Active": active
     }

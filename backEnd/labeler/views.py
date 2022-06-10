@@ -143,7 +143,6 @@ def show_tasks(request):
         # user_info.save()
 
         task_log = pd.DataFrame(eval(user_info.task_log))
-        # "TaskID", "BatchID", "TaskName", "DataType", "ItemNum", "LastTime", "TaskState"
         task_log.loc[task_log.shape[0]] = [str(task_id), str(batch_id), task.task_name, task.data_type, [0, task_content.shape[0]],
                                            datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), ddl, "Unfinished"]
         user_info.task_log = str(task_log.to_dict())
@@ -256,7 +255,6 @@ def find_rollback(request, task_content_all, current_item_id, PageSize):
         task_content = [
             dict(forward_task.iloc[i, :]) for i in range(forward_task.shape[0])
         ]
-
 
     for i in task_content:
         if i["__Label__"]:
@@ -447,7 +445,7 @@ def submit_label(request, CrossNum):
                 table.loc[table["__ID__"] == label["id"], "__Times__"] = str(1)
                 table.loc[table["__ID__"] == label["id"], "__Labelers__"] = str([request.user.id])
                 # 记录历史行为
-                salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="new")
+                # salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="new")
             else:
                 if request.user.id not in eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0]):
                     old_labels = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])
