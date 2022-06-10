@@ -119,8 +119,10 @@ def get_history(request):
         if user_type == "labeler":
             data = get_labeler_history(request)
         elif user_type == "publisher":
-            # task_state = request.GET["TaskState"]
-            task_state = "Unfinished"
+            try:
+                task_state = request.GET["TaskState"]
+            except:
+                task_state = "Unfinished"
             data = get_publisher_history(request, task_state)
 
         return render(request, "history/index.html", {'UserType': UserInfo.objects.get(user=user).user_type, 'TaskList':json.dumps(data)})
