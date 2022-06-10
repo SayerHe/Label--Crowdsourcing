@@ -90,7 +90,7 @@ def get_publisher_history(request, task_state):
                 'Deadline': [taskDDL[i] for i in range(len(completeDegree))  if completeDegree[i] < 1],
                 'Progress': [completeDegree[i] for i in range(len(completeDegree))  if completeDegree[i] < 1],
                 "Accuracy": [accuracy[i] for i in range(len(completeDegree))  if completeDegree[i] < 1],
-                # "Accuracy": "",
+                "TaskState": task_state,
                 }
     else:
         data = {
@@ -100,7 +100,7 @@ def get_publisher_history(request, task_state):
             'Deadline': [taskDDL[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
             'Progress': [completeDegree[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
             "Accuracy": [accuracy[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
-            # "Accuracy": "",
+            "TaskState": task_state,
         }
     print(data["Accuracy"])
     data = pd.DataFrame(data).to_dict('records')
