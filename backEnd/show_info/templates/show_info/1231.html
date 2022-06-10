@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>菜鸟教程(runoob.com)</title>
+<script>
+function displayResult(){
+	var radios = document.getElementsByName('colors');
+	var  dateTime=new Date()
+	dateTime=dateTime.setDate(dateTime.getDate()+1);
+ 	dateTime=new Date(dateTime);
+	dateTime.tostring();
+	dateTime.slice(4, 8);
+	for (var i = 0, length = radios.length; i < length; i++) {
+		if (radios[i].checked) {
+			// 弹出选中值
+			alert(dateTime);
+			// 选中后退出循环
+			break;
+		}
+	}
+}
+</script>
+</head>
