@@ -19,12 +19,15 @@ def feedback(request):
             problem_description=request.POST["ProblemDescription"]
             problem_type=request.POST["ProblemType"]
             priority=request.POST["Priority"]
+            print(problem_description)
+            print(task_id)
         except:
             return JsonResponse({"err": "err !"})
         try:
             problem_details=request.POST["ProblemDetails"]
         except:
             problem_details=None
+            return JsonResponse({"err": "err !"})
 
         user_info = UserInfo.objects.get(user=user)
         task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
@@ -40,10 +43,13 @@ def feedback(request):
         feedback_file["Priority"] = priority
         feedback_file["ProblemDetails"]=problem_details
         feedback_file["UpdatedTime"]=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        print(feedback_file)
         user_info.feedback_file = str(feedback_file.to_dict())
         user_info.save()
+        return JsonResponse({"err": "none"})
 
 def show_feedback(request):
     pass
+
 def history(request):
     return render(request, "feedback/fhistory.html", {'UserName': request.user.username});

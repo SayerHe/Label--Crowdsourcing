@@ -361,7 +361,7 @@ def salary_log_sample(user_info, task, label, payment, state, method="new"):
         # elif old_state == "Success" and state == "Fail":
         #     user_info.salary = user_info.salary - payment
         salary_log.loc[(salary_log["TaskID"] == task.id) & (salary_log["ItemID"]==label["id"]), ["Time", "State"]] = [time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),state]
-    print(salary_log)
+    # print(salary_log)
     user_info.salary_log = str(salary_log.to_dict())
     user_info.save()
 
@@ -391,7 +391,7 @@ def salary_log_cross(user_info, task, label, payment, state, cross_finish, metho
             # elif old_state == "Success" and state == "Fail":
             #     user_info.salary = user_info.salary - payment
             salary_log.loc[(salary_log["TaskID"] == task.id) & (salary_log["ItemID"] == label["id"]), ["Time", "State"]] = [time.strftime("%Y-%m-%d %H:%M:%S",time.localtime()),state]
-    print(salary_log)
+    # print(salary_log)
     user_info.salary_log = str(salary_log.to_dict())
     user_info.save()
 
@@ -576,5 +576,4 @@ def label_page(request):
     elif request.method == "POST":
         return submit_label(request, CrossNum)
 
-def Center(request):
-    return render(request, "labeler/example.html", {'UserName':request.user.username})
+

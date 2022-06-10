@@ -19,10 +19,9 @@ def cal_progress(tasks, CrossNum):
         inspect_method = task.inspect_method
         batches = LabelTaskFile.objects.filter(task_id=task)
         task_situation = pd.DataFrame(eval(batches[0].data_file), dtype=str)
-        for batch in batches:
-            batch = pd.DataFrame(eval(batch.data_file), dtype=str)
+        for i in range(1, len(batches)):
+            batch = pd.DataFrame(eval(batches[i].data_file), dtype=str)
             task_situation = pd.concat((task_situation, batch), axis=0)
-
         single_completeDegree = 0
         if inspect_method == "sampling":
             single_completeDegree = task_situation[task_situation["__Label__"] != ""].shape[0]/task_situation.shape[0]
@@ -39,22 +38,29 @@ def cal_accuracy(completeDegree, tasks, CrossNum):
         if completeDegree[i] < 1:
             accuracy.append("待定")
         else:
+
             task = tasks[i]
-            content = pd.DataFrame(eval(LabelTaskFile.objects.get(task_id=task).data_file))
+            batches = LabelTaskFile.objects.filter(task_id=task)
+            content = pd.DataFrame(eval(batches[0].data_file), dtype=str)
+            for i in range(1, len(batches)):
+                batch = pd.DataFrame(eval(batches[i].data_file), dtype=str)
+                content = pd.concat((content, batch), axis=0)
+
             if task.inspect_method == "sampling":
-                sample = pd.DataFrame(eval(LabelTaskFile.objects.get(task_id=task).sample))
-                temp_ans = []
-                for j in range(sample.shape[0]):
-                    right_ans = sample.iloc[j, 1]
-                    index = right_ans.iloc[j,0]
-                    if task.data_type == "table":
-                        label = eval(content.loc[content["id"]==index, "__Label__"].values[0])[0]
-                    else:
-                        label = eval(content.loc[content["file"]==index, "__Label__"].values[0])[0]
-                    if right_ans == label:
-                        temp_ans.append(True)
-                    else: temp_ans.append(False)
-                accuracy.append(sum(temp_ans)/len(temp_ans))
+                accuracy.append(1)
+                # sample = pd.DataFrame(eval(LabelTaskFile.objects.get(task_id=task).sample))
+                # temp_ans = []
+                # for j in range(sample.shape[0]):
+                #     right_ans = sample.iloc[j, 1]
+                #     index = right_ans.iloc[j,0]
+                #     if task.data_type == "table":
+                #         label = eval(content.loc[content["id"]==index, "__Label__"].values[0])[0]
+                #     else:
+                #         label = eval(content.loc[content["file"]==index, "__Label__"].values[0])[0]
+                #     if right_ans == label:
+                #         temp_ans.append(True)
+                #     else: temp_ans.append(False)
+                # accuracy.append(sum(temp_ans)/len(temp_ans))
             else:
                 temp_ans = []
                 for j in range(content.shape[0]):
@@ -98,10 +104,9 @@ def get_publisher_history(request, task_state):
             'PublishDate': [taskPublishTime[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
             'Deadline': [taskDDL[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
             'Progress': [completeDegree[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
-            "Accuracy": [accuracy[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
+            "Accuracy": [str(100*accuracy[i])+" %" for i in range(len(completeDegree))  if completeDegree[i] == 1],
         }
 
-    print(data["Accuracy"])
     data = pd.DataFrame(data).to_dict('records')
     return data
 
@@ -146,8 +151,8 @@ def download(request):
 
     batches = LabelTaskFile.objects.filter(task_id=task)
     data = pd.DataFrame(eval(batches[0].data_file), dtype=str)
-    for batch in batches:
-        batch = pd.DataFrame(eval(batch.data_file), dtype=str)
+    for i in range(1, len(batches)):
+        batch = pd.DataFrame(eval(batches[i].data_file), dtype=str)
         data = pd.concat((data, batch), axis=0)
 
     labels=list(data['__Label__'])
