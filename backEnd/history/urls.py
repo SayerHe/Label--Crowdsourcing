@@ -6,6 +6,5 @@ app_name = "history"
 
 urlpatterns = [
     path('', views.get_history, name="get_history"),
-    path('doing/', views.get_history, name="doing"),
     path('download/', views.download, name="download"),
 ]
