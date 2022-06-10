@@ -113,6 +113,16 @@
 
       <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.3.2/dist/echarts.min.js"></script>
       <script type="text/javascript">
+          var list = [displayResult(-6),displayResult(-5),displayResult(-4),displayResult(-3),displayResult(-2),displayResult(-1),displayResult(0)];
+
+          function displayResult(num){
+            var  dateTime=new Date()
+            dateTime=dateTime.setDate(dateTime.getDate()+num);
+            dateTime=new Date(dateTime);
+            dateTime=String(dateTime);
+            dateTime=dateTime.slice(4,10);
+            return dateTime
+                }
         var dom = document.getElementById('active');
         var myChart = echarts.init(dom, null, {
           renderer: 'canvas',
@@ -125,7 +135,7 @@
         option = {
       xAxis: {
         type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        data: list
       },
       yAxis: {
         type: 'value'
