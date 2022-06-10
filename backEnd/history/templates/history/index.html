@@ -7,6 +7,7 @@
             var label_url = "{% url 'labeler:label_task' %}",
                 history_url = "{% url 'history:get_history' %}",
                 download_url = "{% url 'history:download' %}",
+                feedback_url = "{% url 'feedback:feedback' %}",
                 TaskList = {{ TaskList|safe }},
                 UserType = '{{ UserType|safe }}';
                 {% comment %} console.log(TaskList) {% endcomment %}
