@@ -8,6 +8,10 @@
 {#            var Data = {{ Data|safe }},#}
 {#                UserName = '{{ UserName|safe }}';#}
 {#        </script>#}
+        <script>
+            var Data = {{ Data|safe }},
+                UserName = '{{ UserName|safe }}';
+        </script>
         <script> var UserType = "labeler" </script>
         <link rel="stylesheet" href="{% static '/CSS/fhistory.css' %}" type="text/css">
         <link rel="stylesheet" href="{% static '/history/CSS/pagination.css' %}" type="text/css">

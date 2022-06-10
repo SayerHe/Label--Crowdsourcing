@@ -86,6 +86,11 @@ def account(request):
     return render(request, "show_info/account.html", {'UserName': request.user.username})
 
 def detail(request):
+    AUDIT_MAP = {
+        "Undetermined": "待审核",
+        "Success": "标注成功",
+        "Fail": "标注失败",
+    }
     user_info = UserInfo.objects.get(user=request.user)
     salary_log = pd.DataFrame(eval(user_info.salary_log))
     task_log = pd.DataFrame(eval(user_info.task_log))
@@ -97,5 +102,7 @@ def detail(request):
     tasks_id = [int(i) for i in tasks_id]
     salary_log=salary_log.loc[salary_log["TaskID"].isin(tasks_id)]
     salary_log = salary_log.to_dict("records")
+    for i in salary_log:
+        i["State"] = AUDIT_MAP[i["State"]]
 
     return render(request, "show_info/detail.html", {'UserName': request.user.username, "Data":json.dumps(salary_log)})
