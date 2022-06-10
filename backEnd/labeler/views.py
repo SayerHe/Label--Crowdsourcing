@@ -13,10 +13,11 @@ from pytz import timezone
 import ast
 
 ZIP_FILES = "zip_tasks"
+CrossNum = 5
 
 def show_tasks(request):
     DATA_ON_ONE_PAGE = 10
-    CrossNum=5
+    CrossNum=3
     if request.method == 'GET':
         if 'RequestData' not in request.GET:
             return render(request, "labeler/index.html", {'UserName':request.user.username})
@@ -563,7 +564,6 @@ def submit_label(request, CrossNum):
     return JsonResponse({"err": "none"})
 
 def label_page(request):
-    CrossNum = 5
     PageSize = 3
     rollback = False
     current_item_id = None
@@ -577,5 +577,12 @@ def label_page(request):
 
     elif request.method == "POST":
         return submit_label(request, CrossNum)
+
+def try_task(request):
+    if request.method == "GET":
+        PageSize = 3
+        rollback = False
+        current_item_id = None
+        return show_label_page(request, CrossNum, PageSize, rollback, current_item_id)
 
 

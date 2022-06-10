@@ -12,7 +12,7 @@ from backEnd import settings
 import random
 import ast
 # Create your views here.
-
+CrossNum = 3
 def cal_progress(tasks, CrossNum):
     completeDegree = []
     for task in tasks:
@@ -64,7 +64,7 @@ def cal_accuracy(completeDegree, tasks, CrossNum):
             else:
                 temp_ans = []
                 for j in range(content.shape[0]):
-                    labels = eval(content.loc[j, "__Label__"].values[0])
+                    labels = eval(content.loc[j, "__Label__"])
                     if task.label_type == "choose":
                         right_ans = max(labels, key=labels.count)
                         rate = labels.count(right_ans)
@@ -79,7 +79,6 @@ def cal_accuracy(completeDegree, tasks, CrossNum):
 
 def get_publisher_history(request, task_state):
     # 任务号，任务名称，任务类型（图片），完成度，准确度，操作（删除+联系客服）
-    CrossNum = 5
     tasks = LabelTasksBaseInfo.objects.filter(publisher=request.user)
     taskID = [i.pk for i in tasks]
     taskName = [i.task_name for i in tasks]
@@ -104,7 +103,7 @@ def get_publisher_history(request, task_state):
             'PublishDate': [taskPublishTime[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
             'Deadline': [taskDDL[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
             'Progress': [completeDegree[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
-            "Accuracy": [str(100*accuracy[i])+" %" for i in range(len(completeDegree))  if completeDegree[i] == 1],
+            "Accuracy": [str(round(100*accuracy[i], 2))+" %" for i in range(len(completeDegree))  if completeDegree[i] == 1],
         }
 
     data = pd.DataFrame(data).to_dict('records')
@@ -132,13 +131,13 @@ def get_history(request):
 
         return render(request, "history/index.html", {'UserType': UserInfo.objects.get(user=user).user_type, 'TaskState':task_state, 'TaskList':json.dumps(data)})
 
-    if request.method == "POST":
-        try:
-            task_id = request.POST["TaskID"]
-            LabelTasksBaseInfo.objects.get(pk=task_id).delete()
-            return JsonResponse({"err": "none"})
-        except:
-            return JsonResponse({"err": "TaskID Missing !"})
+    # if request.method == "POST":
+    #     try:
+    #         task_id = request.POST["TaskID"]
+    #         LabelTasksBaseInfo.objects.get(pk=task_id).delete()
+    #         return JsonResponse({"err": "none"})
+    #     except:
+    #         return JsonResponse({"err": "TaskID Missing !"})
 
 
 def download(request):
@@ -159,7 +158,6 @@ def download(request):
     task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
     new_data=pd.DataFrame()
     new_data['文件名或ID']=data.iloc[:,0]
-    CrossNum = 5
     if task.label_type == 'describe':
         new_labels = []
         if task.inspect_method == 'sampling':
