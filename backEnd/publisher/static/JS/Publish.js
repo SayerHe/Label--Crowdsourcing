@@ -21,12 +21,12 @@ $(document).ready(function(){
     $("#choicesfile").change(function(){
         $("#choicesfiletext").val($(this).val());
     });
-    $("#answerfiletext").click(function(){
-        $("#answerfile").trigger('click');
-    });
-    $("#answerfile").change(function(){
-        $("#answerfiletext").val($(this).val());
-    });
+    // $("#answerfiletext").click(function(){
+    //     $("#answerfile").trigger('click');
+    // });
+    // $("#answerfile").change(function(){
+    //     $("#answerfiletext").val($(this).val());
+    // });
     $("input[name='datatype']").change(function(){
         if(this.value == 'text' || this.value == 'image'){
             $("#label_frame").css('display', 'flex');
@@ -46,14 +46,14 @@ $(document).ready(function(){
             $("#choices_div").css('display', 'none');
         }
     })
-    $("input[name='checktype']").change(function(){
-        if(this.value == 'sampling'){
-            $("#answer_div").css('display', 'block');
-        }
-        else{
-            $("#answer_div").css('display', 'none');
-        }
-    })
+    // $("input[name='checktype']").change(function(){
+    //     if(this.value == 'sampling'){
+    //         $("#answer_div").css('display', 'block');
+    //     }
+    //     else{
+    //         $("#answer_div").css('display', 'none');
+    //     }
+    // })
 });
 
 function calc_recommended_payment(days){
@@ -71,7 +71,6 @@ function btsubmit(){
         form_data.append('DataFile'         ,$('#datafile')[0].files[0]);
         form_data.append('RuleText'         ,$('#markrules').val());
         if($("input[name='marktype']:checked").val() == 'choose'){
-        console.log($('#choicesfile')[0].files[0])
             form_data.append('ChoiceFile', $('#choicesfile')[0].files[0]);
         }
         // form_data.append('RuleFile'     ,$('#markfile')[0].files[0]);

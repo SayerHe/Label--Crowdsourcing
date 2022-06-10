@@ -537,7 +537,9 @@ def submit_label(request, CrossNum):
     new_log = [str(task.id), str(batch_id), task.task_name, task.data_type, process,
                time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), ddl, state]
 
-    task_log.loc[(task_log["TaskID"] == str(task.id)) & (task_log["BatchID"] == str(batch_id))] = new_log
+    # print(task_log.loc[(task_log["TaskID"] == str(task.id)) & (task_log["BatchID"] == str(batch_id))])
+    # print(task_log.loc[(task_log["TaskID"] == str(task.id)) & (task_log["BatchID"] == str(batch_id)),:])
+    task_log.loc[(task_log["TaskID"] == str(task.id)) & (task_log["BatchID"] == str(batch_id)),:] = new_log
     user_info.task_log = str(task_log.to_dict())
     user_info.save()
 

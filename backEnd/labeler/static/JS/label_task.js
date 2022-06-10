@@ -1,6 +1,7 @@
 $(document).ready(function(){
     if(Finished == 'True'){
         alert('finished');
+        open(location, '_self').close();
         return;
     }
     datanum = window.location.search.split('&')[2].split('=')[1];
