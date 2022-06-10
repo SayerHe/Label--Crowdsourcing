@@ -7,6 +7,7 @@ var urls = {
     "Publish":publisher_url,
     "History":history_url,
     "Center":Center_url,
+    "Check":check_url,
     "Account":account_url,
     "Feedback":feedback_url,
     "FHistory":fhistory_url,
