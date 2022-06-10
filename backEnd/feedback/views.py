@@ -48,4 +48,4 @@ def history(request):
     user_info = UserInfo.objects.get(user=request.user)
     feedback_file = pd.DataFrame(eval(user_info.feedback_file))
     feedback_file = feedback_file.to_dict("records")
-    return render(request, "feedback/fhistory.html", {'UserName': request.user.username,"Data":json.dumps(feedback_file})
+    return render(request, "feedback/fhistory.html", {'UserName': request.user.username,"Data":json.dumps(feedback_file)})

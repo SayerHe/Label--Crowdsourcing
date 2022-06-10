@@ -32,7 +32,7 @@ $(document).ready(function(){
         showhtml_publisher(tempdata);
     }
     else if(UserType == 'labeler'){
-        showhtml_labeler(tempdata);
+        showhtml_labeler(Data);
     }
     $('.skillbar').skillbar({
         speed: 800,
@@ -96,16 +96,22 @@ function showhtml_labeler(tasks){
         tmphtml += '<tbody>';
         for(var i in tasks){
             tmphtml += '<tr>';
-            for(var t in tasks[i]){
-                if(t == 'State'){
-                    tmphtml += '<td>'+tasks[i]["Payment"]+'</td>';
+            tmphtml += '<td>'+0+i+'</td>';
+            for(let j=0;j<7;j++){
+                if (j==0){
+                    tmphtml += '<td>'+tasks[i]["TaskID"]+'</td>';
                 }
-                else if(t == 'Payment'){
+                else if (j==1){
+                    tmphtml += '<td>'+tasks[i]["TaskName"]+'</td>';
+                }
+                else if (j==2){
+                    tmphtml += '<td>'+tasks[i]["ProblemType"]+'</td>';
+                }
+                else if (j==3){
+                    tmphtml += '<td>'+tasks[i]["UpdatedTime"]+'</td>';
+                }
+                else if (j==4){
                     tmphtml += '<td>'+tasks[i]["State"]+'</td>';
-                }
-                else
-                {
-                    tmphtml += '<td>'+tasks[i][t]+'</td>';
                 }
             }
             tmphtml += '<td>';
