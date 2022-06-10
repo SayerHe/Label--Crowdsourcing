@@ -11,8 +11,7 @@ var urls = {
     "Account":account_url,
     "Feedback":feedback_url,
     "FHistory":fhistory_url,
-    "Doing":doing_url,
-
+    "Doing":history_url,
 };
 
 $(document).ready(function(){
@@ -146,7 +145,17 @@ function menu_init(e){
 }
 
 function switchpage(pagename){
-    $("#SUBHTML").attr("src", urls[pagename]);
+    if(urls[pagename] == history_url){
+        if(pagename == 'History'){
+            $("#SUBHTML").attr("src", urls[pagename]+'?TaskState=Finished');
+        }
+        else{
+            $("#SUBHTML").attr("src", urls[pagename]+'?TaskState=Unfinished');
+        }
+    }
+    else{
+        $("#SUBHTML").attr("src", urls[pagename]);
+    }
     window.history.pushState(
         {'active':pagename},
         document.title,
