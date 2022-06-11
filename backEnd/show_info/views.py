@@ -86,7 +86,6 @@ def Center(request):
     user_info.salary = salary
     user_info.undetermined = undetermined_salary
     user_info.save()
-    print(pd.DataFrame(eval(user_info.salary_log)))
     payment=user_info.salary
     undetermined=user_info.undetermined
     salary_log = salary_log.apply(to_time, axis=1)

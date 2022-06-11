@@ -112,7 +112,11 @@ def get_publisher_history(request, task_state):
 def get_labeler_history(request):
     user_info = UserInfo.objects.get(user=request.user)
     task_log = user_info.task_log
-    task_log = pd.DataFrame(eval(task_log)).to_dict("records")
+    task_log = pd.DataFrame(eval(task_log))
+    percentage = task_log.apply(lambda x: x["Progress"][0]/x["Progress"][1], axis=1)
+    task_log = task_log.assign(Percentage=percentage)
+    task_log = task_log.sort_values("Percentage")
+    task_log = task_log.to_dict("records")
     return task_log
 
 def get_history(request):
