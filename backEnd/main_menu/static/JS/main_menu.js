@@ -3,7 +3,7 @@ window.onload=function(){
 }
 
 var urls = {
-    "TaskList":labeler_url,
+    "TaskList":inst_url,
     "Publish":publisher_url,
     "History":history_url,
     "Center":Center_url,

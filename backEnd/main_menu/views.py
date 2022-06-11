@@ -46,4 +46,6 @@ def index_appactive(request, appname):
             return JsonResponse({'err':'None'})
     except:
         pass
-
+def inst(request):
+    user = request.user
+    return render(request, 'main_menu/instruction.html', {"UserName": user.username})
