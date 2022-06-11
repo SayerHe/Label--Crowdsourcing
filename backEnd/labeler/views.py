@@ -13,11 +13,10 @@ from pytz import timezone
 import ast
 
 ZIP_FILES = "zip_tasks"
-CrossNum = 5
+CrossNum = 2
 
 def show_tasks(request):
     DATA_ON_ONE_PAGE = 10
-    CrossNum=3
     if request.method == 'GET':
         if 'RequestData' not in request.GET:
             return render(request, "labeler/index.html", {'UserName':request.user.username})
@@ -100,12 +99,10 @@ def show_tasks(request):
                 for batch in batches:
                     if request.user.id in eval(batch.labelers):
                         break
-                    if len(eval(batch.labelers))!=CrossNum:
+                    if len(eval(batch.labelers))<CrossNum:
                         batch_id.append(batch.batch_id)
                         tasks.append(task_base)
                         break
-
-
 
         dataList = []
 
@@ -125,7 +122,6 @@ def show_tasks(request):
                 break
 
         tasks_info = {"DataNumber": len(tasks), "DataList": dataList}
-
         return JsonResponse(tasks_info)
 
     elif request.method == "POST":
@@ -373,7 +369,6 @@ def salary_log_cross(user_info, task, label, payment, state, cross_finish, metho
         if not cross_finish:
             salary_log = pd.DataFrame(eval(user_info.salary_log))
             salary_log.loc[salary_log.shape[0]] = [task.id, task.task_name, label["id"],time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),payment, state]
-            user_info.salary_log = str(salary_log.to_dict())
             # user_info.undetermined = user_info.undetermined + payment
         else:
             # user_info.undetermined = user_info.undetermined - payment
@@ -381,6 +376,7 @@ def salary_log_cross(user_info, task, label, payment, state, cross_finish, metho
             #     user_info.payment = user_info.salary + payment
             salary_log = pd.DataFrame(eval(user_info.salary_log))
             salary_log.loc[(salary_log["TaskID"] == task.id) & (salary_log["ItemID"] == label["id"]), "State"] = state
+            # print(salary_log)
 
     else:
         if not cross_finish:
@@ -465,11 +461,13 @@ def submit_label(request, CrossNum):
                     # 记录历史行为
                     times = table.loc[table["__ID__"] == label["id"], "__Times__"].values[0]
                     salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="new")
+
                     if int(times) == int(CrossNum):
                         labelers_log = eval(table.loc[table["__ID__"] == label["id"], "__Labelers__"].values[0])
                         right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
                         for i in range(len(labelers_log)):
-                            user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
+                            if str(labelers_log[i]) != str(request.user.id):
+                                user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
                             user_label = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])[i]
                             if task.label_type != "choose":
                                 state = "Success"
@@ -478,7 +476,10 @@ def submit_label(request, CrossNum):
                                     state = "Success"
                                 else:
                                     state = "Fail"
-                            salary_log_cross(user_info_i, task, label, payment, state, cross_finish=True, method="new")
+                            if str(labelers_log[i]) != str(request.user.id):
+                                salary_log_cross(user_info_i, task, label, payment, state, cross_finish=True, method="new")
+                            else:
+                                salary_log_cross(user_info, task, label, payment, state, cross_finish=True, method="new")
 
                 else:
                     old_labels = eval(table.loc[table["__ID__"] == label["id"], "__Label__"].values[0])
@@ -486,11 +487,12 @@ def submit_label(request, CrossNum):
                     user_index = old_labelers.index(request.user.id)
                     old_labels[user_index] = label["label"]
                     table.loc[table["__ID__"] == label["id"], "__Label__"] = str(old_labels)
-                    if table.loc[table["__ID__"] == label["id"], "__Times__"].values[0] == CrossNum:
+                    if table.loc[table["__ID__"] == label["id"], "__Times__"].values[0] == int(CrossNum):
                         labelers_log = table.loc[table["__ID__"] == label["id"], "__Labelers__"].tolist()
                         right_label = table.loc[table["__ID__"] == label["id"], "__Label__"].value_counts().index[0]
                         for i in range(len(labelers_log)):
-                            user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
+                            if str(labelers_log[i]) != str(request.user.id):
+                                user_info_i = UserInfo.objects.get(user__id=labelers_log[i])
                             user_label = table.loc[table["__ID__"] == label["id"], "__Label__"][i]
                             if task.label_type != "choose":
                                 state = "Success"
@@ -499,7 +501,10 @@ def submit_label(request, CrossNum):
                                     state = "Success"
                                 else:
                                     state = "Fail"
-                            salary_log_cross(user_info_i, task, label, payment, state, cross_finish=True, method="update")
+                            if str(labelers_log[i]) != str(request.user.id):
+                                salary_log_cross(user_info_i, task, label, payment, state, cross_finish=True, method="new")
+                            else:
+                                salary_log_cross(user_info, task, label, payment, state, cross_finish=True, method="new")
                     else:
                         salary_log_cross(user_info, task, label, payment, "Undetermined", cross_finish=False, method="update")
 
@@ -541,28 +546,6 @@ def submit_label(request, CrossNum):
     # print(task_log.loc[(task_log["TaskID"] == str(task.id)) & (task_log["BatchID"] == str(batch_id)),:])
     task_log.loc[(task_log["TaskID"] == str(task.id)) & (task_log["BatchID"] == str(batch_id)),:] = new_log
     user_info.task_log = str(task_log.to_dict())
-    user_info.save()
-
-    salary = 0
-    undetermined_salary = 0
-    new_task_log = pd.DataFrame(eval(user_info.task_log))
-    tasks_id = list(new_task_log["TaskID"])
-    for task_id in tasks_id:
-        state = new_task_log.loc[new_task_log["TaskID"] == task_id]["TaskState"].values[0]
-        if str(state) == "Finished":
-            task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
-            salary_log = pd.DataFrame(eval(user_info.salary_log))
-            salary_log = salary_log.loc[salary_log["TaskID"] == int(task_id)]
-            if task.inspect_method == "sampling":
-                payment = list(salary_log["Payment"])
-                salary = salary + sum(payment)
-            elif task.inspect_method == "cross":
-                success = list(salary_log.loc[salary_log["State"] == "Success"]["Payment"])
-                undetermined = list(salary_log.loc[salary_log["State"] == "Undetermined"]["Payment"])
-                salary = salary + sum(success)
-                undetermined_salary = undetermined_salary + sum(undetermined)
-    user_info.salary = salary
-    user_info.undetermined = undetermined_salary
     user_info.save()
 
     return JsonResponse({"err": "none"})

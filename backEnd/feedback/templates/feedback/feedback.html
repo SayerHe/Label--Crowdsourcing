@@ -7,6 +7,7 @@
     <script>
         var name = "{{ UserName|safe }}";
         var email = "{{ Email}}";
+        var ID =  "{{ TaskID}}";
         var feedback_url = "{% url 'feedback:feedback' %}";
     </script>
     <script type="text/javascript" src="{% static 'JS/feedback.js' %}"></script>
@@ -28,7 +29,7 @@
         </div>
         <div id="task_con">
             <h4 id="email"> 任务ID: </h4>
-            <input id="ID0">
+            <div contenteditable="True" id="ID0"></div>
         </div>
         <div id="topic_con">
             <h4 id="email"> 问题概述: </h4>
@@ -66,5 +67,6 @@
 <script>
     document.getElementById("name0").innerHTML = name;
     document.getElementById("email0").innerHTML = email;
+    document.getElementById("ID0").innerHTML = ID;
 </script>
 </html>

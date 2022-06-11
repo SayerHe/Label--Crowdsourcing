@@ -7,5 +7,6 @@ app_name = "main_menu"
 
 urlpatterns = [
     path('', views.index, name="index"),
+    path('instruction/', views.inst, name="instruction"),
     path('<str:appname>/', views.index_appactive, name="main_app"),
 ]
