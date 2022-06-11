@@ -12,7 +12,7 @@ from backEnd import settings
 import random
 import ast
 # Create your views here.
-CrossNum = 3
+CrossNum = 2
 def cal_progress(tasks, CrossNum):
     completeDegree = []
     for task in tasks:
