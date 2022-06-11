@@ -195,7 +195,7 @@ function taskList_init_image(){
         ih += draw_question(id, DataList[i]['__Label__']);
         ih += '</div>';
     }
-    ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
+    // ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
 
     document.getElementById('tasktablediv').innerHTML = ih;
 }
@@ -210,7 +210,7 @@ function taskList_init_audio(){
         ih += draw_question(id, DataList[i]['__Label__']);
         ih += '</div>';
     }
-    ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
+    // ih += '<button type="button" id="submit" onclick="SubmitLabelResult()">提&nbsp;交</button>'
 
     document.getElementById('tasktablediv').innerHTML = ih;
 }
