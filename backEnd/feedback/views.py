@@ -38,7 +38,6 @@ def feedback(request):
         feedback_file.loc[feedback_file.shape[0]]=feedback_log
         user_info.feedback_file = str(feedback_file.to_dict())
         user_info.save()
-        print(user_info.feedback_file)
         return JsonResponse({"err": "提交成功!"})
 
 
@@ -46,6 +45,5 @@ def history(request):
     user_info = UserInfo.objects.get(user=request.user)
     feedback_file = pd.DataFrame(eval(user_info.feedback_file))
     feedback_file = feedback_file.to_dict("records")
-    print(feedback_file)
     return render(request, "feedback/fhistory.html", {'UserName': request.user.username, "Data": json.dumps(feedback_file)})
 
