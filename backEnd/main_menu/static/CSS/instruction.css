@@ -54,10 +54,10 @@ body{
 
 #con1 img{
     position: absolute;
-    left:2.5%;
 }
 #img1{
     top:220px;
+    margin-left: -300PX;
 }
 
 #text {
@@ -68,6 +68,7 @@ body{
 }
 #img2{
     top:560px;
+    margin-left: -200PX;
 }
 
 #choose{
@@ -78,6 +79,7 @@ body{
 }
 #img3{
     top:990px;
+    margin-left: -260PX;
 }
 
 #result{
