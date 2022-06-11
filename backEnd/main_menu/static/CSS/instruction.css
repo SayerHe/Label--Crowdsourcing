@@ -3,12 +3,13 @@ body{
 }
 #con1{
     font-family: "PingFang SC";
-    background-color: white!important;
+    /*background-color: white!important;*/
     position: absolute;
     left:10%;
     top:5%;
     width:80%;
-    height:1280px;
+    line-height: 2em;
+    height:1350px;
 }
 
 #con1 h1{
