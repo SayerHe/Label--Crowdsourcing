@@ -7,6 +7,7 @@
     <script>
         var name = "{{ UserName|safe }}";
         var email = "{{ Email}}";
+        var ID =  "{{ TaskID}}";
         var feedback_url = "{% url 'feedback:feedback' %}";
     </script>
     <script type="text/javascript" src="{% static 'JS/feedback.js' %}"></script>
@@ -66,5 +67,6 @@
 <script>
     document.getElementById("name0").innerHTML = name;
     document.getElementById("email0").innerHTML = email;
+    document.getElementById("ID0").innerHTML = ID;
 </script>
 </html>
