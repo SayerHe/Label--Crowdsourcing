@@ -29,8 +29,6 @@ def feedback(request):
             return JsonResponse({"err": "err !"})
 
 
-        print(problem_type)
-        print(priority)
         user_info = UserInfo.objects.get(user=user)
         task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
 

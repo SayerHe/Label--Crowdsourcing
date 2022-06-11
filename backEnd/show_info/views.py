@@ -58,6 +58,7 @@ def Center(request):
     level, percentage = cal_level(item_num, rate)
     payment = user_info.salary
     undetermined = user_info.undetermined
+    print(payment, undetermined)
     salary_log = salary_log.apply(to_time, axis=1)
     last_seven_days = []
     for i in range(-1, 7):
