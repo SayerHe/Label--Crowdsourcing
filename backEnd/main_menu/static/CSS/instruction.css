@@ -8,7 +8,7 @@ body{
     left:10%;
     top:5%;
     width:80%;
-    height:1600px;
+    height:1280px;
 }
 
 #con1 h1{
@@ -61,28 +61,30 @@ body{
 }
 
 #text {
-    top:500px;
+    top:450px;
 }
 #p2 {
-    top:550px;
+    top:500px;
 }
 #img2{
-    top:610px;
+    top:560px;
 }
 
 #choose{
-    top:1150px;
+    top:875px;
 }
 #p3 {
-    top:1200px;
+    top:930px;
 }
 #img3{
-    top:1260px;
-}
-#p4{
-    top:1450px;
+    top:990px;
 }
 
 #result{
-    top:1400px;
+    top:1130px;
 }
+
+#p4{
+    top:1180px;
+}
+
