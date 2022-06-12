@@ -114,8 +114,11 @@ def get_labeler_history(request):
     task_log = user_info.task_log
     task_log = pd.DataFrame(eval(task_log))
     percentage = task_log.apply(lambda x: x["Progress"][0]/x["Progress"][1], axis=1)
-    task_log = task_log.assign(Percentage=percentage)
-    task_log = task_log.sort_values("Percentage")
+    try:
+        task_log = task_log.assign(Percentage=percentage)
+        task_log = task_log.sort_values("Percentage")
+    except:
+        pass
     task_log = task_log.to_dict("records")
     return task_log
 
