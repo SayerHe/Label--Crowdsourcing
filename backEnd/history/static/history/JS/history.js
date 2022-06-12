@@ -48,7 +48,7 @@ $(document).ready(function(){
     }
     else if(UserType == 'labeler'){
         for(t in tableTitle_labeler){
-            tmphtml += '<th name="'+t+'" class="sorting">'+tableTitle_labeler[TaskState][t]+'</th>';
+            tmphtml += '<th name="'+t+'" class="sorting">'+tableTitle_labeler[t]+'</th>';
         }
     }
     tmphtml += '<th>操作</th>';
