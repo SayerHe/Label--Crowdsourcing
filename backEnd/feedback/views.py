@@ -28,9 +28,11 @@ def feedback(request):
         except:
             return JsonResponse({"err": "err !"})
 
-
         user_info = UserInfo.objects.get(user=user)
-        task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
+        try:
+            task = LabelTasksBaseInfo.objects.get(pk=int(task_id))
+        except:
+            return JsonResponse({"err": "Task dosen't exist ! "})
 
         feedback_file= pd.DataFrame(eval(user_info.feedback_file))
         feedback_log = [str(task_id),  task.task_name,"未解决", problem_description,problem_type,
@@ -45,6 +47,5 @@ def history(request):
     user_info = UserInfo.objects.get(user=request.user)
     feedback_file = pd.DataFrame(eval(user_info.feedback_file))
     feedback_file = feedback_file.to_dict("records")
-    print(feedback_file)
     return render(request, "feedback/fhistory.html", {'UserName': request.user.username, "Data": json.dumps(feedback_file)})
 

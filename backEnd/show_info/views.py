@@ -123,6 +123,7 @@ def detail(request):
     }
     user_info = UserInfo.objects.get(user=request.user)
     salary_log = pd.DataFrame(eval(user_info.salary_log))
+    print(salary_log)
     task_log = pd.DataFrame(eval(user_info.task_log))
     tasks_id = task_log["TaskID"].tolist()
     for task_id in tasks_id:
