@@ -132,3 +132,27 @@ body{
     /* margin-top: -60px; */
     margin: 2em 0;
 }
+
+thead th.sorting{
+    cursor: pointer;
+}
+thead th.sorting::before{
+    content: '↓';
+    right: 0;
+    position: relative;
+    float: right;
+    opacity: 0.3;
+}
+thead th.sorting::after{
+    content: '↑';
+    right: 0;
+    position: relative;
+    float: right;
+    opacity: 0.3;
+}
+thead th.sorting.sort-down::before{
+    opacity: 1;
+}
+thead th.sorting.sort-up::after{
+    opacity: 1;
+}

@@ -16,7 +16,7 @@ const tableTitle_publisher={'Finished': {
     'TaskName':'任务名称',
     'PublishDate':'发布日期',
     'Deadline':'截止日期',
-    'Progress':'完成度',
+    'Percentage':'完成度',
 }},
 tableTitle_labeler={
     'TaskName':'任务名称',
@@ -36,8 +36,24 @@ const TaskNumOnOnePage = 10;
 var Tasks;
 
 $(document).ready(function(){
+    // console.log([2,2]>[2,1])
     Tasks = TaskList;
     page_init(Math.max(1, Math.ceil(Tasks.length/TaskNumOnOnePage)));
+    var tmphtml = '';
+    tmphtml += '<tr>';
+    if(UserType == 'publisher'){
+        for(t in tableTitle_publisher[TaskState]){
+            tmphtml += '<th name="'+t+'" class="sorting">'+tableTitle_publisher[TaskState][t]+'</th>';
+        }
+    }
+    else if(UserType == 'labeler'){
+        for(t in tableTitle_labeler){
+            tmphtml += '<th name="'+t+'" class="sorting">'+tableTitle_labeler[TaskState][t]+'</th>';
+        }
+    }
+    tmphtml += '<th>操作</th>';
+    tmphtml += '</tr>';
+    document.getElementById("table-head").innerHTML = tmphtml;
     changepage(1);
     $('#searchinput').change(function(){
         var s = this.value
@@ -50,9 +66,42 @@ $(document).ready(function(){
         page_init(Math.max(1, Math.ceil(Tasks.length/TaskNumOnOnePage)));
         changepage(1);
     })
+    $('.sorting').click(function(){
+        let key = $(this).attr('name');
+        if($(this).hasClass('sort-up')){
+            $(this).removeClass('sort-up');
+            $(this).addClass('sort-down');
+            Tasks.sort((t1, t2) => {
+                if(t1[key] <= t2[key]) {return 1;}
+                else {return -1;}
+            })
+        }
+        else if($(this).hasClass('sort-down')){
+            $(this).removeClass('sort-down');
+            $(this).addClass('sort-up');
+            Tasks.sort((t1, t2) => {
+                if(t1[key] >= t2[key]) {return 1;}
+                else {return -1;}
+            })
+        }
+        else{
+            $('.sort-up').removeClass('sort-up');
+            $('.sort-down').removeClass('sort-down');
+            $(this).addClass('sort-down');
+            Tasks.sort((t1, t2) => {
+                if(t1[key] <= t2[key]) {return 1;}
+                else {return -1;}
+            })
+        }
+        changepage(1);
+    })
 });
 
 window.onload=function(){
+}
+
+function tasksortcmp(t1, t2){
+
 }
 
 function changepage(page){
@@ -71,18 +120,18 @@ function page_init(pagedata){
 
 function showhtml_publisher(tasks){
     var tmphtml = '';
-    tmphtml += '<thead><tr>';
-    for(t in tableTitle_publisher[TaskState]){
-        tmphtml += '<th>'+tableTitle_publisher[TaskState][t]+'</th>';
-    }
-    tmphtml += '<th>操作</th>';
-    tmphtml += '</tr></thead>';
+    // tmphtml += '<thead><tr>';
+    // for(t in tableTitle_publisher[TaskState]){
+    //     tmphtml += '<th name="'+t+'" class="sorting">'+tableTitle_publisher[TaskState][t]+'</th>';
+    // }
+    // tmphtml += '<th>操作</th>';
+    // tmphtml += '</tr></thead>';
     if(tasks.length > 0){
-        tmphtml += '<tbody>';
+        // tmphtml += '<tbody>';
         for(var i in tasks){
             tmphtml += '<tr>';
             for(var t in tableTitle_publisher[TaskState]){
-                if(t == 'Progress'){
+                if(t == 'Percentage'){
                     tmphtml += '<td><div class="skillbar html"><div class="filled" data-width="'+tasks[i][t]*100+'%"></div></div><span class="percent">'+Math.floor(tasks[i][t]*100)+'%</span></td>';
                 }
                 else{
@@ -100,9 +149,9 @@ function showhtml_publisher(tasks){
             tmphtml += '</td>';
             tmphtml += '</tr>';
         }
-        tmphtml += '</tbody>';
+        // tmphtml += '</tbody>';
     }
-    document.getElementById("datatable").innerHTML = tmphtml;
+    document.getElementById("table-body").innerHTML = tmphtml;
     $('.skillbar').skillbar({
         speed: 800,
     });
@@ -111,20 +160,14 @@ function showhtml_publisher(tasks){
 function showhtml_labeler(tasks){
     var tmphtml = '';
     // tmphtml += '<thead><tr><th>任务名称</th><th>任务类型</th><th>已完成条数</th><th>最近标注时间</th><th>任务状态</th><th>操作</th></tr></thead>';
-    tmphtml += '<thead><tr>';
-    for(t in tableTitle_labeler){
-        if(t == "Progress"){
-            tmphtml += '<th>'+tableTitle_labeler[t]+'</th>';
-        }
-        else if(t == "Deadline"){
-            tmphtml += '<th>'+tableTitle_labeler[t]+'</th>';
-        }
-        else {tmphtml += '<th>'+tableTitle_labeler[t]+'</th>';}
-    }
-    tmphtml += '<th>操作</th>';
-    tmphtml += '</tr></thead>';
+    // tmphtml += '<thead><tr>';
+    // for(t in tableTitle_labeler){
+    //     tmphtml += '<th name="'+t+'" class="sorting">'+tableTitle_labeler[t]+'</th>';
+    // }
+    // tmphtml += '<th>操作</th>';
+    // tmphtml += '</tr></thead>';
     if(tasks.length > 0){
-        tmphtml += '<tbody>';
+        // tmphtml += '<tbody>';
         for(var i in tasks){
             tmphtml += '<tr>';
             for(var t in tableTitle_labeler){
@@ -152,9 +195,9 @@ function showhtml_labeler(tasks){
             tmphtml += '</td>';
             tmphtml += '</tr>';
         }
-        tmphtml += '</tbody>';
+        // tmphtml += '</tbody>';
     }
-    document.getElementById("datatable").innerHTML = tmphtml;
+    document.getElementById("table-body").innerHTML = tmphtml;
 }
 
 function deletebutton(taskid){
