@@ -86,7 +86,6 @@ def show_tasks(request):
         tasks = []
         batch_id = []
         for task_base in task_bases:
-            time1 = time.time()
             batches = LabelTaskFile.objects.filter(task_id=task_base)
             if task_base.inspect_method == "sampling":
                 for batch in batches:
@@ -104,7 +103,6 @@ def show_tasks(request):
                         batch_id.append(batch.batch_id)
                         tasks.append(task_base)
                         break
-            print(time.time() - time1, task_base.data_type)
         dataList = []
         for i in range(page*DATA_ON_ONE_PAGE, page*DATA_ON_ONE_PAGE+DATA_ON_ONE_PAGE):
             try:
@@ -194,9 +192,11 @@ def pack_data(request, task_content, task_data_type, task_id, task, label_type, 
         else:
             table = pd.read_excel(table_file)
         task_content = pd.DataFrame(task_content)
-        table = table[:task_content.shape[0]]
-        print(table)
-        print(task_content)
+        ID = task_content["__ID__"].tolist()
+        ID = [int(i)-1 for i in ID]
+        table = table.iloc[ID]
+        table = table.reset_index(drop=True)
+        task_content = task_content.reset_index(drop=True)
         task_content = pd.concat([table, task_content], axis=1  ).to_dict("records")
 
     Data = {
