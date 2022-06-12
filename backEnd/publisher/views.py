@@ -14,16 +14,29 @@ from pathlib import Path
 
 # Create your views here.
 
-def transform_table_file(table_data):
+def transform_table_file(table_data, new_task_id, file_type):
+    now_dir = Path.cwd()
+    file_dir = now_dir.parent / "zip_tasks"
+    if not file_dir.exists():
+        Path(file_dir).mkdir(parents=True)
+    new_task_dir = file_dir / str(new_task_id)
+    new_task_dir.mkdir()
+    if file_type == "csv":
+        new_task_dir = new_task_dir / 'data.csv'
+        table_data.to_csv(str(new_task_dir), index=None)
+    else:
+        new_task_dir = new_task_dir / 'data.xlsx'
+        table_data.to_excel(str(new_task_dir), index=None)
 
-    table_data["__Label__"] = ["" for i in range(len(table_data))]
-    table_data["__ID__"] = [i+1 for i in list(table_data.index)]
-    table_data["__Labelers__"] = ""
-    table_data["__Times__"] = 0
-    table_data = table_data.dropna(axis=0, how='all')
-    table_data = table_data.dropna(axis=1, how='all')
-    # print(table_data.to_string())
-    return table_data
+    final_table = pd.DataFrame(index=table_data.index)
+    final_table["__Label__"] = ["" for i in range(len(final_table))]
+    final_table["__ID__"] = [i+1 for i in list(final_table.index)]
+    final_table["__Labelers__"] = ""
+    final_table["__Times__"] = 0
+    final_table = final_table.dropna(axis=0, how='all')
+    final_table = final_table.dropna(axis=1, how='all')
+    # print(final_table.to_string())
+    return final_table
 
 def transform_zip_file(task_file, new_task_id, request):
     # 将传入的zip解压到服务器，并将相对路径存入数据库
@@ -142,11 +155,20 @@ def create_table_task(request, inspect_method, publisher, task_name, data_type, 
     file_type = str(task_file).split(".")[1]
     if file_type not in table_format_permit:
         return JsonResponse({'err': "FileType Wrong! (Support csv, xlsx, xls, xlsm only)"})
+
+    new_task = LabelTasksBaseInfo(inspect_method=inspect_method, publisher=publisher, task_name=task_name,
+                                      data_type=data_type, rule_file=rule_file,
+                                      label_type=label_type, task_deadline=task_deadline, task_payment=task_payment,
+                                      task_difficulty="easy", choices=choices)
+    new_task.save()
+    new_task_id = new_task.pk
+    LabelTasksBaseInfo.objects.get(pk=new_task_id).delete()
+
     if file_type == "csv":
         task_file_table = pd.read_csv(task_file)
     elif file_type in ["xls", "xlsx", "xlsm"]:
         task_file_table = pd.read_excel(task_file)
-    task_file_table = transform_table_file(task_file_table)
+    task_file_table = transform_table_file(task_file_table, new_task_id+1, file_type)
     task_difficulty = estimate_table_difficulty(task_file_table)
 
     new_task = LabelTasksBaseInfo(inspect_method=inspect_method, publisher=publisher, task_name=task_name,
