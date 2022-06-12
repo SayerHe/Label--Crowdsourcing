@@ -113,7 +113,13 @@ function showhtml_labeler(tasks){
     // tmphtml += '<thead><tr><th>任务名称</th><th>任务类型</th><th>已完成条数</th><th>最近标注时间</th><th>任务状态</th><th>操作</th></tr></thead>';
     tmphtml += '<thead><tr>';
     for(t in tableTitle_labeler){
-        tmphtml += '<th>'+tableTitle_labeler[t]+'</th>';
+        if(t == "Progress"){
+            tmphtml += '<th>'+tableTitle_labeler[t]+'</th>';
+        }
+        else if(t == "Deadline"){
+            tmphtml += '<th>'+tableTitle_labeler[t]+'</th>';
+        }
+        else {tmphtml += '<th>'+tableTitle_labeler[t]+'</th>';}
     }
     tmphtml += '<th>操作</th>';
     tmphtml += '</tr></thead>';
@@ -127,6 +133,9 @@ function showhtml_labeler(tasks){
                 }
                 else if(t == 'Progress'){
                     tmphtml += '<td>'+tasks[i][t][0]+'/'+tasks[i][t][1]+'</td>';
+                }
+                else if(t == 'Deadline'){
+                    tmphtml += '<td>'+tasks[i][t]+'</td>';
                 }
                 else{
                     tmphtml += '<td>'+tasks[i][t]+'</td>';
