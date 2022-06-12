@@ -297,6 +297,7 @@ def show_label_page(request, CrossNum, PageSize, rollback, current_item_id, try_
         return JsonResponse({"err": "Task not exist !"})
     task_content_all = LabelTaskFile.objects.get(task_id=task, batch_id=batch_id).data_file
     task_content_all = pd.DataFrame(eval(task_content_all), dtype="str")
+    print(task_content_all.columns)
     # print(task_content_all)
     task_data_type = str(task.data_type)
     label_type = str(task.label_type)

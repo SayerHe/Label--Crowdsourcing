@@ -93,7 +93,7 @@ def get_publisher_history(request, task_state):
                 'TaskName': [taskName[i] for i in range(len(completeDegree))  if completeDegree[i] < 1],
                 'PublishDate': [taskPublishTime[i] for i in range(len(completeDegree))  if completeDegree[i] < 1],
                 'Deadline': [taskDDL[i] for i in range(len(completeDegree))  if completeDegree[i] < 1],
-                'Progress': [completeDegree[i] for i in range(len(completeDegree))  if completeDegree[i] < 1],
+                'Percentage': [completeDegree[i] for i in range(len(completeDegree))  if completeDegree[i] < 1],
                 "Accuracy": [accuracy[i] for i in range(len(completeDegree))  if completeDegree[i] < 1],
                 }
     else:
@@ -102,7 +102,7 @@ def get_publisher_history(request, task_state):
             'TaskName': [taskName[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
             'PublishDate': [taskPublishTime[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
             'Deadline': [taskDDL[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
-            'Progress': [completeDegree[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
+            'Percentage': [completeDegree[i] for i in range(len(completeDegree))  if completeDegree[i] == 1],
             "Accuracy": [str(round(100*accuracy[i], 2))+" %" for i in range(len(completeDegree))  if completeDegree[i] == 1],
         }
 
