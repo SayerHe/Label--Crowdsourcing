@@ -13,7 +13,7 @@ var urls = {
     "FHistory":fhistory_url,
     "Doing":history_url,
     "Detail":detail_url,
-    "main":inst_url,
+    "Main":inst_url,
 };
 
 $(document).ready(function(){
